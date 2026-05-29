@@ -37,7 +37,7 @@ export default function Home() {
           </span>
           <div className="flex-1">
             <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-200">
-              학생이신가요? 먼저 합법 여부부터 자가진단하세요 (무료, 6개 언어)
+              학생이신가요? 먼저 합법 여부부터 자가진단하세요 (무료)
             </p>
             <p className="mt-0.5 text-xs text-emerald-700 dark:text-emerald-400">
               비자·TOPIK·체류기간으로 8단계 만에 확인 → K-MOM 가입은 그 다음
