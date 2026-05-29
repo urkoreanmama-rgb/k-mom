@@ -1,5 +1,6 @@
 import SignupForm from './signup-form'
 import Link from 'next/link'
+import KakaoLoginButton from '@/components/KakaoLoginButton'
 import type { UserRole } from '@/lib/supabase/types'
 
 const ROLES: UserRole[] = ['student', 'employer', 'school_admin']
@@ -24,7 +25,27 @@ export default async function SignupPage({
           {role === 'employer' && '업주 계정 — 베타 기간 동안 무료.'}
           {role === 'school_admin' && '학교 국제처 — MOU 체결 후 활성화됩니다.'}
         </p>
+
+        {/* 카카오 가입 — 학생만 (외국인 유학생이 카카오 익숙) */}
+        {role === 'student' && (
+          <>
+            <div className="mt-6">
+              <KakaoLoginButton label="카카오로 시작하기" />
+              <p className="mt-2 text-xs text-zinc-500">
+                카카오 계정으로 가입하면 학생으로 등록됩니다.
+              </p>
+            </div>
+
+            <div className="my-6 flex items-center gap-3 text-xs text-zinc-400">
+              <span className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
+              <span>또는 이메일로</span>
+              <span className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
+            </div>
+          </>
+        )}
+
         <SignupForm defaultRole={role} />
+
         <p className="mt-6 text-sm text-zinc-500">
           이미 계정이 있나요?{' '}
           <Link href="/login" className="font-medium underline">
