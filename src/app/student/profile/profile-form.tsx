@@ -4,6 +4,8 @@ import { useState, useTransition } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { formatTopikLevel, formatVisaType, getWeeklyWorkLimit } from '@/lib/visa-rules'
 import type {
+  EnrollmentStatus,
+  ImmigrationPermitStatus,
   StudentProfile,
   TopikLevel,
   User,
@@ -34,6 +36,12 @@ export default function ProfileForm({
   const [topik, setTopik] = useState<TopikLevel>(profile?.topik_level ?? 'none')
   const [intro, setIntro] = useState(profile?.intro ?? '')
   const [skillsRaw, setSkillsRaw] = useState((profile?.skills ?? []).join(', '))
+  const [enrollment, setEnrollment] = useState<EnrollmentStatus>(
+    profile?.enrollment_status ?? 'unknown',
+  )
+  const [permit, setPermit] = useState<ImmigrationPermitStatus>(
+    profile?.immigration_permit_status ?? 'unknown',
+  )
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -61,6 +69,8 @@ export default function ProfileForm({
           topik_level: topik,
           intro,
           skills,
+          enrollment_status: enrollment,
+          immigration_permit_status: permit,
         })
       if (e2) {
         setMsg({ err: e2.message })
@@ -111,6 +121,30 @@ export default function ProfileForm({
         value={topik}
         onChange={(v) => setTopik(v as TopikLevel)}
         options={TOPIK_OPTIONS.map((t) => ({ value: t, label: formatTopikLevel(t) }))}
+      />
+
+      <Select
+        label="학적 상태"
+        value={enrollment}
+        onChange={(v) => setEnrollment(v as EnrollmentStatus)}
+        options={[
+          { value: 'enrolled', label: '재학 중' },
+          { value: 'on_leave', label: '휴학 중' },
+          { value: 'graduated', label: '졸업·수료' },
+          { value: 'unknown', label: '미입력' },
+        ]}
+      />
+
+      <Select
+        label="시간제취업 허가 상태"
+        value={permit}
+        onChange={(v) => setPermit(v as ImmigrationPermitStatus)}
+        options={[
+          { value: 'not_applied', label: '아직 신청 안 함' },
+          { value: 'applied', label: '신청 중 (결과 대기)' },
+          { value: 'approved', label: '허가 완료' },
+          { value: 'unknown', label: '미입력' },
+        ]}
       />
 
       <label className="block">

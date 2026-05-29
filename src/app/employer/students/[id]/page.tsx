@@ -28,6 +28,8 @@ export default async function StudentDetailPage({
   const checklist = buildComplianceChecklist({
     user: studentUser,
     profile: profile ?? null,
+    enrollmentStatus: profile?.enrollment_status ?? 'unknown',
+    immigrationPermitStatus: profile?.immigration_permit_status ?? 'unknown',
     isSemester: isSemesterNow(),
   })
 

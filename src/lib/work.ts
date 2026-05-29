@@ -27,12 +27,30 @@ export async function fetchMyWorks(
   if (error || !works) return []
 
   // 한 번에 상대방 이름들 가져오기
+  // - 업주가 상대(=학생)면 user.name 사용
+  // - 학생이 상대(=업주)면 employers.business_name 우선, 없으면 user.name fallback
   const partnerIds = [...new Set(works.map((w) => w[counterpartColumn]))]
   const { data: partners } = await supabase
     .from('users')
     .select('id, name')
     .in('id', partnerIds)
-  const nameMap = new Map((partners ?? []).map((p) => [p.id, p.name]))
+  const userNameMap = new Map((partners ?? []).map((p) => [p.id, p.name]))
+
+  const businessNameMap = new Map<string, string>()
+  if (viewer === 'student' && partnerIds.length > 0) {
+    const { data: emps } = await supabase
+      .from('employers')
+      .select('user_id, business_name')
+      .in('user_id', partnerIds)
+    for (const e of emps ?? []) {
+      businessNameMap.set(e.user_id, e.business_name)
+    }
+  }
+
+  const nameMap = new Map<string, string>()
+  for (const id of partnerIds) {
+    nameMap.set(id, businessNameMap.get(id) ?? userNameMap.get(id) ?? '(이름 없음)')
+  }
 
   // 모든 리뷰 가져오기
   const workIds = works.map((w) => w.id)
@@ -61,7 +79,8 @@ export async function fetchMyWorks(
       work,
       counterpartId: partnerId,
       counterpartName: nameMap.get(partnerId) ?? '(이름 없음)',
-      counterpartLabel: viewer === 'student' ? '업주' : '학생',
+      // counterpartLabel: 학생이 보면 '가게', 업주가 보면 '학생'
+      counterpartLabel: viewer === 'student' ? '가게' : '학생',
       myReviewSubmitted: meta?.mine ?? false,
       bothRevealed: meta?.revealed ?? false,
     }

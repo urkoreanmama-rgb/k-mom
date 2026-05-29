@@ -9,6 +9,8 @@ export type TopikLevel = 'none' | 'level_1' | 'level_2' | 'level_3' | 'level_4' 
 export type EmployerCertLevel = 'bronze' | 'silver' | 'gold'
 export type WorkStatus = 'active' | 'completed' | 'cancelled'
 export type MouStatus = 'none' | 'pending' | 'active' | 'expired'
+export type EnrollmentStatus = 'enrolled' | 'on_leave' | 'graduated' | 'unknown'
+export type ImmigrationPermitStatus = 'not_applied' | 'applied' | 'approved' | 'unknown'
 
 export type User = {
   id: string
@@ -33,6 +35,8 @@ export type StudentProfile = {
   professor_recommendation_url: string | null
   verified_badge: boolean
   total_work_hours: number
+  enrollment_status: EnrollmentStatus
+  immigration_permit_status: ImmigrationPermitStatus
   created_at: string
   updated_at: string
 }
