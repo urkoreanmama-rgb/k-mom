@@ -79,6 +79,51 @@ export default function Home() {
         </p>
       </section>
 
+      {/* 핵심 흐름 — 조건맞춤 후보 미리보기팩 (투자자용 핵심 메시지) */}
+      <section className="px-6 py-10 max-w-5xl mx-auto">
+        <div className="rounded-3xl border-2 border-emerald-300 bg-gradient-to-br from-emerald-50 via-sky-50 to-violet-50 p-8 dark:border-emerald-800 dark:from-emerald-950/30 dark:via-sky-950/30 dark:to-violet-950/30">
+          <p className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
+            업주 핵심 흐름 · ₩10,000 미리보기팩
+          </p>
+          <h2 className="mt-2 text-3xl font-bold">
+            조건맞춤 외국어 가능 유학생, 사전 확인하세요.
+          </h2>
+          <p className="mt-3 max-w-3xl text-sm text-zinc-700 dark:text-zinc-300">
+            언어·요일·시간대·지역·업무를 입력하면 조건에 맞는 D-2 유학생 후보 수를 먼저
+            보여드립니다. 충분할 때만 <strong>1만 원</strong>에 후보 3명 미리보기를 받으세요.
+            일반 구인 공고를 올리기 전에 후보가 정말 있는지 확인하는 사전 검증 서비스입니다.
+          </p>
+
+          <ol className="mt-6 grid gap-3 sm:grid-cols-4">
+            {[
+              { n: 1, t: '조건 입력', d: '언어·요일·시간·지역' },
+              { n: 2, t: '후보 수 확인', d: '무료로 인원만 먼저' },
+              { n: 3, t: '1만 원 결제', d: '조건이 충분할 때만' },
+              { n: 4, t: '후보 3명 카드', d: '연락은 관리자 거쳐' },
+            ].map((s) => (
+              <li
+                key={s.n}
+                className="rounded-xl bg-white p-3 text-sm dark:bg-zinc-900"
+              >
+                <p className="text-xs font-bold text-emerald-600">{s.n}단계</p>
+                <p className="mt-1 font-semibold">{s.t}</p>
+                <p className="text-xs text-zinc-500">{s.d}</p>
+              </li>
+            ))}
+          </ol>
+
+          <Link
+            href="/employer/match"
+            className="mt-6 inline-flex h-12 items-center rounded-full bg-emerald-600 px-7 text-sm font-bold text-white shadow-md hover:bg-emerald-700"
+          >
+            지금 조건 입력하기 →
+          </Link>
+          <p className="mt-3 text-xs text-zinc-500">
+            ※ 조건에 맞는 후보가 1명 이하이면 결제 안내가 나오지 않습니다. 무료 대기 등록만 가능합니다.
+          </p>
+        </div>
+      </section>
+
       {/* 3대 가치 */}
       <section className="px-6 py-10 max-w-5xl mx-auto">
         <h2 className="text-2xl font-bold">K-MOM은 무엇을 보장하나요?</h2>

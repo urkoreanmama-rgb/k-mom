@@ -35,7 +35,13 @@ export default async function Nav() {
           )}
           {role === 'employer' && (
             <>
-              <Link href="/employer/search" className="hover:underline">학생 프로필 열람</Link>
+              <Link
+                href="/employer/match"
+                className="rounded-full bg-emerald-100 px-3 py-1 font-semibold text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-300"
+              >
+                ⚡ 맞춤 후보 찾기
+              </Link>
+              <Link href="/employer/search" className="hover:underline">학생 열람</Link>
               <Link href="/employer/work" className="hover:underline">진행 중인 채용</Link>
               <Link href="/employer/profile" className="hover:underline">내 가게</Link>
               <Link href="/pricing" className="hover:underline text-zinc-500">요금제</Link>
@@ -45,7 +51,10 @@ export default async function Nav() {
             <Link href="/school/dashboard" className="hover:underline">학교 대시보드</Link>
           )}
           {role === 'platform_admin' && (
-            <Link href="/admin/dashboard" className="hover:underline">운영자</Link>
+            <>
+              <Link href="/admin/dashboard" className="hover:underline">대시보드</Link>
+              <Link href="/admin/requests" className="hover:underline">업주 요청</Link>
+            </>
           )}
           {user ? (
             <>
