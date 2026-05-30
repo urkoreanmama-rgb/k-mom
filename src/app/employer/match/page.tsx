@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import MatchCriteriaForm from './criteria-form'
+import ScenarioCards from './scenario-cards'
 
 export const metadata = {
   title: '맞춤 후보 찾기 · K-MOM',
@@ -8,8 +9,8 @@ export const metadata = {
 export default function MatchEntryPage() {
   return (
     <main className="max-w-3xl mx-auto px-6 py-10">
-      <Link href="/employer/search" className="text-sm text-zinc-500 hover:underline">
-        ← 다른 흐름으로
+      <Link href="/" className="text-sm text-zinc-500 hover:underline">
+        ← 홈으로
       </Link>
 
       <header className="mt-4">
@@ -20,10 +21,6 @@ export default function MatchEntryPage() {
         <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
           외국어 가능 D-2 유학생을 사전 필터링합니다. 조건에 맞는 후보 수를 먼저 확인하고,
           충분할 때만 1만 원에 후보 3명 미리보기를 받아보세요.
-        </p>
-        <p className="mt-1 text-xs text-zinc-500">
-          ※ 일반 구인 공고의 대체가 아닙니다. 공고를 올리기 전 외국어 가능 유학생이 실제로
-          있는지 확인하는 사전 검증 서비스입니다.
         </p>
       </header>
 
@@ -43,9 +40,25 @@ export default function MatchEntryPage() {
         ))}
       </ol>
 
+      {/* 시연 모드 카드 — 원클릭 시나리오 3종 */}
       <div className="mt-8">
-        <MatchCriteriaForm />
+        <ScenarioCards />
       </div>
+
+      {/* 또는 직접 수정 */}
+      <details className="mt-8">
+        <summary className="cursor-pointer text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">
+          또는 조건을 직접 수정하기 (펼치기)
+        </summary>
+        <div className="mt-4 rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+          <p className="text-xs text-zinc-500">
+            아래 폼은 첫 시나리오 값으로 미리 채워져 있습니다. 일부만 바꿔서 다른 조건도 시험해보세요.
+          </p>
+          <div className="mt-4">
+            <MatchCriteriaForm />
+          </div>
+        </div>
+      </details>
     </main>
   )
 }

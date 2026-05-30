@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { submitCriteria } from './actions'
+import { DEMO_SCENARIOS } from '@/data/demo-scenarios'
 
 const LANGUAGES = ['베트남어', '중국어', '영어', '러시아어', '기타'] as const
 const DAYS = ['월', '화', '수', '목', '금', '토', '일'] as const
@@ -23,6 +24,9 @@ const DURATIONS = [
   { value: 'long', label: '장기 (6개월+)' },
 ] as const
 
+// 시연용: 첫 시나리오 값으로 초기 폼 채우기 (투자자가 빈 폼 보지 않게)
+const DEFAULTS = DEMO_SCENARIOS[0].criteria
+
 export default function MatchCriteriaForm() {
   const [pending, setPending] = useState(false)
 
@@ -34,22 +38,54 @@ export default function MatchCriteriaForm() {
       }}
       className="space-y-6"
     >
-      <CheckboxGroup name="requiredLanguages" label="필요 언어 (복수 선택 가능)" options={LANGUAGES} required />
-      <CheckboxGroup name="workDays" label="근무 요일 (복수 선택)" options={DAYS} required />
-      <CheckboxGroup name="workTimeSlots" label="근무 시간대 (복수 선택)" options={TIME_SLOTS} required />
-      <CheckboxGroup name="areas" label="근무 지역 (복수 선택)" options={AREAS} required />
-      <CheckboxGroup name="jobTypes" label="업무 유형 (복수 선택)" options={JOB_TYPES} required />
+      <CheckboxGroup
+        name="requiredLanguages"
+        label="필요 언어 (복수 선택 가능)"
+        options={LANGUAGES}
+        defaults={DEFAULTS.requiredLanguages}
+        required
+      />
+      <CheckboxGroup
+        name="workDays"
+        label="근무 요일 (복수 선택)"
+        options={DAYS}
+        defaults={DEFAULTS.workDays}
+        required
+      />
+      <CheckboxGroup
+        name="workTimeSlots"
+        label="근무 시간대 (복수 선택)"
+        options={TIME_SLOTS}
+        defaults={DEFAULTS.workTimeSlots}
+        required
+      />
+      <CheckboxGroup
+        name="areas"
+        label="근무 지역 (복수 선택)"
+        options={AREAS}
+        defaults={DEFAULTS.areas as readonly string[]}
+        required
+      />
+      <CheckboxGroup
+        name="jobTypes"
+        label="업무 유형 (복수 선택)"
+        options={JOB_TYPES}
+        defaults={DEFAULTS.jobTypes}
+        required
+      />
 
       <RadioGroup
         name="koreanLevel"
         label="필요한 한국어 수준"
         options={KOREAN_LEVELS.map((v) => ({ value: v, label: v }))}
+        defaultValue={DEFAULTS.koreanLevel ?? undefined}
       />
 
       <RadioGroup
         name="duration"
         label="근무 기간"
         options={DURATIONS.map((d) => ({ value: d.value, label: d.label }))}
+        defaultValue={DEFAULTS.duration ?? undefined}
       />
 
       <NumberField
@@ -58,6 +94,7 @@ export default function MatchCriteriaForm() {
         placeholder="예: 10030 (2026년 최저시급)"
         min={9000}
         step={100}
+        defaultValue={DEFAULTS.hourlyWage ?? undefined}
       />
 
       <RadioGroup
@@ -67,6 +104,7 @@ export default function MatchCriteriaForm() {
           { value: 'has', label: '있음' },
           { value: 'none', label: '없음' },
         ]}
+        defaultValue={DEFAULTS.hasForeignHiringExperience ?? undefined}
       />
 
       <RadioGroup
@@ -77,6 +115,7 @@ export default function MatchCriteriaForm() {
           { value: 'needs_help', label: '도움이 필요해요' },
           { value: 'unsure', label: '아직 잘 모르겠어요' },
         ]}
+        defaultValue={DEFAULTS.docReadiness ?? undefined}
       />
 
       <div className="rounded-md bg-zinc-50 px-4 py-3 text-xs text-zinc-600 dark:bg-zinc-900 dark:text-zinc-400">
@@ -100,11 +139,13 @@ function CheckboxGroup({
   name,
   label,
   options,
+  defaults = [],
   required = false,
 }: {
   name: string
   label: string
   options: readonly string[]
+  defaults?: readonly string[]
   required?: boolean
 }) {
   return (
@@ -119,7 +160,13 @@ function CheckboxGroup({
             key={opt}
             className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm hover:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 has-[input:checked]:border-emerald-600 has-[input:checked]:bg-emerald-50 has-[input:checked]:text-emerald-800 dark:has-[input:checked]:bg-emerald-950/40 dark:has-[input:checked]:text-emerald-300"
           >
-            <input type="checkbox" name={name} value={opt} className="h-4 w-4" />
+            <input
+              type="checkbox"
+              name={name}
+              value={opt}
+              defaultChecked={defaults.includes(opt)}
+              className="h-4 w-4"
+            />
             {opt}
           </label>
         ))}
@@ -132,10 +179,12 @@ function RadioGroup({
   name,
   label,
   options,
+  defaultValue,
 }: {
   name: string
   label: string
   options: { value: string; label: string }[]
+  defaultValue?: string
 }) {
   return (
     <fieldset className="space-y-2">
@@ -146,7 +195,13 @@ function RadioGroup({
             key={opt.value}
             className="inline-flex cursor-pointer items-center gap-2 rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm hover:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 has-[input:checked]:border-emerald-600 has-[input:checked]:bg-emerald-50 has-[input:checked]:text-emerald-800 dark:has-[input:checked]:bg-emerald-950/40 dark:has-[input:checked]:text-emerald-300"
           >
-            <input type="radio" name={name} value={opt.value} className="h-4 w-4" />
+            <input
+              type="radio"
+              name={name}
+              value={opt.value}
+              defaultChecked={defaultValue === opt.value}
+              className="h-4 w-4"
+            />
             {opt.label}
           </label>
         ))}
@@ -158,11 +213,13 @@ function RadioGroup({
 function NumberField({
   name,
   label,
+  defaultValue,
   ...props
 }: {
   name: string
   label: string
-} & React.InputHTMLAttributes<HTMLInputElement>) {
+  defaultValue?: number
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, 'defaultValue'>) {
   return (
     <label className="block">
       <span className="block text-sm font-medium">{label}</span>
@@ -170,6 +227,7 @@ function NumberField({
         {...props}
         type="number"
         name={name}
+        defaultValue={defaultValue}
         className="mt-1 h-11 w-full rounded-lg border border-zinc-300 bg-white px-3 text-sm focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 dark:border-zinc-700 dark:bg-zinc-900"
       />
     </label>

@@ -8,6 +8,7 @@ import {
   readCriteria,
   saveCriteria,
 } from '@/lib/match-session'
+import { getScenarioById } from '@/data/demo-scenarios'
 import type {
   Area,
   DayOfWeek,
@@ -25,6 +26,18 @@ import type {
 
 function getAll(fd: FormData, key: string): string[] {
   return fd.getAll(key).map(String)
+}
+
+/**
+ * 시연 시나리오 ID를 받아 미리 정의된 criteria로 바로 진입
+ * — 투자자 시연용 원클릭 버튼이 호출
+ */
+export async function submitDemoScenario(formData: FormData): Promise<void> {
+  const id = String(formData.get('scenario_id') ?? '')
+  const scenario = getScenarioById(id)
+  if (!scenario) redirect('/employer/match')
+  await saveCriteria(scenario.criteria)
+  redirect('/employer/match/preview')
 }
 
 export async function submitCriteria(formData: FormData): Promise<void> {
