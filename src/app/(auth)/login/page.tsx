@@ -2,6 +2,9 @@ import LoginForm from './login-form'
 import Link from 'next/link'
 import KakaoLoginButton from '@/components/KakaoLoginButton'
 
+// 카카오 OAuth 활성화 플래그 — Kakao Developers + Supabase 설정 끝나면 true
+const KAKAO_ENABLED = process.env.NEXT_PUBLIC_KAKAO_ENABLED === 'true'
+
 export default async function LoginPage({
   searchParams,
 }: {
@@ -24,18 +27,23 @@ export default async function LoginPage({
           </p>
         )}
 
-        {/* 카카오 — 학생용 추천 */}
+        {/* 카카오 — 설정 완료되면 KAKAO_ENABLED=true */}
+        {KAKAO_ENABLED && (
+          <>
+            <div className="mt-6">
+              <KakaoLoginButton label="카카오로 로그인" />
+            </div>
+            <div className="my-6 flex items-center gap-3 text-xs text-zinc-400">
+              <span className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
+              <span>또는 이메일로</span>
+              <span className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
+            </div>
+          </>
+        )}
+
         <div className="mt-6">
-          <KakaoLoginButton label="카카오로 로그인" />
+          <LoginForm />
         </div>
-
-        <div className="my-6 flex items-center gap-3 text-xs text-zinc-400">
-          <span className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
-          <span>또는 이메일로</span>
-          <span className="h-px flex-1 bg-zinc-200 dark:bg-zinc-800" />
-        </div>
-
-        <LoginForm />
 
         <p className="mt-6 text-sm text-zinc-500">
           계정이 없나요?{' '}

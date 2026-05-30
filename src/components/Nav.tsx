@@ -67,13 +67,20 @@ export default async function Nav() {
             </>
           ) : (
             <>
-              <Link href="/login" className="hover:underline">로그인</Link>
+              {/* 시현 모드 — 로그인 없이 핵심 흐름 진입 */}
               <Link
-                href="/signup"
-                className="rounded-md bg-zinc-900 px-3 py-1.5 text-xs font-medium text-white dark:bg-white dark:text-zinc-900"
+                href="/employer/match"
+                className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-300"
               >
-                가입
+                ⚡ 시연: 맞춤 후보
               </Link>
+              <Link
+                href="/admin/dashboard"
+                className="rounded-md border border-zinc-300 px-3 py-1 text-xs hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
+              >
+                시연: 운영 대시보드
+              </Link>
+              <Link href="/login" className="hover:underline text-zinc-500">로그인</Link>
             </>
           )}
         </div>

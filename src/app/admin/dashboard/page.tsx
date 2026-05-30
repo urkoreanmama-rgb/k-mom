@@ -1,16 +1,13 @@
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 import { fetchMetrics } from '@/data/demo-metrics'
 
 export const metadata = { title: '운영자 대시보드 · K-MOM' }
 
+// 시현 모드 — 로그인 없이 접근 가능 (투자자 데모용)
+// 실 운영 시: if (!user || user.role !== 'platform_admin') redirect('/login')
 export default async function AdminDashboardPage() {
   const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
 
   // 실제 DB 수치 (참고용) + 시현용 메트릭 함께 노출
   const [{ count: dbStudent }, { count: dbEmployer }, { count: dbReviews }, metrics] =

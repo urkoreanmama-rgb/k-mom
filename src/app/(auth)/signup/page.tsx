@@ -3,6 +3,8 @@ import Link from 'next/link'
 import KakaoLoginButton from '@/components/KakaoLoginButton'
 import type { UserRole } from '@/lib/supabase/types'
 
+const KAKAO_ENABLED = process.env.NEXT_PUBLIC_KAKAO_ENABLED === 'true'
+
 const ROLES: UserRole[] = ['student', 'employer', 'school_admin']
 
 export default async function SignupPage({
@@ -26,8 +28,8 @@ export default async function SignupPage({
           {role === 'school_admin' && '학교 국제처 — MOU 체결 후 활성화됩니다.'}
         </p>
 
-        {/* 카카오 가입 — 학생만 (외국인 유학생이 카카오 익숙) */}
-        {role === 'student' && (
+        {/* 카카오 가입 — 활성화 + 학생일 때만 */}
+        {KAKAO_ENABLED && role === 'student' && (
           <>
             <div className="mt-6">
               <KakaoLoginButton label="카카오로 시작하기" />

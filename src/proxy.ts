@@ -5,6 +5,17 @@ import { createServerClient } from '@supabase/ssr'
 const PROTECTED_PREFIXES = ['/student', '/employer', '/school', '/admin']
 const PUBLIC_AUTH_ROUTES = ['/login', '/signup']
 
+// 투자자 시현 모드 — 로그인 없이 접근 가능한 데모 경로
+// 실제 운영 시 이 리스트 비우거나 isDemoExempt를 false 반환하도록 수정
+const DEMO_EXEMPT_PREFIXES = [
+  '/employer/match',
+  '/admin/dashboard',
+  '/admin/requests',
+]
+function isDemoExempt(path: string): boolean {
+  return DEMO_EXEMPT_PREFIXES.some((p) => path === p || path.startsWith(p + '/'))
+}
+
 export async function proxy(request: NextRequest) {
   // 응답 객체를 만들어두고, Supabase가 쿠키를 set 할 때 여기에 누적
   let response = NextResponse.next({
@@ -43,7 +54,8 @@ export async function proxy(request: NextRequest) {
   const isProtected = PROTECTED_PREFIXES.some((p) => path.startsWith(p))
   const isAuthRoute = PUBLIC_AUTH_ROUTES.includes(path)
 
-  if (isProtected && !user) {
+  // 시현 경로는 보호 우회
+  if (isProtected && !user && !isDemoExempt(path)) {
     const url = request.nextUrl.clone()
     url.pathname = '/login'
     url.searchParams.set('next', path)
