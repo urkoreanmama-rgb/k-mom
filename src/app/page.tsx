@@ -1,8 +1,12 @@
 import Link from "next/link";
+import DemoPersonaCards from "@/components/DemoPersonaCards";
 
 export default function Home() {
   return (
     <main className="flex-1">
+      {/* 투자자 시연용 — 역할별 원클릭 카드 (랜딩 최상단) */}
+      <DemoPersonaCards />
+
       {/* Hero */}
       <section className="px-6 py-20 sm:py-28 max-w-5xl mx-auto">
         <div className="flex items-center gap-3 mb-6">

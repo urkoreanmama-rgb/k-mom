@@ -83,6 +83,45 @@ export async function logout(): Promise<void> {
   redirect('/')
 }
 
+/**
+ * 시연용 — 미리 만든 데모 계정으로 즉시 로그인 + 지정 경로로 이동
+ * 이메일은 demo-personas.ts 의 화이트리스트만 허용
+ */
+const DEMO_PASSWORD = 'kmom2026demo'
+const ALLOWED_DEMO_EMAILS = new Set([
+  'kmom.student1@gmail.com',
+  'kmom.student2@gmail.com',
+  'kmom.student3@gmail.com',
+  'kmom.student4@gmail.com',
+  'kmom.student5@gmail.com',
+  'kmom.employer1@gmail.com',
+  'kmom.employer2@gmail.com',
+  'kmom.employer3@gmail.com',
+  'kmom.school@gmail.com',
+  'kmom.admin@gmail.com',
+])
+
+export async function loginAsDemoAccount(formData: FormData): Promise<void> {
+  const email = String(formData.get('email') ?? '').trim()
+  const dest = String(formData.get('dest') ?? '/')
+
+  if (!ALLOWED_DEMO_EMAILS.has(email)) {
+    redirect('/?demo_error=invalid_account')
+  }
+
+  const supabase = await createClient()
+  // 기존 세션 있으면 끊고 새로 로그인 (역할 전환 시 깔끔)
+  await supabase.auth.signOut()
+  const { error } = await supabase.auth.signInWithPassword({
+    email,
+    password: DEMO_PASSWORD,
+  })
+  if (error) {
+    redirect(`/?demo_error=${encodeURIComponent(error.message)}`)
+  }
+  redirect(dest)
+}
+
 function roleHome(role: UserRole): string {
   switch (role) {
     case 'employer':
