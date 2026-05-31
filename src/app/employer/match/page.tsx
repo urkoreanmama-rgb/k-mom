@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import MatchCriteriaForm from './criteria-form'
 import ScenarioCards from './scenario-cards'
+import { DEMO_MODE } from '@/lib/flags'
 
 export const metadata = {
   title: '맞춤 후보 찾기 · K-MOM',
@@ -40,25 +41,33 @@ export default function MatchEntryPage() {
         ))}
       </ol>
 
-      {/* 시연 모드 카드 — 원클릭 시나리오 3종 */}
-      <div className="mt-8">
-        <ScenarioCards />
-      </div>
-
-      {/* 또는 직접 수정 */}
-      <details className="mt-8">
-        <summary className="cursor-pointer text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">
-          또는 조건을 직접 수정하기 (펼치기)
-        </summary>
-        <div className="mt-4 rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
-          <p className="text-xs text-zinc-500">
-            아래 폼은 첫 시나리오 값으로 미리 채워져 있습니다. 일부만 바꿔서 다른 조건도 시험해보세요.
-          </p>
-          <div className="mt-4">
-            <MatchCriteriaForm />
-          </div>
+      {/* 시연 모드 카드 — DEMO_MODE 켜진 경우만 노출 */}
+      {DEMO_MODE && (
+        <div className="mt-8">
+          <ScenarioCards />
         </div>
-      </details>
+      )}
+
+      {/* 실 사용자는 폼을 메인, 시연자는 폼이 접혀있음 */}
+      {DEMO_MODE ? (
+        <details className="mt-8">
+          <summary className="cursor-pointer text-sm font-medium text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white">
+            또는 조건을 직접 수정하기 (펼치기)
+          </summary>
+          <div className="mt-4 rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+            <p className="text-xs text-zinc-500">
+              아래 폼은 첫 시나리오 값으로 미리 채워져 있습니다. 일부만 바꿔서 다른 조건도 시험해보세요.
+            </p>
+            <div className="mt-4">
+              <MatchCriteriaForm />
+            </div>
+          </div>
+        </details>
+      ) : (
+        <div className="mt-8 rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
+          <MatchCriteriaForm />
+        </div>
+      )}
     </main>
   )
 }

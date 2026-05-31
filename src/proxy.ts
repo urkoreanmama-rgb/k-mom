@@ -6,13 +6,15 @@ const PROTECTED_PREFIXES = ['/student', '/employer', '/school', '/admin']
 const PUBLIC_AUTH_ROUTES = ['/login', '/signup']
 
 // 투자자 시현 모드 — 로그인 없이 접근 가능한 데모 경로
-// 실제 운영 시 이 리스트 비우거나 isDemoExempt를 false 반환하도록 수정
+// NEXT_PUBLIC_DEMO_MODE !== 'false' 일 때만 활성. 운영에선 false로 설정.
+const DEMO_MODE_ENABLED = process.env.NEXT_PUBLIC_DEMO_MODE !== 'false'
 const DEMO_EXEMPT_PREFIXES = [
   '/employer/match',
   '/admin/dashboard',
   '/admin/requests',
 ]
 function isDemoExempt(path: string): boolean {
+  if (!DEMO_MODE_ENABLED) return false
   return DEMO_EXEMPT_PREFIXES.some((p) => path === p || path.startsWith(p + '/'))
 }
 

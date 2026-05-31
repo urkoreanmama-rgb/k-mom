@@ -2,8 +2,7 @@ import SignupForm from './signup-form'
 import Link from 'next/link'
 import KakaoLoginButton from '@/components/KakaoLoginButton'
 import type { UserRole } from '@/lib/supabase/types'
-
-const KAKAO_ENABLED = process.env.NEXT_PUBLIC_KAKAO_ENABLED === 'true'
+import { KAKAO_ENABLED } from '@/lib/flags'
 
 const ROLES: UserRole[] = ['student', 'employer', 'school_admin']
 

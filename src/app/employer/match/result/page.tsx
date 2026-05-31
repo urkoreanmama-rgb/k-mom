@@ -1,21 +1,24 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { isPaid, readCriteria } from '@/lib/match-session'
-import { filterStudents, pickTopThree } from '@/lib/match'
+import { filterStudents, pickTopThree, type MatchCriteria } from '@/lib/match'
 import CandidatePreviewCard from '@/components/CandidatePreviewCard'
+import { getCurrentRequest, recordRevealedCandidates } from '../actions'
 
 export const metadata = { title: '후보 미리보기 · K-MOM' }
 
 export default async function ResultPage() {
-  const paid = await isPaid()
-  const criteria = await readCriteria()
+  const request = await getCurrentRequest()
 
-  if (!criteria) redirect('/employer/match')
-  if (!paid) redirect('/employer/match/preview')
+  if (!request) redirect('/employer/match')
+  if (request.payment_status !== 'paid') redirect('/employer/match/preview')
 
+  const criteria = request.criteria as unknown as MatchCriteria
   const matched = filterStudents(criteria)
   const top3 = pickTopThree(matched)
   const overflowCount = Math.max(0, matched.length - 3)
+
+  // revealed_candidate_ids에 저장 (idempotent — 같은 ID라도 덮어쓰기)
+  await recordRevealedCandidates(top3.map((s) => s.studentId))
 
   return (
     <main className="max-w-4xl mx-auto px-6 py-10">
@@ -28,7 +31,6 @@ export default async function ResultPage() {
         {overflowCount > 0 && ` (전체 ${matched.length}명 중)`}
       </p>
 
-      {/* 진행 단계 */}
       <ol className="mt-6 grid grid-cols-4 gap-1 text-center text-xs">
         <li className="rounded-l-md bg-zinc-200 px-3 py-2 dark:bg-zinc-700">1. 조건 ✓</li>
         <li className="bg-zinc-200 px-3 py-2 dark:bg-zinc-700">2. 후보 수 ✓</li>
@@ -40,6 +42,11 @@ export default async function ResultPage() {
 
       <div className="mt-6 rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200">
         ✓ 결제 완료 (1만 원) · 상품명: 조건맞춤 유학생 후보 미리보기팩
+        {request.payment_transaction_id && (
+          <span className="ml-2 text-xs text-emerald-600 dark:text-emerald-400">
+            거래ID: {request.payment_transaction_id.slice(0, 20)}...
+          </span>
+        )}
       </div>
 
       <div className="mt-6 grid gap-4 md:grid-cols-3">

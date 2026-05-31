@@ -65,6 +65,25 @@ export type WorkHistory = {
   created_at: string
 }
 
+export type EmployerMatchRequestStatus = 'pending' | 'paid' | 'refunded' | 'waitlist'
+
+export type EmployerMatchRequest = {
+  id: string
+  employer_id: string | null
+  criteria: Record<string, unknown> // MatchCriteria as JSON
+  candidate_count: number
+  payment_status: EmployerMatchRequestStatus
+  payment_transaction_id: string | null
+  paid_at: string | null
+  revealed_candidate_ids: string[]
+  contact_requested_ids: string[]
+  waitlisted: boolean
+  admin_note: string | null
+  is_demo: boolean
+  created_at: string
+  updated_at: string
+}
+
 export type Review = {
   id: string
   work_history_id: string
@@ -103,6 +122,7 @@ export type Database = {
       work_histories: TableShape<WorkHistory, 'student_id' | 'employer_id' | 'start_date'>
       reviews: TableShape<Review, 'work_history_id' | 'reviewer_id' | 'reviewee_id' | 'score'>
       schools: TableShape<School, 'name'>
+      employer_match_requests: TableShape<EmployerMatchRequest, 'criteria'>
       school_students: {
         Row: { school_id: string; student_id: string; doc_submitted: boolean; monitored_at: string | null }
         Insert: { school_id: string; student_id: string; doc_submitted?: boolean; monitored_at?: string | null }

@@ -1,8 +1,7 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import { readCriteria } from '@/lib/match-session'
-import { countMatching, getCountMessage } from '@/lib/match'
-import { payAndReveal, joinWaitlist } from '../actions'
+import { getCountMessage, type MatchCriteria } from '@/lib/match'
+import { getCurrentRequest, payAndReveal, joinWaitlist } from '../actions'
 
 export const metadata = { title: '후보 수 확인 · K-MOM' }
 
@@ -12,10 +11,11 @@ export default async function PreviewPage({
   searchParams: Promise<{ error?: string }>
 }) {
   const { error } = await searchParams
-  const criteria = await readCriteria()
-  if (!criteria) redirect('/employer/match')
+  const request = await getCurrentRequest()
+  if (!request) redirect('/employer/match')
 
-  const count = countMatching(criteria)
+  const criteria = request.criteria as unknown as MatchCriteria
+  const count = request.candidate_count
   const msg = getCountMessage(count)
 
   const summary: { label: string; value: string }[] = [
@@ -40,7 +40,6 @@ export default async function PreviewPage({
       </p>
       <h1 className="mt-2 text-3xl font-bold">조건에 맞는 후보 수</h1>
 
-      {/* 진행 단계 */}
       <ol className="mt-6 grid grid-cols-4 gap-1 text-center text-xs">
         <li className="rounded-l-md bg-zinc-200 px-3 py-2 dark:bg-zinc-700">1. 조건</li>
         <li className="bg-emerald-600 px-3 py-2 font-semibold text-white">2. 후보 수 ✓</li>
@@ -48,7 +47,6 @@ export default async function PreviewPage({
         <li className="rounded-r-md border border-zinc-200 px-3 py-2 text-zinc-400 dark:border-zinc-800">4. 후보</li>
       </ol>
 
-      {/* 카운트 결과 카드 */}
       <section
         className={
           stepColor === 'emerald'
@@ -75,7 +73,6 @@ export default async function PreviewPage({
         <p className="mt-4 text-lg font-semibold">{msg.title}</p>
         <p className="mt-1 text-sm text-zinc-700 dark:text-zinc-300">{msg.detail}</p>
 
-        {/* 분기 CTA */}
         {msg.level === 'enough' && (
           <form action={payAndReveal} className="mt-6">
             <button
@@ -130,7 +127,6 @@ export default async function PreviewPage({
         </p>
       )}
 
-      {/* 입력한 조건 요약 */}
       <section className="mt-8 rounded-2xl border border-zinc-200 bg-white p-5 dark:border-zinc-800 dark:bg-zinc-900">
         <p className="text-sm font-semibold">입력한 조건</p>
         <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-2 text-sm">
@@ -141,6 +137,11 @@ export default async function PreviewPage({
             </div>
           ))}
         </dl>
+        {request.is_demo && (
+          <p className="mt-3 text-xs text-zinc-400">
+            ※ 이 요청은 시연 모드로 기록되었습니다 (admin 화면에서 구분 표시).
+          </p>
+        )}
       </section>
     </main>
   )

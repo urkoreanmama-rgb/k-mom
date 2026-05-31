@@ -1,9 +1,7 @@
 import LoginForm from './login-form'
 import Link from 'next/link'
 import KakaoLoginButton from '@/components/KakaoLoginButton'
-
-// 카카오 OAuth 활성화 플래그 — Kakao Developers + Supabase 설정 끝나면 true
-const KAKAO_ENABLED = process.env.NEXT_PUBLIC_KAKAO_ENABLED === 'true'
+import { KAKAO_ENABLED } from '@/lib/flags'
 
 export default async function LoginPage({
   searchParams,
