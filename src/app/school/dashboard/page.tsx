@@ -175,6 +175,9 @@ export default async function SchoolDashboardPage() {
         </div>
       </section>
 
+      {/* 재학생 실명 명단 (정식 MOU 권한) */}
+      <StudentRoster school={school} studentIds={studentIds} />
+
       {/* MOU 업그레이드 안내 */}
       {school.mou_status !== 'active' && (
         <section className="mt-10 rounded-2xl border border-violet-200 bg-violet-50 p-6 dark:border-violet-900 dark:bg-violet-950/30">
@@ -276,4 +279,162 @@ function DistRow({ label, value, total }: { label: string; value: number; total:
       <p className="mt-1 text-xs text-zinc-500">{pct}%</p>
     </div>
   )
+}
+
+/**
+ * 재학생 실명 명단 — 학생 이름·비자·TOPIK·학적·서류·현재 근무 가게
+ * (정식 MOU 권한 — 학생 동의 기반)
+ */
+async function StudentRoster({
+  school,
+  studentIds,
+}: {
+  school: { id: string; mou_status: string }
+  studentIds: string[]
+}) {
+  if (studentIds.length === 0) return null
+
+  const supabase = await createClient()
+  const [usersRes, profilesRes, schoolStudentsRes, worksRes] = await Promise.all([
+    supabase.from('users').select('id, name, nationality, visa_type').in('id', studentIds),
+    supabase
+      .from('student_profiles')
+      .select('user_id, topik_level, verified_badge')
+      .in('user_id', studentIds),
+    supabase
+      .from('school_students')
+      .select('student_id, doc_submitted')
+      .eq('school_id', school.id),
+    supabase
+      .from('work_histories')
+      .select('student_id, employer_id, status, hours_per_week, start_date')
+      .in('student_id', studentIds)
+      .eq('status', 'active'),
+  ])
+
+  const users = usersRes.data ?? []
+  const profiles = new Map((profilesRes.data ?? []).map((p) => [p.user_id, p]))
+  const schoolStudents = new Map(
+    (schoolStudentsRes.data ?? []).map((s) => [s.student_id, s]),
+  )
+  const works = worksRes.data ?? []
+
+  // 업주 이름 가져오기
+  const employerIds = [...new Set(works.map((w) => w.employer_id))]
+  let employerNameMap = new Map<string, string>()
+  if (employerIds.length > 0) {
+    const { data: emps } = await supabase
+      .from('employers')
+      .select('user_id, business_name')
+      .in('user_id', employerIds)
+    employerNameMap = new Map((emps ?? []).map((e) => [e.user_id, e.business_name]))
+  }
+  const workByStudent = new Map<string, (typeof works)[number]>()
+  for (const w of works) workByStudent.set(w.student_id, w)
+
+  return (
+    <section className="mt-10">
+      <div className="flex items-center justify-between">
+        <div>
+          <h2 className="text-xl font-bold">재학생 실명 명단</h2>
+          <p className="mt-1 text-sm text-zinc-500">
+            학교 이름으로 가입한 학생 {users.length}명 · 정식 MOU 권한 (학생 동의 기반)
+          </p>
+        </div>
+        <span className="rounded-full bg-violet-600 px-3 py-1 text-xs font-bold text-white">
+          🔐 MOU 회원
+        </span>
+      </div>
+
+      <div className="mt-4 overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
+        <table className="min-w-full divide-y divide-zinc-200 text-sm dark:divide-zinc-800">
+          <thead className="bg-zinc-50 dark:bg-zinc-900">
+            <tr>
+              <Th>학생 이름</Th>
+              <Th>국적·비자</Th>
+              <Th>TOPIK</Th>
+              <Th>학교 인증</Th>
+              <Th>서류 제출</Th>
+              <Th>현재 근무 가게</Th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-zinc-100 bg-white dark:divide-zinc-800 dark:bg-zinc-950">
+            {users.map((u) => {
+              const p = profiles.get(u.id)
+              const ss = schoolStudents.get(u.id)
+              const w = workByStudent.get(u.id)
+              const employerName = w ? employerNameMap.get(w.employer_id) ?? '(미표시)' : null
+              return (
+                <tr key={u.id} className="hover:bg-zinc-50 dark:hover:bg-zinc-900">
+                  <Td>
+                    <span className="font-medium">{u.name}</span>
+                  </Td>
+                  <Td>
+                    <div>{u.nationality ?? '-'}</div>
+                    <div className="text-xs text-zinc-500">{u.visa_type ?? '미입력'}</div>
+                  </Td>
+                  <Td>
+                    {p?.topik_level && p.topik_level !== 'none' ? (
+                      <span className="rounded-md bg-sky-100 px-2 py-0.5 text-xs text-sky-800 dark:bg-sky-900/40 dark:text-sky-300">
+                        {p.topik_level.replace('level_', '')}급
+                      </span>
+                    ) : (
+                      <span className="text-xs text-zinc-400">없음</span>
+                    )}
+                  </Td>
+                  <Td>
+                    {p?.verified_badge ? (
+                      <span className="text-xs text-emerald-700 dark:text-emerald-300">✓ 인증</span>
+                    ) : (
+                      <span className="text-xs text-zinc-400">미인증</span>
+                    )}
+                  </Td>
+                  <Td>
+                    {ss?.doc_submitted ? (
+                      <span className="text-xs text-emerald-700 dark:text-emerald-300">✓ 제출</span>
+                    ) : (
+                      <span className="rounded-md bg-red-100 px-2 py-0.5 text-xs text-red-700 dark:bg-red-900/40 dark:text-red-300">
+                        ✕ 미제출
+                      </span>
+                    )}
+                  </Td>
+                  <Td>
+                    {employerName ? (
+                      <div>
+                        <span className="font-medium text-emerald-700 dark:text-emerald-300">
+                          {employerName}
+                        </span>
+                        {w?.hours_per_week && (
+                          <div className="text-xs text-zinc-500">주 {w.hours_per_week}시간</div>
+                        )}
+                      </div>
+                    ) : (
+                      <span className="text-xs text-zinc-400">근무 없음</span>
+                    )}
+                  </Td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      <p className="mt-3 text-xs text-zinc-500">
+        ⓘ 이 명단은 K-MOM에 등록한 학생 중 본인 동의로 학교 이름이 연결된 학생만 표시됩니다.
+        근무 정보는 학생이 K-MOM에서 진행 중인 근무에 한해 표시됩니다.
+      </p>
+    </section>
+  )
+}
+
+function Th({ children }: { children: React.ReactNode }) {
+  return (
+    <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-zinc-600 dark:text-zinc-400">
+      {children}
+    </th>
+  )
+}
+
+function Td({ children }: { children: React.ReactNode }) {
+  return <td className="px-4 py-3 align-top">{children}</td>
 }
