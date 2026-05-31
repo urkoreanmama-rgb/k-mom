@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import type { EmployerCertLevel } from '@/lib/supabase/types'
+import SendApplicationButton from '@/components/SendApplicationButton'
 
 export const metadata = { title: '업주 둘러보기 · K-MOM' }
 
@@ -46,6 +47,13 @@ export default async function StudentEmployersPage({
   if (sp.cert) query = query.eq('certification_level', sp.cert as EmployerCertLevel)
 
   const { data: employers } = await query
+
+  // 내가 이미 이력서 보낸 업주들
+  const { data: myApps } = await supabase
+    .from('student_applications')
+    .select('employer_id')
+    .eq('student_id', user.id)
+  const sentToEmployerIds = new Set((myApps ?? []).map((a) => a.employer_id))
 
   // 업종 목록 (필터용)
   const allCategories = [
@@ -115,6 +123,12 @@ export default async function StudentEmployersPage({
                   {e.certification_level === 'silver' && '평가 5건+ 평균 4.0↑'}
                   {e.certification_level === 'bronze' && '신규 또는 평가 누적 중'}
                 </div>
+
+                <SendApplicationButton
+                  employerId={e.user_id}
+                  businessName={e.business_name}
+                  alreadySent={sentToEmployerIds.has(e.user_id)}
+                />
               </article>
             )
           })

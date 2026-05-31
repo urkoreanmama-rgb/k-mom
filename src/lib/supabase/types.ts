@@ -37,8 +37,22 @@ export type StudentProfile = {
   total_work_hours: number
   enrollment_status: EnrollmentStatus
   immigration_permit_status: ImmigrationPermitStatus
+  resume_text: string | null
   created_at: string
   updated_at: string
+}
+
+export type ApplicationStatus = 'sent' | 'read' | 'responded' | 'rejected'
+
+export type StudentApplication = {
+  id: string
+  student_id: string
+  employer_id: string
+  message: string | null
+  status: ApplicationStatus
+  read_at: string | null
+  responded_at: string | null
+  created_at: string
 }
 
 export type Employer = {
@@ -123,6 +137,7 @@ export type Database = {
       reviews: TableShape<Review, 'work_history_id' | 'reviewer_id' | 'reviewee_id' | 'score'>
       schools: TableShape<School, 'name'>
       employer_match_requests: TableShape<EmployerMatchRequest, 'criteria'>
+      student_applications: TableShape<StudentApplication, 'student_id' | 'employer_id'>
       school_students: {
         Row: { school_id: string; student_id: string; doc_submitted: boolean; monitored_at: string | null }
         Insert: { school_id: string; student_id: string; doc_submitted?: boolean; monitored_at?: string | null }

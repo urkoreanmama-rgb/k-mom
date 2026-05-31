@@ -44,6 +44,7 @@ export default async function Nav() {
                 ⚡ 맞춤 후보 찾기
               </Link>
               <Link href="/employer/search" className="hover:underline">학생 열람</Link>
+              <Link href="/employer/applications" className="hover:underline">📩 받은 이력서</Link>
               <Link href="/employer/work" className="hover:underline">진행 중인 채용</Link>
               <Link href="/employer/profile" className="hover:underline">내 가게</Link>
               <Link href="/pricing" className="hover:underline text-zinc-500">요금제</Link>

@@ -42,6 +42,7 @@ export default function ProfileForm({
   const [permit, setPermit] = useState<ImmigrationPermitStatus>(
     profile?.immigration_permit_status ?? 'unknown',
   )
+  const [resume, setResume] = useState(profile?.resume_text ?? '')
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -71,6 +72,7 @@ export default function ProfileForm({
           skills,
           enrollment_status: enrollment,
           immigration_permit_status: permit,
+          resume_text: resume.trim() || null,
         })
       if (e2) {
         setMsg({ err: e2.message })
@@ -164,6 +166,35 @@ export default function ProfileForm({
         onChange={setSkillsRaw}
         placeholder="예: 카페 서빙, 번역, 사진 촬영"
       />
+
+      <label className="block">
+        <span className="block text-sm font-medium">📄 이력서</span>
+        <span className="block text-xs text-zinc-500 mt-0.5">
+          학력 · 경력 · 자기소개 등 자유롭게 작성하세요. 업주에게 직접 보낼 때 사용됩니다.
+        </span>
+        <textarea
+          value={resume}
+          onChange={(e) => setResume(e.target.value)}
+          rows={12}
+          placeholder={`예시:
+
+[학력]
+한국대학교 컴퓨터공학과 2학년 재학 중 (2024.03 ~ )
+
+[경력]
+- 베트남 식당 호아 (홀서빙, 2024.05 ~ 2024.11, 8개월)
+- 카페 ABC (바리스타, 2023.09 ~ 2024.02)
+
+[자기소개]
+한국에 온지 2년 된 베트남 유학생입니다.
+손님 응대 자신 있고 베트남어 통역도 가능합니다.
+시간제취업 허가 모두 받아둔 상태입니다.
+
+[가능 일정]
+주중 저녁 18시 ~ 22시, 주말 종일`}
+          className="mt-2 w-full rounded-lg border border-zinc-300 bg-white px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 font-mono"
+        />
+      </label>
 
       {msg.err && (
         <p className="rounded-md bg-red-50 px-3 py-2 text-sm text-red-700 dark:bg-red-950/40 dark:text-red-300">
