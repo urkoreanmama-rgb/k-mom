@@ -12,6 +12,7 @@ const DEMO_EXEMPT_PREFIXES = [
   '/employer/match',
   '/admin/dashboard',
   '/admin/requests',
+  '/demo',
 ]
 function isDemoExempt(path: string): boolean {
   if (!DEMO_MODE_ENABLED) return false

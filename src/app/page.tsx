@@ -1,12 +1,9 @@
 import Link from "next/link";
-import DemoPersonaCards from "@/components/DemoPersonaCards";
-import { DEMO_MODE } from "@/lib/flags";
 
 export default function Home() {
   return (
     <main className="flex-1">
-      {/* 투자자 시연용 — 역할별 원클릭 카드 (랜딩 최상단). DEMO_MODE=false일 때 숨김 */}
-      {DEMO_MODE && <DemoPersonaCards />}
+      {/* 시연 카드는 /demo 페이지로 이동 — 홈은 production-focused */}
 
       {/* Hero */}
       <section className="px-6 py-20 sm:py-28 max-w-5xl mx-auto">

@@ -7,7 +7,13 @@ export const metadata = {
   title: '맞춤 후보 찾기 · K-MOM',
 }
 
-export default function MatchEntryPage() {
+export default async function MatchEntryPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>
+}) {
+  const { error } = await searchParams
+
   return (
     <main className="max-w-3xl mx-auto px-6 py-10">
       <Link href="/" className="text-sm text-zinc-500 hover:underline">
@@ -40,6 +46,17 @@ export default function MatchEntryPage() {
           </li>
         ))}
       </ol>
+
+      {error === 'create_failed' && (
+        <div className="mt-6 rounded-xl border-2 border-red-300 bg-red-50 p-4 text-sm dark:border-red-800 dark:bg-red-950/30">
+          <p className="font-semibold text-red-800 dark:text-red-200">
+            ⚠️ 요청 저장 실패 — Supabase에 SQL을 먼저 실행해주세요
+          </p>
+          <p className="mt-1 text-xs text-red-700 dark:text-red-300">
+            <code className="rounded bg-red-100 px-1 dark:bg-red-900/60">employer_match_requests</code> 테이블이 없습니다. Phase 2-A 통합 SQL을 실행하면 작동합니다.
+          </p>
+        </div>
+      )}
 
       {/* 시연 모드 카드 — DEMO_MODE 켜진 경우만 노출 */}
       {DEMO_MODE && (

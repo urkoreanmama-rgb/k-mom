@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { logout } from '@/app/actions/auth'
 import { createClient } from '@/lib/supabase/server'
+import { DEMO_MODE } from '@/lib/flags'
 
 export default async function Nav() {
   const supabase = await createClient()
@@ -67,20 +68,21 @@ export default async function Nav() {
             </>
           ) : (
             <>
-              {/* 시현 모드 — 로그인 없이 핵심 흐름 진입 */}
-              <Link
-                href="/employer/match"
-                className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-semibold text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-300"
-              >
-                ⚡ 시연: 맞춤 후보
-              </Link>
-              <Link
-                href="/admin/dashboard"
-                className="rounded-md border border-zinc-300 px-3 py-1 text-xs hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800"
-              >
-                시연: 운영 대시보드
-              </Link>
+              {DEMO_MODE && (
+                <Link
+                  href="/demo"
+                  className="rounded-full bg-zinc-900 px-3 py-1 text-xs font-semibold text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900"
+                >
+                  🎬 시연 모드
+                </Link>
+              )}
               <Link href="/login" className="hover:underline text-zinc-500">로그인</Link>
+              <Link
+                href="/signup"
+                className="rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700"
+              >
+                가입
+              </Link>
             </>
           )}
         </div>
