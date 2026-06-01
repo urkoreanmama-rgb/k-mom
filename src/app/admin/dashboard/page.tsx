@@ -82,6 +82,23 @@ export default async function AdminDashboardPage() {
         </div>
       </section>
 
+      {/* ── 신뢰·확장 지표 (새로 추가된 8개) ── */}
+      <section className="mt-10">
+        <h2 className="text-sm font-semibold text-zinc-500">신뢰·확장 지표 (신뢰 생태계)</h2>
+        <div className="mt-3 grid gap-4 md:grid-cols-4">
+          <MetricCard label="등록 업체 수" value={metrics.registeredCompanies} unit="개" tone="sky" />
+          <MetricCard label="인증 업체 수" value={metrics.certifiedCompanies} unit="개" tone="emerald" highlight />
+          <MetricCard label="누적 평가 수" value={metrics.totalReviews} unit="건" tone="violet" />
+          <MetricCard label="교수 추천 학생" value={metrics.professorRecommendedStudents} unit="명" tone="amber" />
+        </div>
+        <div className="mt-3 grid gap-4 md:grid-cols-4">
+          <MetricCard label="맞춤 매칭 요청" value={metrics.candidateMatchRequests} unit="건" tone="sky" />
+          <MetricCard label="미리보기팩 결제" value={metrics.previewPayments} unit="건" tone="violet" />
+          <MetricCard label="학생 만족도" value={metrics.studentSatisfaction} unit="/ 5" tone="emerald" highlight />
+          <MetricCard label="업체 신뢰도 평균" value={metrics.companyTrustAverage} unit="/ 5" tone="emerald" highlight />
+        </div>
+      </section>
+
       {/* ── 전환 깔때기 ── */}
       <section className="mt-10">
         <h2 className="text-sm font-semibold text-zinc-500">전환 깔때기</h2>

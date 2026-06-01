@@ -31,6 +31,7 @@ export default async function Nav() {
           {role === 'student' && (
             <>
               <Link href="/student/profile" className="hover:underline">내 프로필</Link>
+              <Link href="/student/resume" className="hover:underline">📝 이력서</Link>
               <Link href="/student/employers" className="hover:underline">업주 둘러보기</Link>
               <Link href="/student/history" className="hover:underline">알바 이력</Link>
             </>

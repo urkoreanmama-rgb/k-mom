@@ -2,6 +2,8 @@ import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import { markApplicationRead } from '@/app/actions/applications'
+import FormattedResume from '@/components/FormattedResume'
+import type { ResumeData } from '@/lib/resume'
 
 export const metadata = { title: '받은 이력서 · K-MOM' }
 
@@ -43,7 +45,7 @@ export default async function EmployerApplicationsPage() {
       .in('id', studentIds),
     supabase
       .from('student_profiles')
-      .select('user_id, topik_level, verified_badge, resume_text, intro, skills, total_work_hours')
+      .select('user_id, topik_level, verified_badge, resume_text, resume_json, intro, skills, total_work_hours')
       .in('user_id', studentIds),
   ])
   const userMap = new Map((usersRes.data ?? []).map((u) => [u.id, u]))
@@ -112,32 +114,38 @@ export default async function EmployerApplicationsPage() {
                 </div>
               )}
 
-              {/* 이력서 본문 */}
+              {/* 이력서 본문 — 양식 이력서가 있으면 포맷팅, 없으면 자유 텍스트 */}
               <details className="mt-4 group" open={isUnread}>
                 <summary className="cursor-pointer text-sm font-medium text-zinc-700 hover:text-zinc-900 dark:text-zinc-300 dark:hover:text-white">
                   📄 이력서 펼쳐 보기
                 </summary>
-                <div className="mt-2 rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
-                  {p?.intro && (
-                    <p className="mb-3 text-sm italic text-zinc-600 dark:text-zinc-400">
-                      "{p.intro}"
-                    </p>
-                  )}
-                  {p?.skills && p.skills.length > 0 && (
-                    <div className="mb-3 flex flex-wrap gap-1">
-                      {p.skills.map((s) => (
-                        <span
-                          key={s}
-                          className="rounded-md bg-sky-100 px-2 py-0.5 text-xs text-sky-800 dark:bg-sky-900/40 dark:text-sky-300"
-                        >
-                          {s}
-                        </span>
-                      ))}
+                <div className="mt-3">
+                  {p?.resume_json ? (
+                    <FormattedResume resume={p.resume_json as unknown as ResumeData} />
+                  ) : (
+                    <div className="rounded-lg border border-zinc-200 bg-zinc-50 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-950">
+                      {p?.intro && (
+                        <p className="mb-3 text-sm italic text-zinc-600 dark:text-zinc-400">
+                          "{p.intro}"
+                        </p>
+                      )}
+                      {p?.skills && p.skills.length > 0 && (
+                        <div className="mb-3 flex flex-wrap gap-1">
+                          {p.skills.map((s) => (
+                            <span
+                              key={s}
+                              className="rounded-md bg-sky-100 px-2 py-0.5 text-xs text-sky-800 dark:bg-sky-900/40 dark:text-sky-300"
+                            >
+                              {s}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                      <pre className="whitespace-pre-wrap font-sans text-sm text-zinc-800 dark:text-zinc-200">
+                        {p?.resume_text ?? '(이력서 본문이 없습니다)'}
+                      </pre>
                     </div>
                   )}
-                  <pre className="whitespace-pre-wrap font-sans text-sm text-zinc-800 dark:text-zinc-200">
-                    {p?.resume_text ?? '(이력서 본문이 없습니다)'}
-                  </pre>
                 </div>
               </details>
 

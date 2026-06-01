@@ -38,6 +38,7 @@ export type StudentProfile = {
   enrollment_status: EnrollmentStatus
   immigration_permit_status: ImmigrationPermitStatus
   resume_text: string | null
+  resume_json: Record<string, unknown> | null
   created_at: string
   updated_at: string
 }
