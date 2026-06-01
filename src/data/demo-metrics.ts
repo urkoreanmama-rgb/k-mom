@@ -2,6 +2,7 @@
 // 실제 운영 시 Supabase 쿼리로 교체 가능하도록 단일 export로 분리.
 
 export interface DemoMetrics {
+  // 기존 지표
   registeredStudents: number
   inquiredEmployers: number
   candidateCountConfirmedEmployers: number
@@ -9,6 +10,16 @@ export interface DemoMetrics {
   conversionRatePct: number
   contactRequests: number
   waitlistedEmployers: number
+
+  // 새 지표 (명세서 기준)
+  registeredCompanies: number
+  certifiedCompanies: number
+  totalReviews: number
+  professorRecommendedStudents: number
+  candidateMatchRequests: number
+  previewPayments: number
+  studentSatisfaction: number      // 4.6
+  companyTrustAverage: number      // 4.5
 }
 
 export const DEMO_METRICS: DemoMetrics = {
@@ -17,8 +28,16 @@ export const DEMO_METRICS: DemoMetrics = {
   candidateCountConfirmedEmployers: 30,
   paidEmployers: 9,
   conversionRatePct: 30,
-  contactRequests: 15,
+  contactRequests: 18,
   waitlistedEmployers: 4,
+  registeredCompanies: 30,
+  certifiedCompanies: 8,
+  totalReviews: 42,
+  professorRecommendedStudents: 12,
+  candidateMatchRequests: 18,
+  previewPayments: 9,
+  studentSatisfaction: 4.6,
+  companyTrustAverage: 4.5,
 }
 
 // 실제 데이터 모드로 교체할 때 사용할 함수 시그니처 — 지금은 더미 반환

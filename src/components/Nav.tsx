@@ -59,6 +59,11 @@ export default async function Nav() {
               <Link href="/admin/requests" className="hover:underline">업주 요청</Link>
             </>
           )}
+          {/* 공통 데모 링크 — 역할 무관 노출 */}
+          <Link href="/dashboard" className="hover:underline text-zinc-500">대시보드</Link>
+          <Link href="/students" className="hover:underline text-zinc-500">학생 프로필</Link>
+          <Link href="/employers" className="hover:underline text-zinc-500">업체 프로필</Link>
+          <Link href="/reviews" className="hover:underline text-zinc-500">쌍방향 평가</Link>
           {user ? (
             <>
               <span className="text-zinc-500">{name}</span>

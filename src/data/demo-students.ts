@@ -2,7 +2,10 @@
 // 명세: studentId, name, nickname, nationality, visaType, schoolVerified,
 //      languages, koreanLevel, topikLevel, availableDays, availableTimeSlots,
 //      availableAreas, preferredJobTypes, workExperience,
-//      partTimePermissionExperience, introduction, isPublic, contactStatus
+//      partTimePermissionExperience, introduction, isPublic, contactStatus,
+//      professorRecommended, reliabilityScore, punctualityScore, noShowRisk,
+//      averageEmployerRating, rehireRate, strengths, badges,
+//      workHistory, totalWorkHours, schoolName
 //
 // 나중에 Supabase 실제 데이터로 교체할 수 있도록 인터페이스로 분리.
 
@@ -19,6 +22,30 @@ export type JobType =
   | '주방 보조'
   | '기타'
 export type ContactStatus = 'available' | 'pending' | 'unavailable'
+
+export type StudentBadge =
+  | '학교 소속 확인'
+  | '교수 추천'
+  | 'D-2 학생'
+  | '한국어 일상대화 가능'
+  | '알바 이력 있음'
+  | '성실도 우수'
+  | '재고용 의향 높음'
+
+export interface WorkHistoryItem {
+  workId: string
+  companyName: string
+  businessType: string
+  startDate: string   // 'YYYY-MM'
+  endDate: string     // 'YYYY-MM' or '현재'
+  workDays: DayOfWeek[]
+  timeSlot: TimeSlot
+  jobType: JobType
+  employerRated: boolean
+  studentRated: boolean
+  rehireIntent: boolean
+  status: 'completed' | 'active'
+}
 
 export interface DemoStudent {
   studentId: string
@@ -39,6 +66,17 @@ export interface DemoStudent {
   introduction: string
   isPublic: boolean
   contactStatus: ContactStatus
+  professorRecommended: boolean
+  reliabilityScore: number        // 0–5
+  punctualityScore: number        // 0–5
+  noShowRisk: 'low' | 'medium' | 'high'
+  averageEmployerRating: number   // 0–5
+  rehireRate: number              // 0–100 (percentage)
+  strengths: string[]
+  badges: StudentBadge[]
+  workHistory: WorkHistoryItem[]
+  totalWorkHours: number
+  schoolName: string
 }
 
 const WEEKDAYS: DayOfWeek[] = ['월', '화', '수', '목', '금']
@@ -67,6 +105,46 @@ export const DEMO_STUDENTS: DemoStudent[] = [
     introduction: '베트남 동포 가게에서 일한 경험 있어요. 손님 응대 자신 있습니다.',
     isPublic: true,
     contactStatus: 'available',
+    professorRecommended: true,
+    reliabilityScore: 4.8,
+    punctualityScore: 4.9,
+    noShowRisk: 'low',
+    averageEmployerRating: 4.7,
+    rehireRate: 95,
+    strengths: ['손님 응대', '베트남어·한국어 이중 언어', '시간 약속 철저'],
+    badges: ['학교 소속 확인', '교수 추천', 'D-2 학생', '한국어 일상대화 가능', '알바 이력 있음', '성실도 우수', '재고용 의향 높음'],
+    workHistory: [
+      {
+        workId: 'wh-001-1',
+        companyName: '쌀국수 호아 대림점',
+        businessType: '베트남 음식',
+        startDate: '2023-09',
+        endDate: '2024-05',
+        workDays: ['금', '토'],
+        timeSlot: '저녁',
+        jobType: '홀서빙',
+        employerRated: true,
+        studentRated: true,
+        rehireIntent: true,
+        status: 'completed',
+      },
+      {
+        workId: 'wh-001-2',
+        companyName: '카페 글로우 홍대',
+        businessType: '카페',
+        startDate: '2024-09',
+        endDate: '현재',
+        workDays: ['월', '수'],
+        timeSlot: '오후',
+        jobType: '손님 응대',
+        employerRated: false,
+        studentRated: false,
+        rehireIntent: true,
+        status: 'active',
+      },
+    ],
+    totalWorkHours: 220,
+    schoolName: '서울시립대학교',
   },
   {
     studentId: 's-002',
@@ -87,6 +165,32 @@ export const DEMO_STUDENTS: DemoStudent[] = [
     introduction: '주방 일 자신 있어요. 베트남 음식 메뉴 잘 알고 있습니다.',
     isPublic: true,
     contactStatus: 'available',
+    professorRecommended: false,
+    reliabilityScore: 4.2,
+    punctualityScore: 4.0,
+    noShowRisk: 'low',
+    averageEmployerRating: 4.1,
+    rehireRate: 80,
+    strengths: ['주방 경험', '베트남 요리 지식'],
+    badges: ['학교 소속 확인', 'D-2 학생', '알바 이력 있음'],
+    workHistory: [
+      {
+        workId: 'wh-002-1',
+        companyName: '베트남 포하노이',
+        businessType: '베트남 음식',
+        startDate: '2023-03',
+        endDate: '2024-03',
+        workDays: ['화', '목', '토'],
+        timeSlot: '저녁',
+        jobType: '주방 보조',
+        employerRated: true,
+        studentRated: true,
+        rehireIntent: true,
+        status: 'completed',
+      },
+    ],
+    totalWorkHours: 150,
+    schoolName: '한양대학교',
   },
   {
     studentId: 's-003',
@@ -107,6 +211,46 @@ export const DEMO_STUDENTS: DemoStudent[] = [
     introduction: '면세점 경험 있고 3개 언어 가능합니다. 책임감 있게 일합니다.',
     isPublic: true,
     contactStatus: 'available',
+    professorRecommended: true,
+    reliabilityScore: 4.9,
+    punctualityScore: 5.0,
+    noShowRisk: 'low',
+    averageEmployerRating: 4.8,
+    rehireRate: 100,
+    strengths: ['3개 언어', '면세점 경험', '글로벌 고객 응대'],
+    badges: ['학교 소속 확인', '교수 추천', 'D-2 학생', '한국어 일상대화 가능', '알바 이력 있음', '성실도 우수', '재고용 의향 높음'],
+    workHistory: [
+      {
+        workId: 'wh-003-1',
+        companyName: 'K뷰티 명동',
+        businessType: '화장품',
+        startDate: '2023-06',
+        endDate: '2023-11',
+        workDays: ['토', '일'],
+        timeSlot: '오전',
+        jobType: '상품 설명',
+        employerRated: true,
+        studentRated: true,
+        rehireIntent: true,
+        status: 'completed',
+      },
+      {
+        workId: 'wh-003-2',
+        companyName: '코스메틱 에뛰드 명동',
+        businessType: '화장품',
+        startDate: '2024-03',
+        endDate: '현재',
+        workDays: ['월', '수', '금'],
+        timeSlot: '오후',
+        jobType: '손님 응대',
+        employerRated: false,
+        studentRated: false,
+        rehireIntent: true,
+        status: 'active',
+      },
+    ],
+    totalWorkHours: 310,
+    schoolName: '이화여자대학교',
   },
   // ── 중국어 가능 (명동·홍대 위주) ──
   {
@@ -128,6 +272,32 @@ export const DEMO_STUDENTS: DemoStudent[] = [
     introduction: '중국인 관광객 많은 곳 추천. K뷰티 상품에 관심 많아요.',
     isPublic: true,
     contactStatus: 'available',
+    professorRecommended: false,
+    reliabilityScore: 4.3,
+    punctualityScore: 4.2,
+    noShowRisk: 'low',
+    averageEmployerRating: 4.4,
+    rehireRate: 75,
+    strengths: ['중국어', 'K뷰티'],
+    badges: ['학교 소속 확인', 'D-2 학생', '알바 이력 있음', '한국어 일상대화 가능'],
+    workHistory: [
+      {
+        workId: 'wh-004-1',
+        companyName: 'K뷰티 명동',
+        businessType: '화장품',
+        startDate: '2023-10',
+        endDate: '2024-02',
+        workDays: ['토', '일'],
+        timeSlot: '오후',
+        jobType: '상품 설명',
+        employerRated: true,
+        studentRated: true,
+        rehireIntent: true,
+        status: 'completed',
+      },
+    ],
+    totalWorkHours: 120,
+    schoolName: '연세대학교',
   },
   {
     studentId: 's-005',
@@ -148,6 +318,17 @@ export const DEMO_STUDENTS: DemoStudent[] = [
     introduction: '주말 일자리 찾고 있어요.',
     isPublic: true,
     contactStatus: 'available',
+    professorRecommended: false,
+    reliabilityScore: 3.2,
+    punctualityScore: 3.0,
+    noShowRisk: 'medium',
+    averageEmployerRating: 3.1,
+    rehireRate: 40,
+    strengths: ['중국어'],
+    badges: ['D-2 학생'],
+    workHistory: [],
+    totalWorkHours: 0,
+    schoolName: '홍익대학교',
   },
   {
     studentId: 's-006',
@@ -168,11 +349,51 @@ export const DEMO_STUDENTS: DemoStudent[] = [
     introduction: '한국 8년차. 통역도 도와드릴 수 있어요.',
     isPublic: true,
     contactStatus: 'available',
+    professorRecommended: true,
+    reliabilityScore: 4.6,
+    punctualityScore: 4.7,
+    noShowRisk: 'low',
+    averageEmployerRating: 4.5,
+    rehireRate: 90,
+    strengths: ['TOPIK 6급', '8년 한국 거주', '통역'],
+    badges: ['학교 소속 확인', '교수 추천', 'D-2 학생', '한국어 일상대화 가능', '알바 이력 있음', '성실도 우수'],
+    workHistory: [
+      {
+        workId: 'wh-006-1',
+        companyName: '편의점 GS25 대림점',
+        businessType: '편의점',
+        startDate: '2022-09',
+        endDate: '2023-03',
+        workDays: ['화', '목'],
+        timeSlot: '오후',
+        jobType: '계산',
+        employerRated: true,
+        studentRated: true,
+        rehireIntent: true,
+        status: 'completed',
+      },
+      {
+        workId: 'wh-006-2',
+        companyName: '카페 글로우 홍대',
+        businessType: '카페',
+        startDate: '2023-09',
+        endDate: '2024-06',
+        workDays: ['화', '토'],
+        timeSlot: '오전',
+        jobType: '손님 응대',
+        employerRated: true,
+        studentRated: true,
+        rehireIntent: true,
+        status: 'completed',
+      },
+    ],
+    totalWorkHours: 280,
+    schoolName: '고려대학교',
   },
   // ── 영어권 (홍대·이태원·전 지역) ──
   {
     studentId: 's-007',
-    name: 'James O\'Brien',
+    name: "James O'Brien",
     nickname: 'James',
     nationality: '미국',
     visaType: 'D-4',
@@ -189,6 +410,32 @@ export const DEMO_STUDENTS: DemoStudent[] = [
     introduction: 'Native English speaker. 한국어 공부 중. 카페 경험.',
     isPublic: true,
     contactStatus: 'available',
+    professorRecommended: false,
+    reliabilityScore: 4.0,
+    punctualityScore: 3.9,
+    noShowRisk: 'low',
+    averageEmployerRating: 4.0,
+    rehireRate: 70,
+    strengths: ['영어 원어민', '카페 바리스타 경력'],
+    badges: ['학교 소속 확인', '알바 이력 있음', '한국어 일상대화 가능'],
+    workHistory: [
+      {
+        workId: 'wh-007-1',
+        companyName: '카페 글로우 홍대',
+        businessType: '카페',
+        startDate: '2024-03',
+        endDate: '2024-08',
+        workDays: ['월', '수'],
+        timeSlot: '저녁',
+        jobType: '기타',
+        employerRated: true,
+        studentRated: true,
+        rehireIntent: true,
+        status: 'completed',
+      },
+    ],
+    totalWorkHours: 95,
+    schoolName: '서강대학교 어학당',
   },
   {
     studentId: 's-008',
@@ -209,6 +456,32 @@ export const DEMO_STUDENTS: DemoStudent[] = [
     introduction: '교포 출신. 영어 원어민이면서 한국 문화 잘 알아요.',
     isPublic: true,
     contactStatus: 'available',
+    professorRecommended: true,
+    reliabilityScore: 4.5,
+    punctualityScore: 4.6,
+    noShowRisk: 'low',
+    averageEmployerRating: 4.4,
+    rehireRate: 85,
+    strengths: ['영어·한국어 이중 언어', '홀서빙 경력 풍부'],
+    badges: ['학교 소속 확인', '교수 추천', 'D-2 학생', '한국어 일상대화 가능', '알바 이력 있음', '성실도 우수'],
+    workHistory: [
+      {
+        workId: 'wh-008-1',
+        companyName: '분식천국 건대점',
+        businessType: '분식',
+        startDate: '2023-09',
+        endDate: '2024-06',
+        workDays: ['수', '금', '토'],
+        timeSlot: '오후',
+        jobType: '홀서빙',
+        employerRated: true,
+        studentRated: true,
+        rehireIntent: true,
+        status: 'completed',
+      },
+    ],
+    totalWorkHours: 190,
+    schoolName: '성균관대학교',
   },
   // ── 러시아어권 (대림·동대문) ──
   {
@@ -230,6 +503,32 @@ export const DEMO_STUDENTS: DemoStudent[] = [
     introduction: '러시아어권 손님 응대 가능합니다.',
     isPublic: true,
     contactStatus: 'available',
+    professorRecommended: false,
+    reliabilityScore: 3.9,
+    punctualityScore: 4.1,
+    noShowRisk: 'low',
+    averageEmployerRating: 3.8,
+    rehireRate: 65,
+    strengths: ['러시아어', '중앙아시아 음식 지식'],
+    badges: ['학교 소속 확인', 'D-2 학생', '알바 이력 있음'],
+    workHistory: [
+      {
+        workId: 'wh-009-1',
+        companyName: '한식당 어머니밥상',
+        businessType: '한식',
+        startDate: '2023-06',
+        endDate: '2023-10',
+        workDays: ['월', '수'],
+        timeSlot: '저녁',
+        jobType: '주방 보조',
+        employerRated: true,
+        studentRated: true,
+        rehireIntent: false,
+        status: 'completed',
+      },
+    ],
+    totalWorkHours: 80,
+    schoolName: '국민대학교',
   },
   {
     studentId: 's-010',
@@ -250,6 +549,32 @@ export const DEMO_STUDENTS: DemoStudent[] = [
     introduction: '러시아어 통역도 가능. 뷰티 매장 경험.',
     isPublic: true,
     contactStatus: 'available',
+    professorRecommended: true,
+    reliabilityScore: 4.4,
+    punctualityScore: 4.5,
+    noShowRisk: 'low',
+    averageEmployerRating: 4.3,
+    rehireRate: 80,
+    strengths: ['러시아어', '뷰티 매장 경력', '동유럽 고객 응대'],
+    badges: ['학교 소속 확인', '교수 추천', 'D-2 학생', '한국어 일상대화 가능', '알바 이력 있음'],
+    workHistory: [
+      {
+        workId: 'wh-010-1',
+        companyName: '뷰티 스킨케어 홍대',
+        businessType: '화장품',
+        startDate: '2023-09',
+        endDate: '2024-03',
+        workDays: ['화', '토'],
+        timeSlot: '오전',
+        jobType: '상품 설명',
+        employerRated: true,
+        studentRated: true,
+        rehireIntent: true,
+        status: 'completed',
+      },
+    ],
+    totalWorkHours: 145,
+    schoolName: '덕성여자대학교',
   },
 ]
 
@@ -340,6 +665,17 @@ for (const nat of NATIONALITIES) {
       introduction: `${nat} 출신 유학생. 성실하게 일할 자신 있어요.`,
       isPublic: true,
       contactStatus: 'available',
+      professorRecommended: false,
+      reliabilityScore: 3.8,
+      punctualityScore: 3.7,
+      noShowRisk: 'low' as const,
+      averageEmployerRating: 3.9,
+      rehireRate: 65,
+      strengths: [],
+      badges: [] as StudentBadge[],
+      workHistory: [] as WorkHistoryItem[],
+      totalWorkHours: 0,
+      schoolName: '서울 소재 대학교',
     })
     nextId++
   }
@@ -367,6 +703,17 @@ while (DEMO_STUDENTS.length < 50) {
     introduction: '성실하게 일하겠습니다.',
     isPublic: true,
     contactStatus: 'available',
+    professorRecommended: false,
+    reliabilityScore: 3.8,
+    punctualityScore: 3.7,
+    noShowRisk: 'low' as const,
+    averageEmployerRating: 3.9,
+    rehireRate: 65,
+    strengths: [],
+    badges: [] as StudentBadge[],
+    workHistory: [] as WorkHistoryItem[],
+    totalWorkHours: 0,
+    schoolName: '서울 소재 대학교',
   })
 }
 
