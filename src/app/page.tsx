@@ -1,6 +1,43 @@
 import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
 
-export default function Home() {
+// 역할별 홈 경로
+function roleHome(role: string | null): string {
+  switch (role) {
+    case 'employer': return '/employer/match'
+    case 'school_admin': return '/school/dashboard'
+    case 'platform_admin': return '/admin/dashboard'
+    case 'student': return '/student/profile'
+    default: return '/'
+  }
+}
+
+function roleLabel(role: string | null): string {
+  switch (role) {
+    case 'employer': return '업주'
+    case 'school_admin': return '학교'
+    case 'platform_admin': return '운영자'
+    case 'student': return '학생'
+    default: return ''
+  }
+}
+
+export default async function Home() {
+  const supabase = await createClient()
+  const { data: { user } } = await supabase.auth.getUser()
+
+  let role: string | null = null
+  let name = ''
+  if (user) {
+    const { data } = await supabase
+      .from('users')
+      .select('role, name')
+      .eq('id', user.id)
+      .single()
+    role = data?.role ?? null
+    name = data?.name ?? ''
+  }
+
   return (
     <main className="flex-1">
       {/* 시연 카드는 /demo 페이지로 이동 — 홈은 production-focused */}
@@ -48,37 +85,74 @@ export default function Home() {
           <span className="text-emerald-600 transition group-hover:translate-x-1">→</span>
         </a>
 
-        <div className="mt-6 flex flex-wrap gap-3">
-          <Link
-            href="/signup?role=employer"
-            className="inline-flex h-12 items-center rounded-full bg-zinc-900 px-6 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
-          >
-            업주 등록 (Free)
-          </Link>
-          <Link
-            href="/signup?role=student"
-            className="inline-flex h-12 items-center rounded-full border border-zinc-300 px-6 text-sm font-medium hover:bg-white dark:border-zinc-700 dark:hover:bg-zinc-900"
-          >
-            학생 등록 (항상 무료)
-          </Link>
-          <Link
-            href="/signup?role=school_admin"
-            className="inline-flex h-12 items-center rounded-full border border-zinc-300 px-6 text-sm font-medium hover:bg-white dark:border-zinc-700 dark:hover:bg-zinc-900"
-          >
-            학교 파일럿 신청
-          </Link>
-        </div>
+        {user ? (
+          // 로그인된 상태 — 사용자에게 맞는 진입 버튼
+          <>
+            <div className="mt-6 rounded-2xl border-2 border-zinc-300 bg-white p-5 dark:border-zinc-700 dark:bg-zinc-900">
+              <p className="text-sm text-zinc-500">
+                <strong className="text-zinc-900 dark:text-white">{name}</strong>
+                {roleLabel(role) && (
+                  <span className="ml-2 rounded-full bg-zinc-100 px-2 py-0.5 text-xs dark:bg-zinc-800">
+                    {roleLabel(role)}
+                  </span>
+                )}
+                {' '}님으로 로그인되어 있어요.
+              </p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                <Link
+                  href={roleHome(role)}
+                  className="inline-flex h-11 items-center rounded-full bg-zinc-900 px-6 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+                >
+                  → 내 화면으로 가기
+                </Link>
+                <Link
+                  href="/pricing"
+                  className="inline-flex h-11 items-center rounded-full border border-zinc-300 px-5 text-sm font-medium hover:bg-zinc-50 dark:border-zinc-700 dark:hover:bg-zinc-800"
+                >
+                  요금제 보기
+                </Link>
+                <span className="text-xs text-zinc-400 self-center ml-1">
+                  다른 역할로 보려면 우상단 로그아웃 후 새로 로그인
+                </span>
+              </div>
+            </div>
+          </>
+        ) : (
+          // 비로그인 — 기존 가입 버튼
+          <>
+            <div className="mt-6 flex flex-wrap gap-3">
+              <Link
+                href="/signup?role=employer"
+                className="inline-flex h-12 items-center rounded-full bg-zinc-900 px-6 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+              >
+                업주 등록 (Free)
+              </Link>
+              <Link
+                href="/signup?role=student"
+                className="inline-flex h-12 items-center rounded-full border border-zinc-300 px-6 text-sm font-medium hover:bg-white dark:border-zinc-700 dark:hover:bg-zinc-900"
+              >
+                학생 등록 (항상 무료)
+              </Link>
+              <Link
+                href="/signup?role=school_admin"
+                className="inline-flex h-12 items-center rounded-full border border-zinc-300 px-6 text-sm font-medium hover:bg-white dark:border-zinc-700 dark:hover:bg-zinc-900"
+              >
+                학교 파일럿 신청
+              </Link>
+            </div>
 
-        <p className="mt-4 text-sm text-zinc-500">
-          이미 계정이 있나요?{" "}
-          <Link href="/login" className="underline">
-            로그인
-          </Link>
-          {" · "}
-          <Link href="/pricing" className="underline">
-            요금제 보기
-          </Link>
-        </p>
+            <p className="mt-4 text-sm text-zinc-500">
+              이미 계정이 있나요?{" "}
+              <Link href="/login" className="underline">
+                로그인
+              </Link>
+              {" · "}
+              <Link href="/pricing" className="underline">
+                요금제 보기
+              </Link>
+            </p>
+          </>
+        )}
       </section>
 
       {/* 핵심 흐름 — 조건맞춤 후보 미리보기팩 (투자자용 핵심 메시지) */}
