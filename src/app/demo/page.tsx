@@ -23,9 +23,36 @@ export default function DemoPage() {
       {/* 페르소나 카드 6장 */}
       <DemoPersonaCards />
 
-      {/* 추가 시연 자료 */}
+      {/* 공개 데모 페이지 — 로그인 없이도 누구나 볼 수 있는 쇼케이스 */}
       <section className="px-6 py-10 max-w-6xl mx-auto">
-        <h2 className="text-xl font-bold">바로 가기</h2>
+        <h2 className="text-xl font-bold">🌐 공개 쇼케이스 페이지 (로그인 X)</h2>
+        <p className="mt-1 text-sm text-zinc-500">
+          투자자·언론사·일반 방문자에게 K-MOM을 한눈에 보여줄 수 있는 페이지들.
+        </p>
+        <div className="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+          <QuickLink
+            href="/dashboard"
+            title="📈 투자자 대시보드"
+            desc="등록 학생·업체·결제·전환 KPI 한 화면"
+          />
+          <QuickLink
+            href="/students"
+            title="👨‍🎓 학생 전체 명단"
+            desc="50명 학생 필터(언어·지역·인증) + 신뢰 점수"
+          />
+          <QuickLink
+            href="/employers"
+            title="🏪 업체 전체 명단"
+            desc="등록 가게 카드 + 인증 등급별"
+          />
+          <QuickLink
+            href="/reviews"
+            title="⭐ 쌍방향 평가"
+            desc="누적 평가 사례 (학생·업주 양쪽)"
+          />
+        </div>
+
+        <h2 className="mt-10 text-xl font-bold">🔧 운영·관리 페이지 (로그인 후)</h2>
         <div className="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
           <QuickLink
             href="/employer/match"
