@@ -29,7 +29,7 @@ function getBadgeConfig(label: string): { variant: BadgeVariant; icon: string } 
   if (label === '재고용 의향 높음' || label === '학생 재근무 의향 높음') {
     return { variant: 'green', icon: '🔄' }
   }
-  if (label === 'K-MOM 인증 업체') {
+  if (label === 'K-MOM 플랫폼 기준 우수 업체') {
     return { variant: 'emerald', icon: '✅' }
   }
   if (label === '임금 지급 우수' || label === '근무 환경 우수') {

@@ -2,7 +2,7 @@
 // 실제 운영 시 Supabase employer_profiles 쿼리로 교체
 
 export type EmployerBadge =
-  | 'K-MOM 인증 업체'
+  | 'K-MOM 플랫폼 기준 우수 업체'
   | '임금 지급 우수'
   | '근무 환경 우수'
   | '서류 협조 우수'
@@ -33,7 +33,7 @@ export interface DemoEmployer {
   area: string
   requiredLanguages: string[]
   hiringExperience: boolean     // 외국인 유학생 채용 경험
-  certified: boolean            // K-MOM 인증 여부
+  certified: boolean            // K-MOM 플랫폼 기준 우수 업체 여부
   trustScore: number            // 0–5 overall
   reviewSummary: EmployerReviewSummary
   hiringHistory: HiringHistoryItem[]
@@ -69,7 +69,7 @@ export const DEMO_EMPLOYERS: DemoEmployer[] = [
       { studentNickname: '호아', period: '2022.09 – 2023.03', jobType: '홀서빙', rehired: false },
       { studentNickname: '두엑', period: '2024.06 – 현재', jobType: '홀서빙', rehired: false },
     ],
-    badges: ['K-MOM 인증 업체', '임금 지급 우수', '근무 환경 우수', '서류 협조 우수', '외국인 학생 채용 경험 있음', '학생 재근무 의향 높음'],
+    badges: ['K-MOM 플랫폼 기준 우수 업체', '임금 지급 우수', '근무 환경 우수', '서류 협조 우수', '외국인 학생 채용 경험 있음', '학생 재근무 의향 높음'],
     riskFlag: false,
     description: '대림동 베트남 동포 밀집 상권의 인기 쌀국수 전문점. 베트남어 가능 학생을 선호하며, 외국인 유학생 채용 이력 8건 이상. 급여 정시 지급 100% 기록.',
     contactEmail: 'hoa.dalim@gmail.com',
@@ -97,7 +97,7 @@ export const DEMO_EMPLOYERS: DemoEmployer[] = [
       { studentNickname: 'Jia', period: '2023.10 – 2024.02', jobType: '상품 설명', rehired: true },
       { studentNickname: 'Meng', period: '2024.03 – 현재', jobType: '손님 응대', rehired: false },
     ],
-    badges: ['K-MOM 인증 업체', '임금 지급 우수', '외국인 학생 채용 경험 있음', '학생 재근무 의향 높음'],
+    badges: ['K-MOM 플랫폼 기준 우수 업체', '임금 지급 우수', '외국인 학생 채용 경험 있음', '학생 재근무 의향 높음'],
     riskFlag: false,
     description: '명동 핵심 상권 K뷰티 편집숍. 중국·동남아 관광객 대상 상품 설명 가능 학생 필요. 공고 내용 정확하고 근무 환경 쾌적하다는 평이 많음.',
     contactEmail: 'hr@kbeauty-myeongdong.co.kr',
@@ -153,9 +153,9 @@ export const DEMO_EMPLOYERS: DemoEmployer[] = [
       { studentNickname: '응안', period: '2023.03 – 2023.09', jobType: '홀서빙', rehired: true },
       { studentNickname: 'Aigul', period: '2024.03 – 현재', jobType: '계산', rehired: false },
     ],
-    badges: ['K-MOM 인증 업체', '임금 지급 우수', '근무 환경 우수', '서류 협조 우수', '외국인 학생 채용 경험 있음', '학생 재근무 의향 높음'],
+    badges: ['K-MOM 플랫폼 기준 우수 업체', '임금 지급 우수', '근무 환경 우수', '서류 협조 우수', '외국인 학생 채용 경험 있음', '학생 재근무 의향 높음'],
     riskFlag: false,
-    description: '건대입구 역세권 분식 전문점. 학생 고객층으로 항상 활기참. 야간 영업 없이 오후 9시 마감, 주부 및 학생 파트타이머 친화적. K-MOM 인증 1호점.',
+    description: '건대입구 역세권 분식 전문점. 학생 고객층으로 항상 활기참. 야간 영업 없이 오후 9시 마감, 주부 및 학생 파트타이머 친화적. K-MOM 플랫폼 기준 우수 업체 1호점.',
     contactEmail: 'buntcheon.konkuk@kakao.com',
   },
   {
@@ -263,7 +263,7 @@ export const DEMO_EMPLOYERS: DemoEmployer[] = [
       { studentNickname: 'Nargiza', period: '2024.03 – 현재', jobType: '손님 응대', rehired: false },
       { studentNickname: 'Maria', period: '2023.03 – 2023.09', jobType: '상품 설명', rehired: false },
     ],
-    badges: ['K-MOM 인증 업체', '임금 지급 우수', '근무 환경 우수', '서류 협조 우수', '외국인 학생 채용 경험 있음', '학생 재근무 의향 높음'],
+    badges: ['K-MOM 플랫폼 기준 우수 업체', '임금 지급 우수', '근무 환경 우수', '서류 협조 우수', '외국인 학생 채용 경험 있음', '학생 재근무 의향 높음'],
     riskFlag: false,
     description: '홍대 러시아·동유럽 관광객 대상 스킨케어 전문 매장. 러시아어·영어 가능 학생 우대. 급여 정시 지급, 친절한 교육 환경으로 재고용률 높음.',
     contactEmail: 'beautyskinhongdae@gmail.com',
@@ -318,7 +318,7 @@ export const DEMO_EMPLOYERS: DemoEmployer[] = [
       { studentNickname: '란', period: '2022.09 – 2023.03', jobType: '홀서빙', rehired: false },
       { studentNickname: '호아', period: '2024.06 – 현재', jobType: '홀서빙', rehired: false },
     ],
-    badges: ['K-MOM 인증 업체', '임금 지급 우수', '외국인 학생 채용 경험 있음', '학생 재근무 의향 높음'],
+    badges: ['K-MOM 플랫폼 기준 우수 업체', '임금 지급 우수', '외국인 학생 채용 경험 있음', '학생 재근무 의향 높음'],
     riskFlag: false,
     description: '대림동 정통 베트남 쌀국수 전문점. 베트남어 능통 학생 우선. 점주 한국 거주 10년 이상의 베트남 교포로 학생 눈높이에 맞는 배려.',
     contactEmail: 'phohanoi.dalim@gmail.com',
@@ -373,7 +373,7 @@ export const DEMO_EMPLOYERS: DemoEmployer[] = [
       { studentNickname: 'Elena', period: '2023.03 – 2023.09', jobType: '상품 설명', rehired: true },
       { studentNickname: 'Putri', period: '2024.06 – 현재', jobType: '손님 응대', rehired: false },
     ],
-    badges: ['K-MOM 인증 업체', '임금 지급 우수', '근무 환경 우수', '서류 협조 우수', '외국인 학생 채용 경험 있음', '학생 재근무 의향 높음'],
+    badges: ['K-MOM 플랫폼 기준 우수 업체', '임금 지급 우수', '근무 환경 우수', '서류 협조 우수', '외국인 학생 채용 경험 있음', '학생 재근무 의향 높음'],
     riskFlag: false,
     description: '명동 에뛰드 플래그십 스토어. 다국어 가능 학생 최우선. 급여 100% 정시 지급, 유학생 서류 체계적 지원, 재고용률 최고 수준. K-MOM 파트너사.',
     contactEmail: 'etude.myeongdong@amorepacific.com',
