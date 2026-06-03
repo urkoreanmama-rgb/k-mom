@@ -43,20 +43,21 @@ export default async function Home() {
       {/* 시연 카드는 /demo 페이지로 이동 — 홈은 production-focused */}
 
       {/* Hero */}
-      <section className="px-6 py-20 sm:py-28 max-w-5xl mx-auto">
-        <div className="flex items-center gap-3 mb-6">
-          <span className="inline-flex h-8 items-center rounded-full bg-emerald-100 px-3 text-xs font-semibold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
+      <section className="px-4 sm:px-6 py-12 sm:py-20 lg:py-28 max-w-5xl mx-auto">
+        <div className="flex flex-wrap items-center gap-2 mb-4 sm:mb-6">
+          <span className="inline-flex h-7 sm:h-8 items-center rounded-full bg-emerald-100 px-3 text-xs font-semibold text-emerald-700 dark:bg-emerald-900/40 dark:text-emerald-300">
             BETA · Phase 1 MVP
           </span>
-          <span className="inline-flex h-8 items-center rounded-full bg-zinc-100 px-3 text-xs font-semibold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
+          <span className="inline-flex h-7 sm:h-8 items-center rounded-full bg-zinc-100 px-3 text-xs font-semibold text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300">
             출입국관리법 제20조 기반
           </span>
         </div>
-        <h1 className="text-4xl sm:text-6xl font-bold tracking-tight leading-tight">
-          유학생 채용, <br />
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-tight">
+          유학생 채용,{' '}
+          <br className="hidden sm:block" />
           <span className="text-emerald-600 dark:text-emerald-400">합법인지 먼저 확인</span>하세요.
         </h1>
-        <p className="mt-6 text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl">
+        <p className="mt-4 sm:mt-6 text-base sm:text-lg text-zinc-600 dark:text-zinc-400 max-w-2xl">
           K-MOM은 외국인 유학생을 채용하려는 업주와 교외 근무를 관리하는 학교가
           비자·서류·근무시간 위반 없이 안심하고 쓰는 <strong>합법 채용 신뢰 플랫폼</strong>입니다.
         </p>

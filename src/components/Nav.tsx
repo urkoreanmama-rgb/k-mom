@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { logout } from '@/app/actions/auth'
 import { createClient } from '@/lib/supabase/server'
 import { DEMO_MODE } from '@/lib/flags'
+import MobileMenu, { type NavItem } from './MobileMenu'
 
 export default async function Nav() {
   const supabase = await createClient()
@@ -21,50 +22,64 @@ export default async function Nav() {
     name = data?.name ?? ''
   }
 
+  // 역할별 메뉴 아이템 (모바일·데스크톱 공통 데이터)
+  const items: NavItem[] = []
+  if (role === 'student') {
+    items.push(
+      { href: '/student/profile', label: '내 프로필' },
+      { href: '/student/resume', label: '📝 이력서' },
+      { href: '/student/employers', label: '업주 둘러보기' },
+      { href: '/student/history', label: '알바 이력' },
+    )
+  } else if (role === 'employer') {
+    items.push(
+      { href: '/employer/match', label: '⚡ 맞춤 후보 찾기', emphasis: 'highlight' },
+      { href: '/employer/search', label: '학생 열람' },
+      { href: '/employer/applications', label: '📩 받은 이력서' },
+      { href: '/employer/work', label: '진행 중인 채용' },
+      { href: '/employer/profile', label: '내 가게' },
+      { href: '/pricing', label: '요금제' },
+    )
+  } else if (role === 'school_admin') {
+    items.push({ href: '/school/dashboard', label: '학교 대시보드' })
+  } else if (role === 'platform_admin') {
+    items.push(
+      { href: '/admin/dashboard', label: '대시보드' },
+      { href: '/admin/requests', label: '업주 요청' },
+    )
+  }
+
   return (
-    <nav className="border-b border-zinc-200 bg-white/80 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/80 sticky top-0 z-10">
-      <div className="max-w-6xl mx-auto px-6 h-14 flex items-center justify-between">
-        <Link href="/" className="font-bold text-lg">
+    <nav className="border-b border-zinc-200 bg-white/80 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/80 sticky top-0 z-30">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
+        <Link href="/" className="font-bold text-lg shrink-0">
           K-MOM
         </Link>
-        <div className="flex items-center gap-4 text-sm">
-          {role === 'student' && (
-            <>
-              <Link href="/student/profile" className="hover:underline">내 프로필</Link>
-              <Link href="/student/resume" className="hover:underline">📝 이력서</Link>
-              <Link href="/student/employers" className="hover:underline">업주 둘러보기</Link>
-              <Link href="/student/history" className="hover:underline">알바 이력</Link>
-            </>
-          )}
-          {role === 'employer' && (
-            <>
-              <Link
-                href="/employer/match"
-                className="rounded-full bg-emerald-100 px-3 py-1 font-semibold text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-300"
-              >
-                ⚡ 맞춤 후보 찾기
+
+        {/* ─── Desktop nav (md 이상) ─── */}
+        <div className="hidden md:flex items-center gap-4 text-sm">
+          {items.map((item) => {
+            if (item.emphasis === 'highlight') {
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className="rounded-full bg-emerald-100 px-3 py-1 font-semibold text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-300"
+                >
+                  {item.label}
+                </Link>
+              )
+            }
+            return (
+              <Link key={item.href} href={item.href} className="hover:underline">
+                {item.label}
               </Link>
-              <Link href="/employer/search" className="hover:underline">학생 열람</Link>
-              <Link href="/employer/applications" className="hover:underline">📩 받은 이력서</Link>
-              <Link href="/employer/work" className="hover:underline">진행 중인 채용</Link>
-              <Link href="/employer/profile" className="hover:underline">내 가게</Link>
-              <Link href="/pricing" className="hover:underline text-zinc-500">요금제</Link>
-            </>
-          )}
-          {role === 'school_admin' && (
-            <Link href="/school/dashboard" className="hover:underline">학교 대시보드</Link>
-          )}
-          {role === 'platform_admin' && (
-            <>
-              <Link href="/admin/dashboard" className="hover:underline">대시보드</Link>
-              <Link href="/admin/requests" className="hover:underline">업주 요청</Link>
-            </>
-          )}
-          {/* 공개 데모 페이지(/dashboard, /students, /employers, /reviews)는
-              /demo 페이지로 이동했습니다. Nav 중복 방지. */}
+            )
+          })}
+
           {user ? (
             <>
-              <span className="text-zinc-500">{name}</span>
+              <span className="text-zinc-500 max-w-[12ch] truncate">{name}</span>
               <form action={logout}>
                 <button className="rounded-md border border-zinc-300 px-3 py-1 text-xs hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800">
                   로그아웃
@@ -81,7 +96,9 @@ export default async function Nav() {
                   🎬 시연 모드
                 </Link>
               )}
-              <Link href="/login" className="hover:underline text-zinc-500">로그인</Link>
+              <Link href="/login" className="hover:underline text-zinc-500">
+                로그인
+              </Link>
               <Link
                 href="/signup"
                 className="rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700"
@@ -90,6 +107,31 @@ export default async function Nav() {
               </Link>
             </>
           )}
+        </div>
+
+        {/* ─── Mobile nav (md 미만) ─── */}
+        <div className="flex md:hidden items-center gap-2">
+          {!user && (
+            <Link
+              href="/login"
+              className="text-sm text-zinc-600 hover:underline dark:text-zinc-400"
+            >
+              로그인
+            </Link>
+          )}
+          {user && (
+            <form action={logout}>
+              <button className="rounded-md border border-zinc-300 px-3 py-1.5 text-xs hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800">
+                로그아웃
+              </button>
+            </form>
+          )}
+          <MobileMenu
+            items={items}
+            userName={name}
+            isLoggedIn={!!user}
+            isDemoMode={DEMO_MODE}
+          />
         </div>
       </div>
     </nav>

@@ -96,11 +96,11 @@ export default async function AdminRequestsPage({
   }
 
   return (
-    <main className="max-w-7xl mx-auto px-6 py-10">
+    <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
       <Link href="/admin/dashboard" className="text-sm text-zinc-500 hover:underline">
         ← 대시보드로
       </Link>
-      <h1 className="mt-4 text-3xl font-bold">업주 요청 관리</h1>
+      <h1 className="mt-4 text-2xl sm:text-3xl font-bold">업주 요청 관리</h1>
       <p className="mt-1 text-sm text-zinc-500">
         실제 DB 요청 + 시드 더미가 함께 표시됩니다. 필터로 분리해서 볼 수 있어요.
       </p>
@@ -115,7 +115,85 @@ export default async function AdminRequestsPage({
         <FilterTab href="/admin/requests?source=seed" active={source === 'seed'} label={`시드 ${totals.seed}`} />
       </div>
 
-      <div className="mt-6 overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
+      {/* 모바일 (md 미만): 카드 리스트 */}
+      <div className="mt-6 md:hidden space-y-3">
+        {all.map((r) => (
+          <div
+            key={r.id}
+            className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-800 dark:bg-zinc-900"
+          >
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0 flex-1">
+                <p className="font-bold truncate">{r.businessName}</p>
+                <p className="text-xs text-zinc-500">
+                  {r.employerName} · {r.industry} · {r.area}
+                </p>
+              </div>
+              <span
+                className={
+                  r.source === 'live'
+                    ? 'shrink-0 rounded-full bg-violet-100 px-2 py-0.5 text-[10px] font-medium text-violet-700 dark:bg-violet-900/40 dark:text-violet-300'
+                    : 'shrink-0 rounded-full bg-zinc-100 px-2 py-0.5 text-[10px] text-zinc-500 dark:bg-zinc-800'
+                }
+              >
+                {r.source === 'live' ? '🟣 LIVE' : '시드'}
+              </span>
+            </div>
+
+            <div className="mt-2 flex flex-wrap gap-1">
+              {r.requiredLanguages.map((l) => (
+                <span
+                  key={l}
+                  className="rounded-md bg-sky-100 px-1.5 py-0.5 text-[10px] text-sky-700 dark:bg-sky-900/40 dark:text-sky-300"
+                >
+                  {l}
+                </span>
+              ))}
+            </div>
+            <p className="mt-1 text-[11px] text-zinc-500">
+              {r.workDays.join('')} · {r.workTimeSlots.join('·')} · {r.jobTypes.join('·')}
+            </p>
+
+            <div className="mt-3 flex flex-wrap items-center justify-between gap-2 text-xs">
+              <span
+                className={`rounded-full px-2 py-0.5 font-medium ${STATUS_CHIP[r.paymentStatus]}`}
+              >
+                {STATUS_LABEL[r.paymentStatus]}
+              </span>
+              <span
+                className={
+                  r.candidateCount >= 5
+                    ? 'font-bold text-emerald-700 dark:text-emerald-400'
+                    : r.candidateCount >= 2
+                      ? 'font-bold text-amber-700 dark:text-amber-400'
+                      : 'font-bold text-red-700 dark:text-red-400'
+                }
+              >
+                후보 {r.candidateCount}명
+              </span>
+            </div>
+
+            <div className="mt-2 text-[11px] text-zinc-500">
+              열람 <strong>{r.revealedCandidateIds.length}</strong> · 연락{' '}
+              <strong>{r.contactRequestedIds.length}</strong>
+            </div>
+
+            {r.adminNote && (
+              <p className="mt-2 rounded-md bg-zinc-50 px-2 py-1 text-[11px] italic text-zinc-600 dark:bg-zinc-950 dark:text-zinc-400">
+                📝 {r.adminNote}
+              </p>
+            )}
+          </div>
+        ))}
+        {all.length === 0 && (
+          <p className="rounded-xl bg-zinc-50 p-8 text-center text-sm text-zinc-500 dark:bg-zinc-900">
+            해당 조건의 요청이 없습니다.
+          </p>
+        )}
+      </div>
+
+      {/* 데스크톱 (md 이상): 테이블 */}
+      <div className="mt-6 hidden md:block overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
         <table className="min-w-full divide-y divide-zinc-200 text-sm dark:divide-zinc-800">
           <thead className="bg-zinc-50 dark:bg-zinc-900">
             <tr>
