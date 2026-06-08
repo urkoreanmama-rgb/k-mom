@@ -58,13 +58,48 @@ export default async function AdminDashboardPage() {
             맞춤 매칭 흐름의 전환 지표 — 시현용 더미 데이터 기준
           </p>
         </div>
-        <Link
-          href="/admin/requests"
-          className="inline-flex h-10 items-center rounded-lg bg-zinc-900 px-4 text-sm font-medium text-white dark:bg-white dark:text-zinc-900"
-        >
-          업주 요청 관리 →
-        </Link>
+        <div className="flex flex-wrap gap-2">
+          <Link
+            href="/admin/requests"
+            className="inline-flex h-10 items-center rounded-lg bg-zinc-900 px-4 text-sm font-medium text-white dark:bg-white dark:text-zinc-900"
+          >
+            업주 요청 관리 →
+          </Link>
+        </div>
       </header>
+
+      {/* DB 엑셀(CSV) 다운로드 — 운영자만 사용 */}
+      <section className="mt-6 rounded-xl border-2 border-emerald-300 bg-emerald-50 p-4 dark:border-emerald-800 dark:bg-emerald-950/30">
+        <p className="text-sm font-semibold text-emerald-900 dark:text-emerald-200">
+          📥 사용자 DB 엑셀(CSV) 다운로드
+        </p>
+        <p className="mt-1 text-xs text-emerald-700 dark:text-emerald-400">
+          Excel·구글 시트로 바로 열 수 있어요. 한글 파일명·내용 깨짐 없음 (UTF-8 BOM).
+        </p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          <a
+            href="/api/export/students"
+            download
+            className="inline-flex h-10 items-center rounded-lg bg-emerald-600 px-4 text-sm font-medium text-white hover:bg-emerald-700"
+          >
+            👨‍🎓 학생 명단 다운로드
+          </a>
+          <a
+            href="/api/export/employers"
+            download
+            className="inline-flex h-10 items-center rounded-lg bg-sky-600 px-4 text-sm font-medium text-white hover:bg-sky-700"
+          >
+            🏪 업주 명단 다운로드
+          </a>
+          <a
+            href="/api/export/match-requests"
+            download
+            className="inline-flex h-10 items-center rounded-lg bg-violet-600 px-4 text-sm font-medium text-white hover:bg-violet-700"
+          >
+            📋 매칭 요청 다운로드
+          </a>
+        </div>
+      </section>
 
       {/* ── 핵심 KPI ── */}
       <section className="mt-8">

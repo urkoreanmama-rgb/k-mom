@@ -77,6 +77,14 @@ export default async function Nav() {
             )
           })}
 
+          {/* 전체메뉴 — 항상 노출 */}
+          <Link
+            href="/sitemap-all"
+            className="rounded-md border border-zinc-300 px-3 py-1 text-xs text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+          >
+            🗺️ 전체메뉴
+          </Link>
+
           {user ? (
             <>
               <span className="text-zinc-500 max-w-[12ch] truncate">{name}</span>

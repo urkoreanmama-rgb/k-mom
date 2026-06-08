@@ -120,6 +120,14 @@ export default function MobileMenu({
                 </Link>
               ))}
 
+              {/* 전체메뉴 — 항상 노출 */}
+              <Link
+                href="/sitemap-all"
+                className="mt-3 flex h-12 items-center rounded-lg border border-zinc-300 px-4 text-zinc-700 dark:border-zinc-700 dark:text-zinc-300"
+              >
+                🗺️ 전체메뉴
+              </Link>
+
               {isDemoMode && !isLoggedIn && (
                 <Link
                   href="/demo"
