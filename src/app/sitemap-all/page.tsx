@@ -109,16 +109,17 @@ export default async function SitemapPage() {
     },
   ]
 
-  if (DEMO_MODE) {
+  // 시연 모드 메뉴 — 관리자(platform_admin)만 노출
+  if (role === 'platform_admin' && DEMO_MODE) {
     groups.push({
-      title: '🎬 시연 모드 (투자자용)',
+      title: '🎬 시연 모드 (관리자 전용)',
       color: 'zinc',
       items: [
         { href: '/demo', title: '시연 페이지', desc: '6개 페르소나 카드로 원클릭 로그인', emoji: '🎭' },
-        { href: '/dashboard', title: '투자자 대시보드 (공개)', desc: '로그인 없이 KPI 한눈에', emoji: '📊' },
-        { href: '/students', title: '학생 전체 명단 (공개)', desc: '50명 필터 가능', emoji: '👥' },
-        { href: '/employers', title: '업체 전체 명단 (공개)', desc: '등록 가게 카드', emoji: '🏬' },
-        { href: '/reviews', title: '쌍방향 평가 (공개)', desc: '누적 평가 사례', emoji: '⭐' },
+        { href: '/dashboard', title: '투자자 대시보드', desc: '로그인 없이 KPI 한눈에', emoji: '📊' },
+        { href: '/students', title: '학생 전체 명단', desc: '50명 필터 가능', emoji: '👥' },
+        { href: '/employers', title: '업체 전체 명단', desc: '등록 가게 카드', emoji: '🏬' },
+        { href: '/reviews', title: '쌍방향 평가', desc: '누적 평가 사례', emoji: '⭐' },
       ],
     })
   }

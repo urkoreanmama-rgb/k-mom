@@ -22,7 +22,12 @@ function roleLabel(role: string | null): string {
   }
 }
 
-export default async function Home() {
+export default async function Home({
+  searchParams,
+}: {
+  searchParams: Promise<{ notice?: string }>
+}) {
+  const { notice } = await searchParams
   const supabase = await createClient()
   const { data: { user } } = await supabase.auth.getUser()
 
@@ -40,6 +45,11 @@ export default async function Home() {
 
   return (
     <main className="flex-1">
+      {notice === 'demo_admin_only' && (
+        <div className="bg-amber-50 border-b border-amber-200 px-4 py-2 text-center text-xs text-amber-800 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-300">
+          🎬 시연 모드는 운영자(platform_admin) 계정으로 로그인해야 접근할 수 있어요.
+        </div>
+      )}
       {/* 시연 카드는 /demo 페이지로 이동 — 홈은 production-focused */}
 
       {/* Hero */}

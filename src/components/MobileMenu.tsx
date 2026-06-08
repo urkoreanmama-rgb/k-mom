@@ -128,14 +128,7 @@ export default function MobileMenu({
                 🗺️ 전체메뉴
               </Link>
 
-              {isDemoMode && !isLoggedIn && (
-                <Link
-                  href="/demo"
-                  className="mt-3 flex h-12 items-center rounded-lg bg-zinc-900 px-4 font-semibold text-white dark:bg-white dark:text-zinc-900"
-                >
-                  🎬 시연 모드
-                </Link>
-              )}
+              {/* 시연 모드 버튼은 관리자 메뉴(items)에 포함되어 노출됨 — 여기는 비로그인 노출 안 함 */}
             </nav>
           </aside>
         </>

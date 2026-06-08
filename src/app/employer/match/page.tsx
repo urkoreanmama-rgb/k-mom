@@ -31,10 +31,12 @@ export default async function MatchEntryPage({
     role = data?.role ?? null
   }
 
-  // "실 사용자 모드" = 로그인된 사용자 OR DEMO_MODE 꺼진 경우
-  const isRealUserMode = !!user || !DEMO_MODE
-  // 시연 카드는 DEMO_MODE 켜져 있을 때만 노출 — 다만 위치가 달라짐
-  const showDemoCards = DEMO_MODE
+  // 시연 시나리오 카드는 관리자만 볼 수 있음 (실 사용자엔 노출 X)
+  const isAdmin = role === 'platform_admin'
+  // "실 사용자 모드" = 항상 폼이 메인 (관리자가 아닌 모든 경우)
+  const isRealUserMode = !isAdmin
+  // 시연 카드는 관리자에게만, DEMO_MODE도 켜져 있어야 노출
+  const showDemoCards = isAdmin && DEMO_MODE
 
   return (
     <main className="max-w-3xl mx-auto px-4 sm:px-6 py-6 sm:py-10">

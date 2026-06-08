@@ -1,9 +1,31 @@
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 import DemoPersonaCards from '@/components/DemoPersonaCards'
+import { createClient } from '@/lib/supabase/server'
 
 export const metadata = { title: '시연 모드 · K-MOM' }
 
-export default function DemoPage() {
+export default async function DemoPage() {
+  // 관리자(platform_admin)만 접근. 비관리자/비로그인은 홈으로 리다이렉트
+  const supabase = await createClient()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
+
+  if (!user) {
+    redirect('/login?next=/demo')
+  }
+
+  const { data: row } = await supabase
+    .from('users')
+    .select('role')
+    .eq('id', user.id)
+    .maybeSingle()
+
+  if (row?.role !== 'platform_admin') {
+    redirect('/?notice=demo_admin_only')
+  }
+
   return (
     <main className="flex-1">
       {/* 헤더 */}
@@ -14,8 +36,8 @@ export default function DemoPage() {
           </Link>
           <h1 className="mt-3 text-3xl font-bold">🎬 K-MOM 시연 모드</h1>
           <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-            투자자 시연을 위한 모든 페르소나·시나리오·관리자 화면을 한 곳에 모아둔
-            페이지입니다. 일반 사용자는 이 페이지를 보지 않습니다.
+            <strong>운영자 전용</strong> — 투자자 시연을 위한 모든 페르소나·시나리오·관리자 화면.
+            일반 사용자(학생·업주·학교)는 이 페이지를 볼 수 없으며, 메뉴에도 노출되지 않습니다.
           </p>
         </div>
       </header>

@@ -46,6 +46,7 @@ export default async function Nav() {
     items.push(
       { href: '/admin/dashboard', label: '대시보드' },
       { href: '/admin/requests', label: '업주 요청' },
+      { href: '/demo', label: '🎬 시연 모드', emphasis: 'highlight' },
     )
   }
 
@@ -96,14 +97,7 @@ export default async function Nav() {
             </>
           ) : (
             <>
-              {DEMO_MODE && (
-                <Link
-                  href="/demo"
-                  className="rounded-full bg-zinc-900 px-3 py-1 text-xs font-semibold text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900"
-                >
-                  🎬 시연 모드
-                </Link>
-              )}
+              {/* 비로그인 — 시연 버튼 노출 안 함 (실 사용자 경험) */}
               <Link href="/login" className="hover:underline text-zinc-500">
                 로그인
               </Link>
