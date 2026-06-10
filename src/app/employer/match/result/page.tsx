@@ -2,7 +2,8 @@ import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { filterStudents, pickTopThree, type MatchCriteria } from '@/lib/match'
 import CandidatePreviewCard from '@/components/CandidatePreviewCard'
-import { getCurrentRequest, recordRevealedCandidates } from '../actions'
+import { getCurrentRequest } from '../actions'
+import { createClient } from '@/lib/supabase/server'
 
 export const metadata = { title: '후보 미리보기 · K-MOM' }
 
@@ -17,8 +18,17 @@ export default async function ResultPage() {
   const top3 = pickTopThree(matched)
   const overflowCount = Math.max(0, matched.length - 3)
 
-  // revealed_candidate_ids에 저장 (idempotent — 같은 ID라도 덮어쓰기)
-  await recordRevealedCandidates(top3.map((s) => s.studentId))
+  // revealed_candidate_ids 인라인 업데이트 (server action 호출 X — 페이지 렌더 안정성)
+  try {
+    const supabase = await createClient()
+    await supabase
+      .from('employer_match_requests')
+      .update({ revealed_candidate_ids: top3.map((s) => s.studentId) })
+      .eq('id', request.id)
+  } catch (e) {
+    // 업데이트 실패해도 카드는 보여줘야 함 — silent fail
+    console.error('Failed to record revealed candidates:', e)
+  }
 
   return (
     <main className="max-w-4xl mx-auto px-6 py-10">
