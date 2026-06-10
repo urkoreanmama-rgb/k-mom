@@ -23,7 +23,7 @@ export default function ScenarioCards() {
   return (
     <section className="rounded-2xl border-2 border-dashed border-zinc-300 bg-zinc-50 p-5 dark:border-zinc-700 dark:bg-zinc-950">
       <div className="flex items-center gap-2">
-        <span className="rounded-full bg-zinc-900 px-3 py-1 text-xs font-bold text-white dark:bg-white dark:text-zinc-900">
+        <span className="btn-3d rounded-full bg-zinc-900 px-3 py-1 text-xs font-bold text-white dark:bg-white dark:text-zinc-900">
           📺 시연 모드
         </span>
         <p className="text-sm text-zinc-600 dark:text-zinc-400">

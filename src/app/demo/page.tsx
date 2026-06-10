@@ -171,7 +171,7 @@ export default async function DemoPage() {
             return (
               <div
                 key={card.role}
-                className="rounded-2xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900"
+                className="card-3d rounded-2xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900"
               >
                 <p className="text-sm font-medium text-zinc-500">{card.desc}</p>
                 <h2 className="mt-2 text-2xl font-semibold tracking-tight">{card.role}</h2>
@@ -180,7 +180,7 @@ export default async function DemoPage() {
                   <div className="mt-6 space-y-2">
                     <Link
                       href="/demo/student-journey"
-                      className="inline-flex h-11 w-full items-center justify-center rounded-full bg-zinc-900 px-4 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+                      className="btn-3d inline-flex h-11 w-full items-center justify-center rounded-full bg-zinc-900 px-4 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
                     >
                       학생의 여정 보기 (4단계)
                     </Link>
@@ -189,7 +189,7 @@ export default async function DemoPage() {
                       <input type="hidden" name="dest" value={card.dest} />
                       <button
                         type="submit"
-                        className="inline-flex h-11 w-full items-center justify-center rounded-full border border-zinc-300 px-4 text-sm font-medium hover:border-zinc-400 dark:border-zinc-700 dark:hover:border-zinc-600"
+                        className="btn-3d-outline inline-flex h-11 w-full items-center justify-center rounded-full border border-zinc-300 px-4 text-sm font-medium hover:border-zinc-400 dark:border-zinc-700 dark:hover:border-zinc-600"
                       >
                         학생의 현재 상태 보기
                       </button>
@@ -201,7 +201,7 @@ export default async function DemoPage() {
                     <input type="hidden" name="dest" value={card.dest} />
                     <button
                       type="submit"
-                      className="mt-6 inline-flex h-11 w-full items-center justify-center rounded-full bg-zinc-900 px-5 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+                      className="btn-3d mt-6 inline-flex h-11 w-full items-center justify-center rounded-full bg-zinc-900 px-5 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
                     >
                       {card.role} 화면 보기 →
                     </button>

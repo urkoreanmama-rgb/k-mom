@@ -104,7 +104,7 @@ export default function DemoPersonaCards() {
   return (
     <section className="px-6 py-12 max-w-6xl mx-auto">
       <div className="text-center">
-        <span className="inline-block rounded-full bg-zinc-900 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white dark:bg-white dark:text-zinc-900">
+        <span className="btn-3d inline-block rounded-full bg-zinc-900 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white dark:bg-white dark:text-zinc-900">
           📺 투자자 시연 모드
         </span>
         <h2 className="mt-4 text-3xl font-bold">

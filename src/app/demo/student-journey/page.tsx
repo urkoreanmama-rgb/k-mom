@@ -152,7 +152,7 @@ export default async function StudentJourneyPage() {
         {STEPS.map((step) => (
           <article
             key={step.num}
-            className="rounded-2xl border border-zinc-200 bg-white p-8 sm:p-10 dark:border-zinc-800 dark:bg-zinc-900"
+            className="card-3d rounded-2xl border border-zinc-200 bg-white p-8 sm:p-10 dark:border-zinc-800 dark:bg-zinc-900"
           >
             <p className="text-sm font-medium text-zinc-500">Step {step.num}</p>
             <h2 className="mt-2 text-2xl sm:text-3xl font-semibold tracking-tight">
@@ -170,7 +170,7 @@ export default async function StudentJourneyPage() {
                     href={step.cta.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex h-11 items-center rounded-full bg-zinc-900 px-6 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+                    className="btn-3d inline-flex h-11 items-center rounded-full bg-zinc-900 px-6 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
                   >
                     {step.cta.label}
                     <span className="ml-2 text-xs">↗</span>
@@ -178,7 +178,7 @@ export default async function StudentJourneyPage() {
                 ) : step.cta.href ? (
                   <Link
                     href={step.cta.href}
-                    className="inline-flex h-11 items-center rounded-full bg-zinc-900 px-6 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+                    className="btn-3d inline-flex h-11 items-center rounded-full bg-zinc-900 px-6 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
                   >
                     {step.cta.label}
                   </Link>
@@ -188,7 +188,7 @@ export default async function StudentJourneyPage() {
                     <input type="hidden" name="dest" value={step.cta.loginDest} />
                     <button
                       type="submit"
-                      className="inline-flex h-11 items-center rounded-full bg-zinc-900 px-6 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+                      className="btn-3d inline-flex h-11 items-center rounded-full bg-zinc-900 px-6 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
                     >
                       {step.cta.label}
                     </button>
@@ -218,13 +218,13 @@ export default async function StudentJourneyPage() {
       <div className="mt-12 flex flex-wrap justify-center gap-3">
         <Link
           href="/demo"
-          className="inline-flex h-10 items-center rounded-full border border-zinc-300 px-5 text-sm font-medium text-zinc-700 hover:border-zinc-400 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-600"
+          className="btn-3d-outline inline-flex h-10 items-center rounded-full border border-zinc-300 px-5 text-sm font-medium text-zinc-700 hover:border-zinc-400 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-600"
         >
           ← 다른 역할 보기
         </Link>
         <Link
           href="/admin/dashboard"
-          className="inline-flex h-10 items-center rounded-full border border-zinc-300 px-5 text-sm font-medium text-zinc-700 hover:border-zinc-400 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-600"
+          className="btn-3d-outline inline-flex h-10 items-center rounded-full border border-zinc-300 px-5 text-sm font-medium text-zinc-700 hover:border-zinc-400 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-600"
         >
           관리자 대시보드
         </Link>
