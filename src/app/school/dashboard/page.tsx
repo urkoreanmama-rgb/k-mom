@@ -9,7 +9,19 @@ import { DEMO_EMPLOYERS } from '@/data/demo-employers'
 
 export const metadata = { title: '학교 모니터링 대시보드 · K-MOM' }
 
-export default async function SchoolDashboardPage() {
+type Filter = 'working' | 'overlimit' | 'risk' | 'idle' | null
+
+export default async function SchoolDashboardPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ filter?: string }>
+}) {
+  const sp = await searchParams
+  const filter: Filter =
+    sp.filter === 'working' || sp.filter === 'overlimit' || sp.filter === 'risk' || sp.filter === 'idle'
+      ? sp.filter
+      : null
+
   const supabase = await createClient()
   const {
     data: { user },
@@ -81,21 +93,37 @@ export default async function SchoolDashboardPage() {
         </p>
       </header>
 
-      {/* KPI 4개 카드 */}
+      {/* KPI 4개 카드 — 클릭하면 해당 학생만 필터링 */}
       <section className="mt-12 grid gap-4 sm:grid-cols-4">
-        <Kpi label="모니터링 학생" value={total} suffix="명" />
-        <Kpi label="현재 근무 중" value={working} suffix="명" />
+        <Kpi
+          label="모니터링 학생"
+          value={total}
+          suffix="명"
+          href="/school/dashboard"
+          active={!filter}
+        />
+        <Kpi
+          label="현재 근무 중"
+          value={working}
+          suffix="명"
+          href="/school/dashboard?filter=working"
+          active={filter === 'working'}
+        />
         <Kpi
           label="시간 한도 초과"
           value={overLimit}
           suffix="명"
           warn={overLimit > 0}
+          href="/school/dashboard?filter=overlimit"
+          active={filter === 'overlimit'}
         />
         <Kpi
           label="위험 업체 근무"
           value={riskEmployer}
           suffix="명"
           warn={riskEmployer > 0}
+          href="/school/dashboard?filter=risk"
+          active={filter === 'risk'}
         />
       </section>
 
@@ -137,14 +165,55 @@ export default async function SchoolDashboardPage() {
         </section>
       )}
 
-      {/* 학생 카드 그리드 */}
+      {/* 학생 카드 그리드 — 필터 적용 */}
       <section className="mt-12">
-        <h2 className="text-2xl font-semibold tracking-tight">재학 유학생</h2>
-        <p className="mt-2 text-sm text-zinc-500">
-          학생 동의 기반 모니터링 · K-MOM 등록 근무 이력 기준
-        </p>
+        <div className="flex items-baseline justify-between gap-3">
+          <div>
+            <h2 className="text-2xl font-semibold tracking-tight">
+              {filter === 'working' && '현재 근무 중인 학생'}
+              {filter === 'overlimit' && '시간 한도 초과 학생'}
+              {filter === 'risk' && '위험 업체에서 근무 중'}
+              {filter === 'idle' && '대기 중인 학생'}
+              {!filter && '재학 유학생'}
+            </h2>
+            <p className="mt-2 text-sm text-zinc-500">
+              학생 동의 기반 모니터링 · K-MOM 등록 근무 이력 기준
+            </p>
+          </div>
+          {filter && (
+            <Link
+              href="/school/dashboard"
+              className="text-sm text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
+            >
+              ← 전체 보기
+            </Link>
+          )}
+        </div>
+        {showcase.filter((s) => {
+          const w = currentWork[s.studentId]
+          const emp = w ? DEMO_EMPLOYERS.find((e) => e.companyId === w.employerId) : null
+          if (filter === 'working') return Boolean(w)
+          if (filter === 'overlimit') return w && w.weeklyHours > 25
+          if (filter === 'risk') return Boolean(emp?.riskFlag)
+          if (filter === 'idle') return !w
+          return true
+        }).length === 0 && (
+          <div className="mt-8 rounded-2xl border border-dashed border-zinc-300 bg-white p-12 text-center text-sm text-zinc-500 dark:border-zinc-700 dark:bg-zinc-900">
+            해당하는 학생이 없습니다.
+          </div>
+        )}
         <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {showcase.map((s) => {
+          {showcase
+            .filter((s) => {
+              const w = currentWork[s.studentId]
+              const emp = w ? DEMO_EMPLOYERS.find((e) => e.companyId === w.employerId) : null
+              if (filter === 'working') return Boolean(w)
+              if (filter === 'overlimit') return w && w.weeklyHours > 25
+              if (filter === 'risk') return Boolean(emp?.riskFlag)
+              if (filter === 'idle') return !w
+              return true
+            })
+            .map((s) => {
             const w = currentWork[s.studentId]
             const emp = w ? DEMO_EMPLOYERS.find((e) => e.companyId === w.employerId) : null
             const isOverLimit = w && w.weeklyHours > 25
@@ -230,20 +299,26 @@ function Kpi({
   value,
   suffix,
   warn = false,
+  href,
+  active = false,
 }: {
   label: string
   value: number
   suffix?: string
   warn?: boolean
+  href?: string
+  active?: boolean
 }) {
-  return (
-    <div
-      className={
-        warn
-          ? 'card-3d rounded-2xl border border-zinc-300 bg-white p-6 ring-2 ring-zinc-200 dark:border-zinc-700 dark:bg-zinc-900 dark:ring-zinc-700'
-          : 'card-3d rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900'
-      }
-    >
+  const base =
+    'card-3d block rounded-2xl border bg-white p-6 dark:bg-zinc-900'
+  const stateClass = active
+    ? 'border-zinc-900 ring-2 ring-zinc-300 dark:border-zinc-100 dark:ring-zinc-700'
+    : warn
+      ? 'border-zinc-300 ring-2 ring-zinc-200 dark:border-zinc-700 dark:ring-zinc-700'
+      : 'border-zinc-200 dark:border-zinc-800'
+
+  const content = (
+    <>
       <p className="text-xs text-zinc-500">{label}</p>
       <p className="mt-2 text-3xl font-semibold tracking-tight">
         {value}
@@ -251,8 +326,22 @@ function Kpi({
           <span className="ml-1 text-sm font-medium text-zinc-500">{suffix}</span>
         )}
       </p>
-    </div>
+      {href && (
+        <p className="mt-3 text-[10px] font-medium uppercase tracking-wide text-zinc-400">
+          {active ? '· 활성 ·' : '클릭해서 보기 →'}
+        </p>
+      )}
+    </>
   )
+
+  if (href) {
+    return (
+      <Link href={href} className={`${base} ${stateClass}`}>
+        {content}
+      </Link>
+    )
+  }
+  return <div className={`${base} ${stateClass}`}>{content}</div>
 }
 
 function Stat({ label, value }: { label: string; value: string }) {
