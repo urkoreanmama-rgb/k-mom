@@ -36,15 +36,15 @@ export default async function Nav() {
   if (role === 'student') {
     items.push(
       { href: '/student/profile', label: '내 프로필' },
-      { href: '/student/resume', label: '📝 이력서' },
+      { href: '/student/resume', label: '이력서' },
       { href: '/student/employers', label: '업주 둘러보기' },
       { href: '/student/history', label: '알바 이력' },
     )
   } else if (role === 'employer') {
     items.push(
-      { href: '/employer/match', label: '⚡ 맞춤 후보 찾기', emphasis: 'highlight' },
+      { href: '/employer/match', label: '맞춤 후보 찾기', emphasis: 'highlight' },
       { href: '/employer/search', label: '학생 열람' },
-      { href: '/employer/applications', label: '📩 받은 이력서' },
+      { href: '/employer/applications', label: '받은 이력서' },
       { href: '/employer/work', label: '진행 중인 채용' },
       { href: '/employer/profile', label: '내 가게' },
       { href: '/pricing', label: '요금제' },
@@ -55,7 +55,7 @@ export default async function Nav() {
     items.push(
       { href: '/admin/dashboard', label: '대시보드' },
       { href: '/admin/requests', label: '업주 요청' },
-      { href: '/demo', label: '🎬 시연 모드', emphasis: 'highlight' },
+      { href: '/demo', label: '시연 모드', emphasis: 'highlight' },
     )
   }
 
@@ -74,14 +74,14 @@ export default async function Nav() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="rounded-full bg-emerald-100 px-3 py-1 font-semibold text-emerald-700 hover:bg-emerald-200 dark:bg-emerald-900/40 dark:text-emerald-300"
+                  className="rounded-full bg-zinc-900 px-3.5 py-1.5 font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
                 >
                   {item.label}
                 </Link>
               )
             }
             return (
-              <Link key={item.href} href={item.href} className="hover:underline">
+              <Link key={item.href} href={item.href} className="text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">
                 {item.label}
               </Link>
             )
@@ -90,16 +90,16 @@ export default async function Nav() {
           {/* 전체메뉴 — 항상 노출 */}
           <Link
             href="/sitemap-all"
-            className="rounded-md border border-zinc-300 px-3 py-1 text-xs text-zinc-600 hover:bg-zinc-100 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            className="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100"
           >
-            🗺️ 전체메뉴
+            전체메뉴
           </Link>
 
           {user ? (
             <>
               <span className="text-zinc-500 max-w-[12ch] truncate">{name}</span>
               <form action={logout}>
-                <button className="rounded-md border border-zinc-300 px-3 py-1 text-xs hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800">
+                <button className="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100">
                   로그아웃
                 </button>
               </form>
@@ -107,12 +107,12 @@ export default async function Nav() {
           ) : (
             <>
               {/* 비로그인 — 시연 버튼 노출 안 함 (실 사용자 경험) */}
-              <Link href="/login" className="hover:underline text-zinc-500">
+              <Link href="/login" className="text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100">
                 로그인
               </Link>
               <Link
                 href="/signup"
-                className="rounded-md bg-emerald-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-emerald-700"
+                className="rounded-full bg-zinc-900 px-4 py-1.5 font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
               >
                 가입
               </Link>

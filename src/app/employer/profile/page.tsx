@@ -92,11 +92,11 @@ export default async function EmployerProfilePage() {
         </div>
 
         {/* "왜 이 배지인가" 설명 */}
-        <div className="mt-4 rounded-xl bg-emerald-50 p-3 text-xs dark:bg-emerald-950/30">
-          <p className="font-bold text-emerald-900 dark:text-emerald-200">
-            💡 배지는 학생들의 실제 평가가 자동 산정합니다
+        <div className="mt-4 rounded-xl border border-zinc-200 bg-zinc-50 p-4 text-sm dark:border-zinc-800 dark:bg-zinc-950">
+          <p className="font-medium tracking-tight text-zinc-900 dark:text-zinc-100">
+            배지는 학생들의 실제 평가가 자동 산정합니다
           </p>
-          <p className="mt-1 text-emerald-800 dark:text-emerald-300">
+          <p className="mt-1.5 text-zinc-500 leading-relaxed">
             학생들이 실제로 일해보고 평가한 점수가 누적되면 자동으로 등급이 올라갑니다.
             등급이 오를수록 학생들이 먼저 지원하는 가게가 됩니다.
           </p>

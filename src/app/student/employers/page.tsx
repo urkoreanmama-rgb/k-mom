@@ -118,13 +118,13 @@ export default async function StudentEmployersPage({
       </div>
 
       {/* 학생 평가가 만드는 신뢰 지표 안내 */}
-      <section className="mt-6 rounded-2xl border-2 border-emerald-200 bg-emerald-50 p-4 text-sm dark:border-emerald-900/50 dark:bg-emerald-950/30">
-        <p className="font-bold text-emerald-900 dark:text-emerald-200">
-          🏆 인증 배지는 학생들의 실제 평가가 자동 산정합니다
+      <section className="mt-6 rounded-2xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-950">
+        <p className="font-medium tracking-tight">
+          인증 배지는 학생들의 실제 평가가 자동 산정합니다.
         </p>
-        <p className="mt-1 text-emerald-800 dark:text-emerald-300">
-          광고비가 아니라 학생들의 평가 누적으로 등급이 정해져요.{' '}
-          <strong>GOLD 인증 업체는 학생들이 검증한 곳</strong>이니까 먼저 살펴보세요.
+        <p className="mt-2 text-sm text-zinc-500">
+          광고비가 아니라 학생들의 평가 누적으로 등급이 정해져요. GOLD 인증 업체는
+          학생들이 검증한 곳이니까 먼저 살펴보세요.
         </p>
       </section>
 

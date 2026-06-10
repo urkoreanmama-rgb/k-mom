@@ -1,28 +1,41 @@
 @import "tailwindcss";
 
+/* 디자인 토큰 — Apple-inspired
+   흰/검/회 + 단일 액센트만 사용. 그라데이션·강한 색 금지. */
 :root {
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #1d1d1f;       /* Apple text */
+  --muted: #6e6e73;            /* Apple secondary text */
+  --surface: #f5f5f7;          /* Apple section bg */
+  --border: #d2d2d7;            /* Apple hairline */
+  --accent: #0071e3;            /* Apple blue */
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "SF Pro Text", "Pretendard", "Inter", system-ui, -apple-system, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --background: #000000;
+    --foreground: #f5f5f7;
+    --muted: #86868b;
+    --surface: #1d1d1f;
+    --border: #2c2c2e;
+    --accent: #2997ff;          /* Apple blue dark */
   }
 }
 
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  letter-spacing: -0.005em;
 }
 
 /* 클릭 가능한 모든 요소에 손가락 커서 */
