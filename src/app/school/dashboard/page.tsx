@@ -30,33 +30,19 @@ export default async function SchoolDashboardPage({
   // 학교 데모 계정이 Supabase에 없거나 RLS 차단되어도 시연 화면이 보이도록
   // user 없으면 그대로 데모 데이터 표시 (redirect 안 함)
   let schoolName: string | null = null
-  let realStudentCount = 0
   if (user) {
     const { data: s } = await supabase
       .from('schools')
-      .select('id, name')
+      .select('name')
       .eq('admin_user_id', user.id)
       .maybeSingle()
-    if (s) {
-      schoolName = s.name
-      const { data: rows } = await supabase
-        .from('school_students')
-        .select('student_id')
-        .eq('school_id', s.id)
-      realStudentCount = rows?.length ?? 0
-    }
+    if (s) schoolName = s.name
   }
 
-  // 실 데이터 5명 이상이면 실 데이터 모드 (아직 미구현 — 추후 확장)
-  // 그 외에는 데모 학생 명단으로 시연
-  const useDemoData = realStudentCount < 5
-
-  // 시연용으로 12명 중 주요 6명 픽 (다양한 비자·언어·상태)
-  const showcase = useDemoData
-    ? ['s-001', 's-002', 's-003', 's-007', 's-009', 's-005']
-        .map((id) => DEMO_STUDENTS.find((s) => s.studentId === id))
-        .filter((s): s is NonNullable<typeof s> => Boolean(s))
-    : []
+  // 시연 모드 — 항상 6명 데모 학생 노출 (학교 row·매핑 무관)
+  const showcase = ['s-001', 's-002', 's-003', 's-007', 's-009', 's-005']
+    .map((id) => DEMO_STUDENTS.find((s) => s.studentId === id))
+    .filter((s): s is NonNullable<typeof s> => Boolean(s))
 
   // 각 학생별 현재 근무지 (DEMO_EMPLOYERS 매핑)
   const currentWork: Record<string, { employerId: string; weeklyHours: number } | null> = {
@@ -68,16 +54,18 @@ export default async function SchoolDashboardPage({
     's-005': { employerId: 'e-005', weeklyHours: 9 },    // ⚠️ 위험 업체
   }
 
-  // KPI
+  // KPI — showcase 기반으로 계산해서 필터 결과와 정확히 일치시킴
   const total = showcase.length
-  const working = Object.values(currentWork).filter(Boolean).length
-  const overLimit = Object.entries(currentWork).filter(
-    ([, w]) => w && w.weeklyHours > 25,
-  ).length
-  const riskEmployer = Object.entries(currentWork).filter(([, w]) => {
+  const working = showcase.filter((s) => Boolean(currentWork[s.studentId])).length
+  const overLimit = showcase.filter((s) => {
+    const w = currentWork[s.studentId]
+    return Boolean(w && w.weeklyHours > 25)
+  }).length
+  const riskEmployer = showcase.filter((s) => {
+    const w = currentWork[s.studentId]
     if (!w) return false
     const emp = DEMO_EMPLOYERS.find((e) => e.companyId === w.employerId)
-    return emp?.riskFlag
+    return Boolean(emp?.riskFlag)
   }).length
 
   return (
