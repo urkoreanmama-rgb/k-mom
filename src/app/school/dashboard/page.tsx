@@ -4,7 +4,6 @@
 
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/server'
-import { redirect } from 'next/navigation'
 import { DEMO_STUDENTS } from '@/data/demo-students'
 import { DEMO_EMPLOYERS } from '@/data/demo-employers'
 
@@ -15,22 +14,25 @@ export default async function SchoolDashboardPage() {
   const {
     data: { user },
   } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
 
-  // 실제 학교가 있고 학생 매핑이 충분하면 실 데이터 표시
-  const { data: school } = await supabase
-    .from('schools')
-    .select('*')
-    .eq('admin_user_id', user.id)
-    .maybeSingle()
-
+  // 학교 데모 계정이 Supabase에 없거나 RLS 차단되어도 시연 화면이 보이도록
+  // user 없으면 그대로 데모 데이터 표시 (redirect 안 함)
+  let school: { id: string; name: string; admin_user_id: string; mou_status: string } | null = null
   let realStudentCount = 0
-  if (school) {
-    const { data: rows } = await supabase
-      .from('school_students')
-      .select('student_id')
-      .eq('school_id', school.id)
-    realStudentCount = rows?.length ?? 0
+  if (user) {
+    const { data: s } = await supabase
+      .from('schools')
+      .select('*')
+      .eq('admin_user_id', user.id)
+      .maybeSingle()
+    school = s ?? null
+    if (school) {
+      const { data: rows } = await supabase
+        .from('school_students')
+        .select('student_id')
+        .eq('school_id', school.id)
+      realStudentCount = rows?.length ?? 0
+    }
   }
 
   // 실 데이터 5명 이상이면 실 데이터 모드 (아직 미구현 — 추후 확장)

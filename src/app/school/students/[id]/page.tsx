@@ -3,7 +3,7 @@
 // 시연 모드: DEMO_STUDENTS 기반
 
 import Link from 'next/link'
-import { notFound, redirect } from 'next/navigation'
+import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import { DEMO_STUDENTS } from '@/data/demo-students'
 import { DEMO_EMPLOYERS } from '@/data/demo-employers'
@@ -33,20 +33,10 @@ export async function generateMetadata({ params }: PageProps) {
 export default async function SchoolStudentDetailPage({ params }: PageProps) {
   const { id } = await params
 
+  // 학교 데모 계정이 없거나 RLS로 막혀도 시연 화면이 보이도록
+  // user/role 체크는 부드럽게 (notFound만 유지)
   const supabase = await createClient()
-  const {
-    data: { user },
-  } = await supabase.auth.getUser()
-  if (!user) redirect('/login')
-
-  // school_admin 권한 확인
-  const { data: row } = await supabase
-    .from('users')
-    .select('role')
-    .eq('id', user.id)
-    .maybeSingle()
-  const isSchoolOrAdmin = row?.role === 'school_admin' || row?.role === 'platform_admin'
-  if (!isSchoolOrAdmin) redirect('/?notice=school_only')
+  await supabase.auth.getUser() // 세션 유지용 (결과 사용 안 함)
 
   const student = DEMO_STUDENTS.find((s) => s.studentId === id)
   if (!student) notFound()
