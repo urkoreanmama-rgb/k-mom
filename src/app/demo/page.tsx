@@ -97,7 +97,57 @@ export default async function DemoPage() {
         </p>
       </header>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+      {/* K-MOM의 핵심 차별화 — 시연 시작 전에 가장 먼저 보여야 함 */}
+      <section className="mt-8 rounded-2xl border-2 border-emerald-300 bg-gradient-to-br from-emerald-50 to-sky-50 p-6 dark:border-emerald-800 dark:from-emerald-950/30 dark:to-sky-950/30">
+        <div className="text-center">
+          <span className="inline-block rounded-full bg-emerald-600 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white">
+            K-MOM 핵심 차별화
+          </span>
+          <h2 className="mt-3 text-xl sm:text-2xl font-bold">
+            인증 배지는 매칭 데이터의 <span className="text-emerald-600 dark:text-emerald-400">부산물</span>입니다
+          </h2>
+          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+            학생이 먼저 지원하고 싶은 업체가 자동으로 위로 올라옵니다
+          </p>
+        </div>
+
+        {/* 비교표 */}
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
+          <div className="rounded-xl border border-zinc-200 bg-white p-4 dark:border-zinc-700 dark:bg-zinc-900">
+            <p className="text-xs font-bold uppercase tracking-wide text-zinc-500">
+              일반 알바앱
+            </p>
+            <p className="mt-2 text-sm font-bold text-zinc-700 dark:text-zinc-300">
+              💸 광고비 = 상위 노출
+            </p>
+            <ul className="mt-2 space-y-1 text-xs text-zinc-600 dark:text-zinc-400">
+              <li>· 돈 많이 쓴 업체가 위로</li>
+              <li>· 학생은 신뢰 못함 → 신중하게 안 봄</li>
+              <li>· 채용 성공률 보통</li>
+            </ul>
+          </div>
+          <div className="rounded-xl border-2 border-emerald-400 bg-white p-4 dark:border-emerald-700 dark:bg-zinc-900">
+            <p className="text-xs font-bold uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
+              K-MOM
+            </p>
+            <p className="mt-2 text-sm font-bold text-emerald-800 dark:text-emerald-300">
+              ⭐ 학생 평가 = 상위 노출
+            </p>
+            <ul className="mt-2 space-y-1 text-xs text-zinc-600 dark:text-zinc-400">
+              <li>· 학생이 잘했다 한 곳이 위로</li>
+              <li>· GOLD 인증 = 학생이 먼저 지원</li>
+              <li>· 채용 성공률 ↑ 신뢰 자산 누적</li>
+            </ul>
+          </div>
+        </div>
+
+        <p className="mt-4 text-center text-xs text-zinc-500 dark:text-zinc-400">
+          GOLD 🥇 = 20건+ 평균 4.5↑ · SILVER 🥈 = 5건+ 평균 4.0↑ ·
+          자동 산정 (Postgres 트리거)
+        </p>
+      </section>
+
+      <div className="mt-8 grid gap-4 sm:grid-cols-2">
         {ROLE_CARDS.map((card) => {
           const t = TONE_MAP[card.tone]
           const isStudent = card.role === '학생'
