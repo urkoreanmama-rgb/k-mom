@@ -43,7 +43,7 @@ export default function EmployersPage() {
         </Link>
         <h1 className="mt-3 text-3xl font-bold">업체 신뢰 프로필</h1>
         <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-          등록 업체 30곳 · K-MOM 인증 업체 8곳
+          등록 업체 30곳 · K-MOM 플랫폼 기준 우수 업체 8곳
         </p>
       </div>
 

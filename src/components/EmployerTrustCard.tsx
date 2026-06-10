@@ -30,7 +30,7 @@ export default function EmployerTrustCard({ employer, compact = false }: Employe
           <span className="text-xl">{emoji}</span>
           <span className="font-semibold text-zinc-900 dark:text-zinc-100">{employer.companyName}</span>
           {employer.certified && (
-            <TrustBadge label="K-MOM 인증 업체" size="sm" />
+            <TrustBadge label="K-MOM 플랫폼 기준 우수 업체" size="sm" />
           )}
           {employer.riskFlag && (
             <span className="inline-flex items-center gap-1 rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-700 dark:bg-orange-900/40 dark:text-orange-300">
@@ -64,7 +64,7 @@ export default function EmployerTrustCard({ employer, compact = false }: Employe
             <div className="flex items-center gap-2 flex-wrap">
               <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">{employer.companyName}</h3>
               {employer.certified && (
-                <TrustBadge label="K-MOM 인증 업체" size="sm" />
+                <TrustBadge label="K-MOM 플랫폼 기준 우수 업체" size="sm" />
               )}
             </div>
             <p className="mt-0.5 text-sm text-zinc-500 dark:text-zinc-400">

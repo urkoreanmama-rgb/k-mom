@@ -122,7 +122,7 @@ export default async function AdminDashboardPage() {
         <h2 className="text-sm font-semibold text-zinc-500">신뢰·확장 지표 (신뢰 생태계)</h2>
         <div className="mt-3 grid gap-4 md:grid-cols-4">
           <MetricCard label="등록 업체 수" value={metrics.registeredCompanies} unit="개" tone="sky" />
-          <MetricCard label="인증 업체 수" value={metrics.certifiedCompanies} unit="개" tone="emerald" highlight />
+          <MetricCard label="우수 업체 수" value={metrics.certifiedCompanies} unit="개" tone="emerald" highlight />
           <MetricCard label="누적 평가 수" value={metrics.totalReviews} unit="건" tone="violet" />
           <MetricCard label="교수 추천 학생" value={metrics.professorRecommendedStudents} unit="명" tone="amber" />
         </div>

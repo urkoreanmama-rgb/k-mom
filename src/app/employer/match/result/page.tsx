@@ -50,7 +50,15 @@ export default async function ResultPage() {
         </li>
       </ol>
 
-      <div className="mt-6 rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200">
+      <div className="mt-6 rounded-xl border border-emerald-300 bg-emerald-50 px-4 py-3 text-sm text-emerald-800 dark:border-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-200">
+        <p className="font-semibold">현재 조건에 맞는 후보는 K-MOM 플랫폼 기준 우수 업체에 우선 노출됩니다.</p>
+        <p className="mt-1 text-xs text-emerald-700 dark:text-emerald-300">
+          우수 업체란 학생 평가 기반으로 임금 신뢰도·근무 환경·서류 협조 등 6가지 기준을 충족한 업체입니다.{' '}
+          <a href="/employers/certified" className="underline hover:no-underline">우수 업체 조건 보기 →</a>
+        </p>
+      </div>
+
+      <div className="mt-4 rounded-xl bg-emerald-50 px-4 py-3 text-sm text-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-200">
         ✓ 결제 완료 (1만 원) · 상품명: 조건맞춤 유학생 후보 미리보기팩
         {request.payment_transaction_id && (
           <span className="ml-2 text-xs text-emerald-600 dark:text-emerald-400">

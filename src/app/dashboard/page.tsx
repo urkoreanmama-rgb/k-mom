@@ -37,7 +37,7 @@ export default function InvestorDashboardPage() {
         <div className="grid gap-4 grid-cols-1 sm:grid-cols-3">
           <KpiCard icon="🎓" value={m.registeredStudents} unit="명" label="등록 유학생 수" tone="sky" />
           <KpiCard icon="🏪" value={m.registeredCompanies} unit="곳" label="등록 업체 수" tone="emerald" />
-          <KpiCard icon="✅" value={m.certifiedCompanies} unit="곳" label="K-MOM 인증 업체" tone="emerald" verified />
+          <KpiCard icon="✅" value={m.certifiedCompanies} unit="곳" label="K-MOM 플랫폼 기준 우수 업체" tone="emerald" verified />
           <KpiCard icon="⭐" value={m.totalReviews} unit="건" label="쌍방향 평가 누적" tone="amber" />
           <KpiCard icon="🏫" value={m.professorRecommendedStudents} unit="명" label="교수 추천 학생 수" tone="violet" />
           <KpiCard icon="🔍" value={m.candidateMatchRequests} unit="건" label="조건맞춤 후보 요청" tone="sky" />
@@ -69,7 +69,7 @@ export default function InvestorDashboardPage() {
             icon="🏫"
             title="학교"
             headline="교외 근무를 모니터링한다"
-            items={['K-MOM 인증 업체 목록', '위험 신호 알림', '익명 리포트 접수']}
+            items={['K-MOM 플랫폼 기준 우수 업체 목록', '위험 신호 알림', '익명 리포트 접수']}
             tone="violet"
           />
         </div>

@@ -138,7 +138,7 @@ export default async function SchoolStudentDetailPage({ params }: PageProps) {
             </h2>
             <p className="mt-1 text-sm text-zinc-500">
               {currentEmp.area} · {currentEmp.businessType}
-              {currentEmp.certified && ' · K-MOM 인증 업체'}
+              {currentEmp.certified && ' · K-MOM 플랫폼 기준 우수 업체'}
             </p>
             <div className="mt-6 grid grid-cols-3 gap-4 border-t border-zinc-100 pt-6 dark:border-zinc-800">
               <Metric label="시작일" value={current.startDate} />

@@ -113,7 +113,7 @@ export default async function EmployerDetailPage({ params }: Props) {
       {/* Certification conditions */}
       <section className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-6 dark:border-emerald-800 dark:bg-emerald-900/10">
         <div className="flex items-center gap-3 mb-4">
-          <h2 className="text-lg font-bold text-emerald-900 dark:text-emerald-100">K-MOM 인증 조건</h2>
+          <h2 className="text-lg font-bold text-emerald-900 dark:text-emerald-100">K-MOM 플랫폼 기준 우수 업체 조건</h2>
           {employer.certified ? (
             <span className="inline-flex items-center gap-1 rounded-full bg-emerald-600 px-3 py-0.5 text-xs font-bold text-white">
               ✓ 인증 완료
@@ -148,7 +148,7 @@ export default async function EmployerDetailPage({ params }: Props) {
         </div>
         {!employer.certified && (
           <p className="mt-4 text-xs text-emerald-700 dark:text-emerald-400">
-            위 조건을 모두 충족하면 K-MOM 인증 업체로 등록되어 우수 학생에게 먼저 노출됩니다.
+            위 조건을 모두 충족하면 K-MOM 플랫폼 기준 우수 업체로 등록되어 우수 학생에게 먼저 노출됩니다.
           </p>
         )}
       </section>
