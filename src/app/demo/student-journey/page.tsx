@@ -170,7 +170,7 @@ export default async function StudentJourneyPage() {
                     href={step.cta.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="btn-3d inline-flex h-11 items-center rounded-full bg-zinc-900 px-6 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+                    className="btn-3d inline-flex h-11 items-center rounded-full px-6 text-sm font-medium"
                   >
                     {step.cta.label}
                     <span className="ml-2 text-xs">↗</span>
@@ -178,7 +178,7 @@ export default async function StudentJourneyPage() {
                 ) : step.cta.href ? (
                   <Link
                     href={step.cta.href}
-                    className="btn-3d inline-flex h-11 items-center rounded-full bg-zinc-900 px-6 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+                    className="btn-3d inline-flex h-11 items-center rounded-full px-6 text-sm font-medium"
                   >
                     {step.cta.label}
                   </Link>
@@ -188,7 +188,7 @@ export default async function StudentJourneyPage() {
                     <input type="hidden" name="dest" value={step.cta.loginDest} />
                     <button
                       type="submit"
-                      className="btn-3d inline-flex h-11 items-center rounded-full bg-zinc-900 px-6 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+                      className="btn-3d inline-flex h-11 items-center rounded-full px-6 text-sm font-medium"
                     >
                       {step.cta.label}
                     </button>
@@ -218,13 +218,13 @@ export default async function StudentJourneyPage() {
       <div className="mt-12 flex flex-wrap justify-center gap-3">
         <Link
           href="/demo"
-          className="btn-3d-outline inline-flex h-10 items-center rounded-full border border-zinc-300 px-5 text-sm font-medium text-zinc-700 hover:border-zinc-400 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-600"
+          className="btn-3d inline-flex h-10 items-center rounded-full px-5 text-sm font-medium text-zinc-700 dark:text-zinc-300"
         >
           ← 다른 역할 보기
         </Link>
         <Link
           href="/admin/dashboard"
-          className="btn-3d-outline inline-flex h-10 items-center rounded-full border border-zinc-300 px-5 text-sm font-medium text-zinc-700 hover:border-zinc-400 dark:border-zinc-700 dark:text-zinc-300 dark:hover:border-zinc-600"
+          className="btn-3d inline-flex h-10 items-center rounded-full px-5 text-sm font-medium text-zinc-700 dark:text-zinc-300"
         >
           관리자 대시보드
         </Link>

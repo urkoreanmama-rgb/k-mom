@@ -74,7 +74,7 @@ export default async function Nav() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="btn-3d rounded-full bg-zinc-900 px-3.5 py-1.5 font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+                  className="btn-3d rounded-full px-3.5 py-1.5 font-medium"
                 >
                   {item.label}
                 </Link>
@@ -112,7 +112,7 @@ export default async function Nav() {
               </Link>
               <Link
                 href="/signup"
-                className="btn-3d rounded-full bg-zinc-900 px-4 py-1.5 font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+                className="btn-3d rounded-full px-4 py-1.5 font-medium"
               >
                 가입
               </Link>
@@ -132,7 +132,7 @@ export default async function Nav() {
           )}
           {user && (
             <form action={logout}>
-              <button className="rounded-md border border-zinc-300 px-3 py-1.5 text-xs hover:bg-zinc-100 dark:border-zinc-700 dark:hover:bg-zinc-800">
+              <button className="rounded-md px-3 py-1.5 text-xs hover:bg-zinc-100 dark:hover:bg-zinc-800">
                 로그아웃
               </button>
             </form>

@@ -96,7 +96,7 @@ const TONE: Record<Persona['tone'], { border: string; bg: string; chip: string; 
       border: 'border-zinc-400 dark:border-zinc-600',
       bg: 'bg-zinc-50 dark:bg-zinc-900',
       chip: 'bg-zinc-300 text-zinc-900 dark:bg-zinc-700 dark:text-zinc-100',
-      btn: 'bg-zinc-900 hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200',
+      btn: 'bg-zinc-900',
     },
   }
 
@@ -104,7 +104,7 @@ export default function DemoPersonaCards() {
   return (
     <section className="px-6 py-12 max-w-6xl mx-auto">
       <div className="text-center">
-        <span className="btn-3d inline-block rounded-full bg-zinc-900 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-white dark:bg-white dark:text-zinc-900">
+        <span className="btn-3d inline-block rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-wider">
           📺 투자자 시연 모드
         </span>
         <h2 className="mt-4 text-3xl font-bold">
@@ -144,7 +144,7 @@ export default function DemoPersonaCards() {
 
               <button
                 type="submit"
-                className={`mt-auto h-10 rounded-lg px-4 text-sm font-semibold text-white ${t.btn} mt-5`}
+                className={`mt-auto h-10 rounded-lg px-4 text-sm font-semibold ${t.btn} mt-5`}
               >
                 {p.role}으로 시연 보기 →
               </button>

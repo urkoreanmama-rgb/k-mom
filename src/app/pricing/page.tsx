@@ -147,7 +147,7 @@ export default function PricingPage() {
         </p>
         <Link
           href="/signup?role=student"
-          className="btn-3d mt-6 inline-flex h-11 items-center rounded-full bg-zinc-900 px-6 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+          className="btn-3d mt-6 inline-flex h-11 items-center rounded-full px-6 text-sm font-medium"
         >
           학생 무료 가입
         </Link>
@@ -234,7 +234,7 @@ function LanguagePack({
   detail: string
 }) {
   return (
-    <div className="card-3d rounded-2xl border border-zinc-200 bg-white p-6 hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-600">
+    <div className="card-3d rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
       <div className="flex items-center gap-3">
         <span className="text-2xl">{flag}</span>
         <p className="text-base font-semibold tracking-tight">{lang}</p>
@@ -270,7 +270,7 @@ function PlanCard({
     <div
       className={
         highlight
-          ? 'rounded-2xl border-2 border-zinc-900 bg-white p-8 dark:border-zinc-100 dark:bg-zinc-900'
+          ? 'rounded-2xl border-2 border-zinc-900 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900 dark:ring-zinc-700'
           : 'rounded-2xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900'
       }
     >
@@ -294,8 +294,8 @@ function PlanCard({
         href={href}
         className={
           highlight
-            ? 'mt-8 inline-flex h-11 w-full items-center justify-center rounded-full bg-zinc-900 px-4 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200'
-            : 'mt-8 inline-flex h-11 w-full items-center justify-center rounded-full border border-zinc-300 px-4 text-sm font-medium hover:border-zinc-400 dark:border-zinc-700 dark:hover:border-zinc-600'
+            ? 'mt-8 inline-flex h-11 w-full items-center justify-center rounded-full px-4 text-sm font-medium'
+            : 'mt-8 inline-flex h-11 w-full items-center justify-center rounded-full px-4 text-sm font-medium'
         }
       >
         {cta}

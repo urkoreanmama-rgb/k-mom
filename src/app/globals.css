@@ -39,59 +39,52 @@ body {
 }
 
 /* ────────────────────────────────────────────────
-   3D 버튼 — iOS·Apple 스타일 (그림자 + 마이크로 인터랙션)
-   부드러운 부유감, hover에서 살짝 위로, active에서 살짝 눌림
+   3D 버튼 — macOS 네이티브 버튼 스타일
+   흰 바탕 + 얇은 실선 + 입체 음영 (위 하이라이트 + 아래 그림자)
+   누르면 살짝 들어가는 느낌 (inset shadow)
+   모든 버튼에 동일하게 적용 — primary/secondary 구분 없음
    ──────────────────────────────────────────────── */
 
 .btn-3d {
+  background: var(--background);
+  color: var(--foreground);
+  border: 1px solid rgba(0, 0, 0, 0.1);
   box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.08),
-    0 2px 8px rgba(0, 0, 0, 0.06);
-  transition:
-    transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-3d:hover {
-  box-shadow:
-    0 4px 12px rgba(0, 0, 0, 0.12),
-    0 8px 24px rgba(0, 0, 0, 0.08);
-  transform: translateY(-1px);
-}
-
-.btn-3d:active {
-  box-shadow:
-    0 1px 2px rgba(0, 0, 0, 0.1);
-  transform: translateY(1px);
-  transition-duration: 0.05s;
-}
-
-.btn-3d:disabled {
-  box-shadow: none;
-  transform: none;
-}
-
-/* 보조 버튼 (외곽선만) — 더 가벼운 그림자 */
-.btn-3d-outline {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    inset 0 1px 0 rgba(255, 255, 255, 0.6),   /* 위쪽 안쪽 하이라이트 (입체감의 핵심) */
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 2px 6px rgba(0, 0, 0, 0.06);
   transition:
     transform 0.15s cubic-bezier(0.16, 1, 0.3, 1),
     box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1),
     border-color 0.15s ease;
 }
 
-.btn-3d-outline:hover {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+.btn-3d:hover {
+  border-color: rgba(0, 0, 0, 0.2);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.7),
+    0 2px 4px rgba(0, 0, 0, 0.06),
+    0 8px 16px rgba(0, 0, 0, 0.1);
   transform: translateY(-1px);
 }
 
-.btn-3d-outline:active {
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
+.btn-3d:active {
+  border-color: rgba(0, 0, 0, 0.15);
+  box-shadow:
+    inset 0 2px 4px rgba(0, 0, 0, 0.08),       /* 안쪽으로 눌림 */
+    0 1px 1px rgba(0, 0, 0, 0.03);
   transform: translateY(1px);
   transition-duration: 0.05s;
 }
 
-/* 3D 카드 — hover에서 살짝 떠오르고 그림자 깊어짐 */
+.btn-3d:disabled {
+  opacity: 0.5;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transform: none;
+  pointer-events: none;
+}
+
+/* 3D 카드 — hover에서 살짝 떠오름 */
 .card-3d {
   box-shadow:
     0 1px 2px rgba(0, 0, 0, 0.04),
@@ -108,23 +101,30 @@ body {
   transform: translateY(-2px);
 }
 
-/* 다크모드 — 그림자 색을 흰색 톤으로 미세하게 */
+/* 다크모드 */
 @media (prefers-color-scheme: dark) {
+  .btn-3d,
   .btn-3d {
+    background: var(--surface);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.06),
       0 1px 2px rgba(0, 0, 0, 0.4),
-      0 2px 8px rgba(0, 0, 0, 0.3);
+      0 2px 6px rgba(0, 0, 0, 0.3);
   }
+  .btn-3d:hover,
   .btn-3d:hover {
+    border-color: rgba(255, 255, 255, 0.2);
     box-shadow:
-      0 4px 12px rgba(0, 0, 0, 0.5),
-      0 8px 24px rgba(0, 0, 0, 0.4);
+      inset 0 1px 0 rgba(255, 255, 255, 0.08),
+      0 2px 4px rgba(0, 0, 0, 0.5),
+      0 8px 16px rgba(0, 0, 0, 0.4);
   }
-  .btn-3d-outline {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
-  }
-  .btn-3d-outline:hover {
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  .btn-3d:active,
+  .btn-3d:active {
+    box-shadow:
+      inset 0 2px 4px rgba(0, 0, 0, 0.5),
+      0 1px 1px rgba(0, 0, 0, 0.3);
   }
   .card-3d {
     box-shadow:

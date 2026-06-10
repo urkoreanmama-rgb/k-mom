@@ -21,9 +21,9 @@ const TONE: Record<'green' | 'amber' | 'red', { wrap: string; chip: string; btn:
 
 export default function ScenarioCards() {
   return (
-    <section className="rounded-2xl border-2 border-dashed border-zinc-300 bg-zinc-50 p-5 dark:border-zinc-700 dark:bg-zinc-950">
+    <section className="rounded-2xl border-2 border-dashed border-zinc-300 bg-zinc-50 p-5 dark:bg-zinc-950">
       <div className="flex items-center gap-2">
-        <span className="btn-3d rounded-full bg-zinc-900 px-3 py-1 text-xs font-bold text-white dark:bg-white dark:text-zinc-900">
+        <span className="btn-3d rounded-full px-3 py-1 text-xs font-bold">
           📺 시연 모드
         </span>
         <p className="text-sm text-zinc-600 dark:text-zinc-400">
@@ -53,7 +53,7 @@ export default function ScenarioCards() {
               </span>
               <button
                 type="submit"
-                className={`mt-3 h-9 rounded-lg px-3 text-xs font-semibold text-white ${t.btn}`}
+                className={`mt-3 h-9 rounded-lg px-3 text-xs font-semibold ${t.btn}`}
               >
                 이 조건으로 보기 →
               </button>

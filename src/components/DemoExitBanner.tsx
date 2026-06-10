@@ -11,20 +11,20 @@ export default async function DemoExitBanner() {
   if (!inDemo) return null
 
   return (
-    <div className="sticky top-0 z-40 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900">
+    <div className="sticky top-0 z-40 border-b border-zinc-200 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-900">
       <div className="max-w-6xl mx-auto px-4 py-2 flex items-center justify-between gap-3">
-        <p className="text-xs sm:text-sm font-medium flex items-center gap-3">
-          <span className="text-[10px] font-medium uppercase tracking-wider opacity-70">
+        <p className="text-xs sm:text-sm font-medium flex items-center gap-3 text-zinc-700 dark:text-zinc-300">
+          <span className="text-[10px] font-medium uppercase tracking-wider text-zinc-500">
             시연 모드
           </span>
-          <span className="hidden sm:inline opacity-80">
+          <span className="hidden sm:inline text-zinc-500">
             데모 계정으로 둘러보는 중입니다
           </span>
         </p>
         <form action={endDemoSession}>
           <button
             type="submit"
-            className="rounded-full bg-white px-4 py-1.5 text-xs font-medium text-zinc-900 hover:bg-zinc-200 dark:bg-zinc-900 dark:text-white dark:hover:bg-zinc-800"
+            className="btn-3d rounded-full px-4 py-1.5 text-xs font-medium"
           >
             시연 모드로 돌아가기
           </button>

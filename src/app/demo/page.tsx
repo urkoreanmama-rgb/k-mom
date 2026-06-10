@@ -97,7 +97,7 @@ export default async function DemoPage() {
               <li>— 채용 성공률 보통</li>
             </ul>
           </div>
-          <div className="rounded-xl border border-zinc-900 bg-zinc-900 p-6 text-white dark:border-zinc-100 dark:bg-zinc-100 dark:text-zinc-900">
+          <div className="rounded-xl border border-zinc-900 p-6 dark:border-zinc-100 dark:bg-zinc-100">
             <p className="text-xs font-medium uppercase tracking-wide text-zinc-400 dark:text-zinc-600">
               K-MOM
             </p>
@@ -180,7 +180,7 @@ export default async function DemoPage() {
                   <div className="mt-6 space-y-2">
                     <Link
                       href="/demo/student-journey"
-                      className="btn-3d inline-flex h-11 w-full items-center justify-center rounded-full bg-zinc-900 px-4 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+                      className="btn-3d inline-flex h-11 w-full items-center justify-center rounded-full px-4 text-sm font-medium"
                     >
                       학생의 여정 보기 (4단계)
                     </Link>
@@ -189,7 +189,7 @@ export default async function DemoPage() {
                       <input type="hidden" name="dest" value={card.dest} />
                       <button
                         type="submit"
-                        className="btn-3d-outline inline-flex h-11 w-full items-center justify-center rounded-full border border-zinc-300 px-4 text-sm font-medium hover:border-zinc-400 dark:border-zinc-700 dark:hover:border-zinc-600"
+                        className="btn-3d inline-flex h-11 w-full items-center justify-center rounded-full px-4 text-sm font-medium"
                       >
                         학생의 현재 상태 보기
                       </button>
@@ -201,7 +201,7 @@ export default async function DemoPage() {
                     <input type="hidden" name="dest" value={card.dest} />
                     <button
                       type="submit"
-                      className="btn-3d mt-6 inline-flex h-11 w-full items-center justify-center rounded-full bg-zinc-900 px-5 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+                      className="btn-3d mt-6 inline-flex h-11 w-full items-center justify-center rounded-full px-5 text-sm font-medium"
                     >
                       {card.role} 화면 보기 →
                     </button>
@@ -240,7 +240,7 @@ function BMSection({
     <div
       className={
         emphasis
-          ? 'rounded-xl border-2 border-zinc-900 bg-zinc-50 p-6 dark:border-zinc-100 dark:bg-zinc-950'
+          ? 'rounded-xl card-3d border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900'
           : 'rounded-xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-950'
       }
     >

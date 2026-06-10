@@ -37,13 +37,13 @@ export default async function Home({
         <div className="mt-10 flex flex-wrap justify-center gap-3">
           <Link
             href="/signup?role=employer"
-            className="btn-3d inline-flex h-12 items-center rounded-full bg-zinc-900 px-7 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="btn-3d inline-flex h-12 items-center rounded-full px-7 text-sm font-medium"
           >
             업주 등록
           </Link>
           <Link
             href="/signup?role=student"
-            className="btn-3d-outline inline-flex h-12 items-center rounded-full border border-zinc-300 px-7 text-sm font-medium hover:border-zinc-400 dark:border-zinc-700 dark:hover:border-zinc-600"
+            className="btn-3d inline-flex h-12 items-center rounded-full px-7 text-sm font-medium"
           >
             학생 등록
           </Link>
@@ -74,7 +74,7 @@ export default async function Home({
             href="https://test-me-ecru.vercel.app/유학생-아르바이트-체커/index.html"
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-3d mt-8 inline-flex h-12 items-center rounded-full bg-zinc-900 px-7 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="btn-3d mt-8 inline-flex h-12 items-center rounded-full px-7 text-sm font-medium"
           >
             비자 체커 열기 →
           </a>
@@ -115,13 +115,13 @@ export default async function Home({
         <div className="mt-8 flex flex-wrap gap-3">
           <Link
             href="/employer/match"
-            className="btn-3d inline-flex h-12 items-center rounded-full bg-zinc-900 px-7 text-sm font-medium text-white hover:bg-zinc-700 dark:bg-white dark:text-zinc-900 dark:hover:bg-zinc-200"
+            className="btn-3d inline-flex h-12 items-center rounded-full px-7 text-sm font-medium"
           >
             지금 시작하기 →
           </Link>
           <Link
             href="/pricing"
-            className="btn-3d-outline inline-flex h-12 items-center rounded-full border border-zinc-300 px-7 text-sm font-medium hover:border-zinc-400 dark:border-zinc-700 dark:hover:border-zinc-600"
+            className="btn-3d inline-flex h-12 items-center rounded-full px-7 text-sm font-medium"
           >
             요금제 자세히
           </Link>
