@@ -100,25 +100,49 @@ export default async function DemoPage() {
       <div className="mt-10 grid gap-4 sm:grid-cols-2">
         {ROLE_CARDS.map((card) => {
           const t = TONE_MAP[card.tone]
+          const isStudent = card.role === '학생'
+
           return (
-            <form
+            <div
               key={card.role}
-              action={loginAsDemoAccount}
               className={`rounded-2xl border-2 p-8 text-center transition ${t.wrap}`}
             >
-              <input type="hidden" name="email" value={card.email} />
-              <input type="hidden" name="dest" value={card.dest} />
-
               <div className="text-6xl">{card.emoji}</div>
               <h2 className="mt-4 text-2xl font-bold">{card.role}</h2>
 
-              <button
-                type="submit"
-                className={`mt-6 inline-flex h-12 w-full items-center justify-center rounded-lg px-5 text-base font-bold text-white ${t.btn}`}
-              >
-                {card.role} 화면 보기 →
-              </button>
-            </form>
+              {/* 학생 카드만 2개 버튼 (여정 보기 + 현재 상태) */}
+              {isStudent ? (
+                <div className="mt-6 space-y-2">
+                  <Link
+                    href="/demo/student-journey"
+                    className={`inline-flex h-11 w-full items-center justify-center rounded-lg px-4 text-sm font-bold text-white ${t.btn}`}
+                  >
+                    🗺️ 학생의 여정 보기 (4단계)
+                  </Link>
+                  <form action={loginAsDemoAccount}>
+                    <input type="hidden" name="email" value={card.email} />
+                    <input type="hidden" name="dest" value={card.dest} />
+                    <button
+                      type="submit"
+                      className="inline-flex h-11 w-full items-center justify-center rounded-lg border-2 border-emerald-600 bg-white px-4 text-sm font-bold text-emerald-700 hover:bg-emerald-50 dark:bg-zinc-900 dark:text-emerald-300 dark:hover:bg-zinc-800"
+                    >
+                      📋 학생의 현재 상태 보기 →
+                    </button>
+                  </form>
+                </div>
+              ) : (
+                <form action={loginAsDemoAccount}>
+                  <input type="hidden" name="email" value={card.email} />
+                  <input type="hidden" name="dest" value={card.dest} />
+                  <button
+                    type="submit"
+                    className={`mt-6 inline-flex h-12 w-full items-center justify-center rounded-lg px-5 text-base font-bold text-white ${t.btn}`}
+                  >
+                    {card.role} 화면 보기 →
+                  </button>
+                </form>
+              )}
+            </div>
           )
         })}
       </div>
