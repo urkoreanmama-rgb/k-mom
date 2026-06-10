@@ -16,7 +16,7 @@ export default async function EmployerProfilePage() {
   ])
 
   // 실제 평가 데이터에서 신뢰 지표 자동 산정
-  // (배지는 reviews 누적의 부산물)
+  // (배지는 reviews 누적으로 자동 결정됨)
   const rawTrust = await getEmployerTrust(supabase, user.id)
   const stored = employer?.certification_level ?? 'bronze'
   const demoFilled = fillDemoTrust(stored, rawTrust.reviewCount, rawTrust.avgRating)
@@ -94,7 +94,7 @@ export default async function EmployerProfilePage() {
         {/* "왜 이 배지인가" 설명 */}
         <div className="mt-4 rounded-xl bg-emerald-50 p-3 text-xs dark:bg-emerald-950/30">
           <p className="font-bold text-emerald-900 dark:text-emerald-200">
-            💡 이 배지는 마케팅이 아닙니다 — 매칭 데이터의 부산물입니다
+            💡 배지는 학생들의 실제 평가가 자동 산정합니다
           </p>
           <p className="mt-1 text-emerald-800 dark:text-emerald-300">
             학생들이 실제로 일해보고 평가한 점수가 누적되면 자동으로 등급이 올라갑니다.

@@ -1,5 +1,5 @@
 // 업주 신뢰도 — 학생들의 실제 평가 데이터에서 자동 산정
-// "K-MOM 배지는 매칭 데이터의 부산물" 모델 구현
+// 배지(GOLD/SILVER/BRONZE)는 광고비가 아니라 학생들의 평가 누적으로 결정됨
 //
 // 평점 산정:
 //   reviews 테이블에서 reviewee_id = employer_id 이고 revealed_at != null 인 평가들의

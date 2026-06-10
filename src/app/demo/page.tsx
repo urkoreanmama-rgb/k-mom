@@ -104,10 +104,10 @@ export default async function DemoPage() {
             K-MOM 핵심 차별화
           </span>
           <h2 className="mt-3 text-xl sm:text-2xl font-bold">
-            인증 배지는 매칭 데이터의 <span className="text-emerald-600 dark:text-emerald-400">부산물</span>입니다
+            학생이 검증한 가게가 <span className="text-emerald-600 dark:text-emerald-400">자동으로 위로</span> 올라옵니다
           </h2>
           <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-            학생이 먼저 지원하고 싶은 업체가 자동으로 위로 올라옵니다
+            학생이 먼저 지원하고 싶은 업체에 인증 배지가 부여됩니다
           </p>
         </div>
 

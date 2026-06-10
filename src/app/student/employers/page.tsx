@@ -58,7 +58,7 @@ export default async function StudentEmployersPage({
   const sentToEmployerIds = new Set((myApps ?? []).map((a) => a.employer_id))
 
   // 실제 평가 데이터에서 업주별 신뢰 지표 자동 산정
-  // (배지는 reviews 평균·건수의 부산물)
+  // (배지는 reviews 평균·건수로 자동 결정됨)
   const trustMap = await getEmployersTrust(
     supabase,
     employerList.map((e) => e.user_id),
@@ -117,13 +117,13 @@ export default async function StudentEmployersPage({
         ))}
       </div>
 
-      {/* '배지는 평가의 부산물' 안내 */}
+      {/* 학생 평가가 만드는 신뢰 지표 안내 */}
       <section className="mt-6 rounded-2xl border-2 border-emerald-200 bg-emerald-50 p-4 text-sm dark:border-emerald-900/50 dark:bg-emerald-950/30">
         <p className="font-bold text-emerald-900 dark:text-emerald-200">
-          🏆 인증 배지는 K-MOM이 부여한 마케팅이 아닙니다
+          🏆 인증 배지는 학생들의 실제 평가가 자동 산정합니다
         </p>
         <p className="mt-1 text-emerald-800 dark:text-emerald-300">
-          학생들의 실제 평가가 누적되어 자동으로 산정된 신뢰 지표예요.{' '}
+          광고비가 아니라 학생들의 평가 누적으로 등급이 정해져요.{' '}
           <strong>GOLD 인증 업체는 학생들이 검증한 곳</strong>이니까 먼저 살펴보세요.
         </p>
       </section>
