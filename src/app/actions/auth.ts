@@ -1,8 +1,11 @@
 'use server'
 
+import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
 import type { UserRole } from '@/lib/supabase/types'
+
+const DEMO_SESSION_COOKIE = 'kmom_in_demo'
 
 export interface AuthFormState {
   error?: string
@@ -80,6 +83,9 @@ export async function login(
 export async function logout(): Promise<void> {
   const supabase = await createClient()
   await supabase.auth.signOut()
+  // 데모 세션 쿠키도 같이 제거
+  const store = await cookies()
+  store.delete(DEMO_SESSION_COOKIE)
   redirect('/')
 }
 
@@ -112,6 +118,16 @@ export async function loginAsDemoAccount(formData: FormData): Promise<void> {
   const supabase = await createClient()
   // 기존 세션 있으면 끊고 새로 로그인 (역할 전환 시 깔끔)
   await supabase.auth.signOut()
+
+  // 데모 세션 쿠키 설정 — 배너로 '시연 종료' 안내 표시
+  const store = await cookies()
+  store.set(DEMO_SESSION_COOKIE, '1', {
+    httpOnly: false,
+    sameSite: 'lax',
+    path: '/',
+    maxAge: 60 * 60 * 2, // 2시간
+  })
+
   const { error } = await supabase.auth.signInWithPassword({
     email,
     password: DEMO_PASSWORD,
@@ -120,6 +136,28 @@ export async function loginAsDemoAccount(formData: FormData): Promise<void> {
     redirect(`/?demo_error=${encodeURIComponent(error.message)}`)
   }
   redirect(dest)
+}
+
+/**
+ * 시연 세션 종료 — 현재 로그인한 데모 계정 로그아웃 + 관리자(시연 모드)로 복귀
+ * 학생 여정이라면 /demo/student-journey로 돌려보낼 수도 있지만 일관성을 위해 /demo
+ */
+export async function endDemoSession(): Promise<void> {
+  const supabase = await createClient()
+  await supabase.auth.signOut()
+  const store = await cookies()
+  store.delete(DEMO_SESSION_COOKIE)
+
+  // 관리자 자동 재로그인 → /demo
+  const { error } = await supabase.auth.signInWithPassword({
+    email: 'kmom.admin@gmail.com',
+    password: DEMO_PASSWORD,
+  })
+  if (error) {
+    // 관리자 자동 로그인 실패 시 그냥 로그인 페이지로
+    redirect('/login?next=/demo')
+  }
+  redirect('/demo')
 }
 
 function roleHome(role: UserRole): string {

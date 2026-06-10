@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Nav from "@/components/Nav";
+import DemoExitBanner from "@/components/DemoExitBanner";
 
 export const metadata: Metadata = {
   title: "K-MOM | 유학생 합법 알바 매칭",
@@ -14,6 +15,7 @@ export default function RootLayout({
   return (
     <html lang="ko" className="h-full antialiased">
       <body className="min-h-full flex flex-col bg-zinc-50 text-zinc-900 dark:bg-zinc-950 dark:text-zinc-100">
+        <DemoExitBanner />
         <Nav />
         {children}
       </body>
