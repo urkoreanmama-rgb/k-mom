@@ -21,6 +21,10 @@ export interface ResumeData {
     desiredAreas?: string[]
     desiredJobTypes?: string[]
     availabilityNote?: string
+    // 구조화된 근무 조건 (업주 검색 매칭용)
+    availableDays?: string[]    // ['월','화','수','목','금','토','일']
+    availableTimeSlots?: string[] // ['오전','오후','저녁']
+    workDuration?: string       // '단기' | '한 달 이상' | '세 달 이상' | '장기'
   }
 }
 

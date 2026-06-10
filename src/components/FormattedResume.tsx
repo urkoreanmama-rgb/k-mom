@@ -111,20 +111,32 @@ export default function FormattedResume({ resume }: { resume: ResumeData }) {
       {/* 희망 조건 */}
       {(resume.preferences.desiredHourlyWage ||
         resume.preferences.availabilityNote ||
+        (resume.preferences.availableDays?.length ?? 0) > 0 ||
+        (resume.preferences.availableTimeSlots?.length ?? 0) > 0 ||
+        resume.preferences.workDuration ||
         (resume.preferences.desiredAreas?.length ?? 0) > 0 ||
         (resume.preferences.desiredJobTypes?.length ?? 0) > 0) && (
         <Block title="희망 근무 조건">
-          {resume.preferences.desiredHourlyWage && (
-            <Row label="희망 시급" value={`${resume.preferences.desiredHourlyWage.toLocaleString()}원`} />
+          {(resume.preferences.availableDays?.length ?? 0) > 0 && (
+            <Row label="가능 요일" value={resume.preferences.availableDays!.join(' · ')} />
           )}
-          {resume.preferences.availabilityNote && (
-            <Row label="가능 시간" value={resume.preferences.availabilityNote} />
+          {(resume.preferences.availableTimeSlots?.length ?? 0) > 0 && (
+            <Row label="가능 시간대" value={resume.preferences.availableTimeSlots!.join(' · ')} />
+          )}
+          {resume.preferences.workDuration && (
+            <Row label="근무 기간" value={resume.preferences.workDuration} />
           )}
           {(resume.preferences.desiredAreas?.length ?? 0) > 0 && (
             <Row label="희망 지역" value={resume.preferences.desiredAreas!.join(' · ')} />
           )}
           {(resume.preferences.desiredJobTypes?.length ?? 0) > 0 && (
             <Row label="희망 업종" value={resume.preferences.desiredJobTypes!.join(' · ')} />
+          )}
+          {resume.preferences.desiredHourlyWage && (
+            <Row label="희망 시급" value={`${resume.preferences.desiredHourlyWage.toLocaleString()}원`} />
+          )}
+          {resume.preferences.availabilityNote && (
+            <Row label="추가 메모" value={resume.preferences.availabilityNote} />
           )}
         </Block>
       )}

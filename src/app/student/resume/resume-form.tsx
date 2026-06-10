@@ -197,13 +197,84 @@ export default function ResumeForm({
       </Section>
 
       {/* 희망 조건 */}
-      <Section title="⑦ 희망 근무 조건" desc="업주에게 매칭에 참고됩니다.">
+      <Section
+        title="⑦ 희망 근무 조건"
+        desc="업주가 조건맞춤 매칭에서 사용합니다. 꼭 채워주세요."
+      >
+        {/* 근무 가능 요일 */}
+        <CheckboxRow
+          label="근무 가능 요일"
+          options={['월', '화', '수', '목', '금', '토', '일']}
+          values={data.preferences.availableDays ?? []}
+          onChange={(vs) => update('preferences', { ...data.preferences, availableDays: vs })}
+        />
+
+        {/* 근무 가능 시간대 */}
+        <CheckboxRow
+          label="근무 가능 시간대"
+          options={['오전', '오후', '저녁']}
+          values={data.preferences.availableTimeSlots ?? []}
+          onChange={(vs) =>
+            update('preferences', { ...data.preferences, availableTimeSlots: vs })
+          }
+        />
+
+        {/* 근무 기간 (라디오) */}
+        <RadioRow
+          label="근무 기간"
+          options={['단기 (1주~4주)', '한 달 이상', '세 달 이상', '장기 (6개월+)']}
+          value={data.preferences.workDuration ?? ''}
+          onChange={(v) => update('preferences', { ...data.preferences, workDuration: v })}
+        />
+
+        {/* 희망 지역 (체크박스) */}
+        <CheckboxRow
+          label="희망 근무 지역"
+          options={['대림', '건대', '홍대', '명동', '강남', '이태원', '기타']}
+          values={data.preferences.desiredAreas ?? []}
+          onChange={(vs) =>
+            update('preferences', { ...data.preferences, desiredAreas: vs })
+          }
+        />
+
+        {/* 희망 업종 (체크박스) */}
+        <CheckboxRow
+          label="희망 업종"
+          options={[
+            '홀서빙',
+            '카페',
+            '매장 판매',
+            '주방 보조',
+            '계산',
+            '상품 설명',
+            '통역·번역',
+            '기타',
+          ]}
+          values={data.preferences.desiredJobTypes ?? []}
+          onChange={(vs) =>
+            update('preferences', { ...data.preferences, desiredJobTypes: vs })
+          }
+        />
+
+        {/* 시급 + 가능 시간 자유 메모 */}
         <Row2>
-          <NumberField label="희망 시급 (원)" value={data.preferences.desiredHourlyWage} onChange={(v) => update('preferences', { ...data.preferences, desiredHourlyWage: v })} placeholder="10030" />
-          <Field label="가능 시간대 메모" value={data.preferences.availabilityNote ?? ''} onChange={(v) => update('preferences', { ...data.preferences, availabilityNote: v })} placeholder="평일 저녁, 주말 종일 가능" />
+          <NumberField
+            label="희망 시급 (원)"
+            value={data.preferences.desiredHourlyWage}
+            onChange={(v) =>
+              update('preferences', { ...data.preferences, desiredHourlyWage: v })
+            }
+            placeholder="10030"
+          />
+          <Field
+            label="추가 메모"
+            value={data.preferences.availabilityNote ?? ''}
+            onChange={(v) =>
+              update('preferences', { ...data.preferences, availabilityNote: v })
+            }
+            placeholder="예: 시험기간엔 주말만"
+          />
         </Row2>
-        <Field label="희망 지역 (쉼표 구분)" value={(data.preferences.desiredAreas ?? []).join(', ')} onChange={(v) => update('preferences', { ...data.preferences, desiredAreas: v.split(',').map((s) => s.trim()).filter(Boolean) })} placeholder="대림, 건대, 홍대" />
-        <Field label="희망 업종 (쉼표 구분)" value={(data.preferences.desiredJobTypes ?? []).join(', ')} onChange={(v) => update('preferences', { ...data.preferences, desiredJobTypes: v.split(',').map((s) => s.trim()).filter(Boolean) })} placeholder="홀서빙, 카페, 매장 판매" />
       </Section>
 
       {/* 저장 */}
@@ -370,6 +441,84 @@ function TextArea({
         className="mt-1 w-full rounded-md border border-zinc-300 bg-white px-2 py-1.5 text-sm focus:border-zinc-900 focus:outline-none focus:ring-1 focus:ring-zinc-900 dark:border-zinc-700 dark:bg-zinc-900"
       />
     </label>
+  )
+}
+
+function CheckboxRow({
+  label,
+  options,
+  values,
+  onChange,
+}: {
+  label: string
+  options: string[]
+  values: string[]
+  onChange: (vs: string[]) => void
+}) {
+  function toggle(opt: string) {
+    if (values.includes(opt)) onChange(values.filter((v) => v !== opt))
+    else onChange([...values, opt])
+  }
+  return (
+    <div>
+      <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400">{label}</p>
+      <div className="mt-1.5 flex flex-wrap gap-1.5">
+        {options.map((opt) => {
+          const checked = values.includes(opt)
+          return (
+            <button
+              type="button"
+              key={opt}
+              onClick={() => toggle(opt)}
+              className={
+                checked
+                  ? 'h-9 rounded-lg border-2 border-emerald-600 bg-emerald-50 px-3 text-xs font-semibold text-emerald-800 dark:border-emerald-500 dark:bg-emerald-950/40 dark:text-emerald-200'
+                  : 'h-9 rounded-lg border border-zinc-300 bg-white px-3 text-xs text-zinc-700 hover:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300'
+              }
+            >
+              {checked ? '✓ ' : ''}{opt}
+            </button>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
+function RadioRow({
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  label: string
+  options: string[]
+  value: string
+  onChange: (v: string) => void
+}) {
+  return (
+    <div>
+      <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400">{label}</p>
+      <div className="mt-1.5 flex flex-wrap gap-1.5">
+        {options.map((opt) => {
+          const checked = value === opt
+          return (
+            <button
+              type="button"
+              key={opt}
+              onClick={() => onChange(checked ? '' : opt)}
+              className={
+                checked
+                  ? 'h-9 rounded-lg border-2 border-emerald-600 bg-emerald-50 px-3 text-xs font-semibold text-emerald-800 dark:border-emerald-500 dark:bg-emerald-950/40 dark:text-emerald-200'
+                  : 'h-9 rounded-lg border border-zinc-300 bg-white px-3 text-xs text-zinc-700 hover:border-zinc-500 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300'
+              }
+            >
+              {checked ? '● ' : '○ '}{opt}
+            </button>
+          )
+        })}
+      </div>
+    </div>
   )
 }
 
