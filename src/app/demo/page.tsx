@@ -1,12 +1,92 @@
+// 🎬 시연 모드 — 운영자 전용
+// 학생·업주·학교·관리자 4개 역할 버튼만 노출.
+// 클릭 → 해당 역할 데모 계정 자동 로그인 + 그 역할 화면 진입.
+
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
-import DemoPersonaCards from '@/components/DemoPersonaCards'
 import { createClient } from '@/lib/supabase/server'
+import { loginAsDemoAccount } from '@/app/actions/auth'
 
 export const metadata = { title: '시연 모드 · K-MOM' }
 
+interface RoleCard {
+  emoji: string
+  role: string
+  email: string
+  dest: string
+  description: string
+  highlight: string // 이 역할 화면에서 보여줄 핵심
+  tone: 'emerald' | 'sky' | 'violet' | 'amber'
+}
+
+const ROLE_CARDS: RoleCard[] = [
+  {
+    emoji: '👨‍🎓',
+    role: '학생',
+    email: 'kmom.student1@gmail.com',
+    dest: '/student/profile',
+    description: '응우옌 티 화 — 베트남 D-2 유학생',
+    highlight: '합법성 점수·내 프로필 미리보기·이력서 양식·업주 둘러보기·알바 이력',
+    tone: 'emerald',
+  },
+  {
+    emoji: '🏪',
+    role: '업주',
+    email: 'kmom.employer3@gmail.com',
+    dest: '/employer/match',
+    description: '이수정 — 카페 글로우 홍대 사장',
+    highlight: '⚡ 맞춤 후보 찾기 (조건→후보수→1만원 결제→후보3명)·받은 이력서',
+    tone: 'sky',
+  },
+  {
+    emoji: '🏫',
+    role: '학교',
+    email: 'kmom.school@gmail.com',
+    dest: '/school/dashboard',
+    description: '정수민 — K-MOM 데모대학교 국제처',
+    highlight: '학생 모니터링·서류 제출 현황·익명 위험 요약 + 정식 MOU 권한 명단',
+    tone: 'violet',
+  },
+  {
+    emoji: '🛡️',
+    role: '관리자',
+    email: 'kmom.admin@gmail.com',
+    dest: '/admin/dashboard',
+    description: 'K-MOM 플랫폼 운영자',
+    highlight: 'KPI 15종 + 전환 깔때기 + DB 다운로드 + 업주 요청 관리',
+    tone: 'amber',
+  },
+]
+
+const TONE_MAP: Record<RoleCard['tone'], { border: string; bg: string; chip: string; btn: string }> = {
+  emerald: {
+    border: 'border-emerald-300 dark:border-emerald-800',
+    bg: 'bg-emerald-50 dark:bg-emerald-950/30',
+    chip: 'bg-emerald-200 text-emerald-900 dark:bg-emerald-900/60 dark:text-emerald-200',
+    btn: 'bg-emerald-600 hover:bg-emerald-700',
+  },
+  sky: {
+    border: 'border-sky-300 dark:border-sky-800',
+    bg: 'bg-sky-50 dark:bg-sky-950/30',
+    chip: 'bg-sky-200 text-sky-900 dark:bg-sky-900/60 dark:text-sky-200',
+    btn: 'bg-sky-600 hover:bg-sky-700',
+  },
+  violet: {
+    border: 'border-violet-300 dark:border-violet-800',
+    bg: 'bg-violet-50 dark:bg-violet-950/30',
+    chip: 'bg-violet-200 text-violet-900 dark:bg-violet-900/60 dark:text-violet-200',
+    btn: 'bg-violet-600 hover:bg-violet-700',
+  },
+  amber: {
+    border: 'border-amber-300 dark:border-amber-800',
+    bg: 'bg-amber-50 dark:bg-amber-950/30',
+    chip: 'bg-amber-200 text-amber-900 dark:bg-amber-900/60 dark:text-amber-200',
+    btn: 'bg-amber-600 hover:bg-amber-700',
+  },
+}
+
 export default async function DemoPage() {
-  // 관리자(platform_admin)만 접근. 비관리자/비로그인은 홈으로 리다이렉트
+  // 관리자(platform_admin)만 접근. 비관리자/비로그인은 리다이렉트
   const supabase = await createClient()
   const {
     data: { user },
@@ -27,164 +107,65 @@ export default async function DemoPage() {
   }
 
   return (
-    <main className="flex-1">
-      {/* 헤더 */}
-      <header className="border-b border-zinc-200 bg-zinc-50 px-6 py-8 dark:border-zinc-800 dark:bg-zinc-950">
-        <div className="max-w-6xl mx-auto">
-          <Link href="/" className="text-sm text-zinc-500 hover:underline">
-            ← 홈으로
-          </Link>
-          <h1 className="mt-3 text-3xl font-bold">🎬 K-MOM 시연 모드</h1>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-            <strong>운영자 전용</strong> — 투자자 시연을 위한 모든 페르소나·시나리오·관리자 화면.
-            일반 사용자(학생·업주·학교)는 이 페이지를 볼 수 없으며, 메뉴에도 노출되지 않습니다.
-          </p>
-        </div>
+    <main className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-10">
+      <Link href="/admin/dashboard" className="text-sm text-zinc-500 hover:underline">
+        ← 운영자 대시보드로
+      </Link>
+
+      <header className="mt-4 text-center">
+        <span className="inline-block rounded-full bg-zinc-900 px-4 py-1 text-xs font-bold uppercase tracking-wider text-white dark:bg-white dark:text-zinc-900">
+          🎬 시연 모드 · 운영자 전용
+        </span>
+        <h1 className="mt-4 text-2xl sm:text-3xl font-bold">
+          어떤 역할의 입장에서 둘러볼까요?
+        </h1>
+        <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+          버튼 하나를 클릭하면 그 역할 데모 계정으로 자동 로그인되어 해당 화면이 열립니다.
+        </p>
       </header>
 
-      {/* 페르소나 카드 6장 */}
-      <DemoPersonaCards />
+      {/* 4개 역할 버튼 */}
+      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+        {ROLE_CARDS.map((card) => {
+          const t = TONE_MAP[card.tone]
+          return (
+            <form
+              key={card.role}
+              action={loginAsDemoAccount}
+              className={`flex flex-col rounded-2xl border-2 p-5 ${t.border} ${t.bg}`}
+            >
+              <input type="hidden" name="email" value={card.email} />
+              <input type="hidden" name="dest" value={card.dest} />
 
-      {/* 공개 데모 페이지 — 로그인 없이도 누구나 볼 수 있는 쇼케이스 */}
-      <section className="px-6 py-10 max-w-6xl mx-auto">
-        <h2 className="text-xl font-bold">🌐 공개 쇼케이스 페이지 (로그인 X)</h2>
-        <p className="mt-1 text-sm text-zinc-500">
-          투자자·언론사·일반 방문자에게 K-MOM을 한눈에 보여줄 수 있는 페이지들.
-        </p>
-        <div className="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-          <QuickLink
-            href="/dashboard"
-            title="📈 투자자 대시보드"
-            desc="등록 학생·업체·결제·전환 KPI 한 화면"
-          />
-          <QuickLink
-            href="/students"
-            title="👨‍🎓 학생 전체 명단"
-            desc="50명 학생 필터(언어·지역·인증) + 신뢰 점수"
-          />
-          <QuickLink
-            href="/employers"
-            title="🏪 업체 전체 명단"
-            desc="등록 가게 카드 + 인증 등급별"
-          />
-          <QuickLink
-            href="/reviews"
-            title="⭐ 쌍방향 평가"
-            desc="누적 평가 사례 (학생·업주 양쪽)"
-          />
-        </div>
+              <div className="flex items-center gap-3">
+                <span className="text-5xl">{card.emoji}</span>
+                <div>
+                  <p className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-bold ${t.chip}`}>
+                    {card.role}
+                  </p>
+                  <p className="mt-1 text-sm font-semibold">{card.description}</p>
+                </div>
+              </div>
 
-        <h2 className="mt-10 text-xl font-bold">🔧 운영·관리 페이지 (로그인 후)</h2>
-        <div className="mt-4 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
-          <QuickLink
-            href="/employer/match"
-            title="⚡ 맞춤 후보 흐름"
-            desc="조건 → 후보 수 → 결제 → 카드 (시나리오 3종 노출)"
-          />
-          <QuickLink
-            href="/admin/dashboard"
-            title="📊 운영자 대시보드"
-            desc="투자자 KPI 7종 + 깔때기"
-          />
-          <QuickLink
-            href="/admin/requests"
-            title="📋 업주 요청 관리"
-            desc="LIVE + 시드 더미 30건 통합"
-          />
-          <QuickLink
-            href="/pricing"
-            title="💰 요금제"
-            desc="Free / Contact Pack / Verified Partner"
-          />
-        </div>
+              <p className="mt-4 text-xs text-zinc-700 dark:text-zinc-300">
+                <span className="font-semibold">시연 화면:</span> {card.highlight}
+              </p>
 
-        <h2 className="mt-10 text-xl font-bold">시연 계정 (비번 통일: kmom2026demo)</h2>
-        <div className="mt-4 overflow-x-auto rounded-xl border border-zinc-200 dark:border-zinc-800">
-          <table className="min-w-full text-sm">
-            <thead className="bg-zinc-50 dark:bg-zinc-900">
-              <tr>
-                <th className="px-3 py-2 text-left text-xs font-semibold text-zinc-600 dark:text-zinc-400">
-                  역할
-                </th>
-                <th className="px-3 py-2 text-left text-xs font-semibold text-zinc-600 dark:text-zinc-400">
-                  이메일
-                </th>
-                <th className="px-3 py-2 text-left text-xs font-semibold text-zinc-600 dark:text-zinc-400">
-                  설명
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-zinc-100 dark:divide-zinc-800">
-              <DemoAccountRow role="학생" email="kmom.student1@gmail.com" desc="완벽 프로필 + 평가 누적" />
-              <DemoAccountRow role="학생" email="kmom.student2@gmail.com" desc="좋은 프로필" />
-              <DemoAccountRow role="학생" email="kmom.student3@gmail.com" desc="평균 프로필" />
-              <DemoAccountRow role="학생" email="kmom.student4@gmail.com" desc="부족 프로필" />
-              <DemoAccountRow role="학생" email="kmom.student5@gmail.com" desc="빈 프로필 (TODO 시연)" />
-              <DemoAccountRow role="업주" email="kmom.employer1@gmail.com" desc="🥇 GOLD · 평가 완료" />
-              <DemoAccountRow role="업주" email="kmom.employer2@gmail.com" desc="🥈 SILVER · 진행 중" />
-              <DemoAccountRow role="업주" email="kmom.employer3@gmail.com" desc="🥉 BRONZE · 신규" />
-              <DemoAccountRow role="학교" email="kmom.school@gmail.com" desc="K-MOM 데모대학교 국제처" />
-              <DemoAccountRow role="운영자" email="kmom.admin@gmail.com" desc="platform_admin" />
-            </tbody>
-          </table>
-        </div>
+              <button
+                type="submit"
+                className={`mt-auto h-12 rounded-lg px-4 text-sm font-bold text-white ${t.btn}`}
+              >
+                {card.role} 입장에서 보기 →
+              </button>
+            </form>
+          )
+        })}
+      </div>
 
-        <p className="mt-6 rounded-md bg-amber-50 px-4 py-3 text-xs text-amber-900 dark:bg-amber-950/40 dark:text-amber-200">
-          ⚠️ 시연 모드는 <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/60">NEXT_PUBLIC_DEMO_MODE</code> 환경변수로 전체 제어됩니다.
-          운영 전환 시 Vercel env에 <code className="rounded bg-amber-100 px-1 dark:bg-amber-900/60">false</code>로 설정하면
-          모든 시연 요소(시나리오 카드, /demo 우회, 페르소나 카드)가 자동으로 숨겨집니다.
-        </p>
-      </section>
+      <p className="mt-8 text-center text-xs text-zinc-500">
+        ※ 클릭 시 자동으로 그 역할의 메인 화면으로 이동합니다. 다른 역할을 보려면 우상단 로그아웃 후
+        다시 이 페이지로 돌아오세요.
+      </p>
     </main>
-  )
-}
-
-function QuickLink({
-  href,
-  title,
-  desc,
-}: {
-  href: string
-  title: string
-  desc: string
-}) {
-  return (
-    <Link
-      href={href}
-      className="rounded-xl border border-zinc-200 bg-white p-4 hover:border-zinc-400 dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-600"
-    >
-      <p className="font-semibold">{title}</p>
-      <p className="mt-1 text-xs text-zinc-500">{desc}</p>
-    </Link>
-  )
-}
-
-function DemoAccountRow({
-  role,
-  email,
-  desc,
-}: {
-  role: string
-  email: string
-  desc: string
-}) {
-  const chip =
-    role === '학생'
-      ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/40 dark:text-emerald-300'
-      : role === '업주'
-        ? 'bg-sky-100 text-sky-800 dark:bg-sky-900/40 dark:text-sky-300'
-        : role === '학교'
-          ? 'bg-violet-100 text-violet-800 dark:bg-violet-900/40 dark:text-violet-300'
-          : 'bg-zinc-200 text-zinc-800 dark:bg-zinc-700 dark:text-zinc-200'
-  return (
-    <tr className="hover:bg-zinc-50 dark:hover:bg-zinc-900">
-      <td className="px-3 py-2">
-        <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${chip}`}>
-          {role}
-        </span>
-      </td>
-      <td className="px-3 py-2 font-mono text-xs">{email}</td>
-      <td className="px-3 py-2 text-xs text-zinc-600 dark:text-zinc-400">{desc}</td>
-    </tr>
   )
 }
