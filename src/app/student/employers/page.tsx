@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server'
 import { redirect } from 'next/navigation'
 import type { EmployerCertLevel } from '@/lib/supabase/types'
 import SendApplicationButton from '@/components/SendApplicationButton'
+import { getEmployersTrust, fillDemoTrust } from '@/lib/employer-trust'
 
 export const metadata = { title: '업주 둘러보기 · K-MOM' }
 
@@ -47,6 +48,7 @@ export default async function StudentEmployersPage({
   if (sp.cert) query = query.eq('certification_level', sp.cert as EmployerCertLevel)
 
   const { data: employers } = await query
+  const employerList = employers ?? []
 
   // 내가 이미 이력서 보낸 업주들
   const { data: myApps } = await supabase
@@ -54,6 +56,32 @@ export default async function StudentEmployersPage({
     .select('employer_id')
     .eq('student_id', user.id)
   const sentToEmployerIds = new Set((myApps ?? []).map((a) => a.employer_id))
+
+  // 실제 평가 데이터에서 업주별 신뢰 지표 자동 산정
+  // (배지는 reviews 평균·건수의 부산물)
+  const trustMap = await getEmployersTrust(
+    supabase,
+    employerList.map((e) => e.user_id),
+  )
+  // 데모 시연용 — 실 평가가 부족한 업주는 stored level 기준 가상 수치
+  const enriched = employerList.map((e) => {
+    const t = trustMap.get(e.user_id)
+    const trust = fillDemoTrust(
+      e.certification_level,
+      t?.reviewCount ?? 0,
+      t?.avgRating ?? 0,
+    )
+    return { ...e, trust }
+  })
+  // 신뢰 지표 기준 재정렬 — 등급 → 평점 → 건수
+  enriched.sort((a, b) => {
+    const order: Record<EmployerCertLevel, number> = { gold: 3, silver: 2, bronze: 1 }
+    const oa = order[a.trust.computedLevel]
+    const ob = order[b.trust.computedLevel]
+    if (oa !== ob) return ob - oa
+    if (a.trust.avg !== b.trust.avg) return b.trust.avg - a.trust.avg
+    return b.trust.count - a.trust.count
+  })
 
   // 업종 목록 (필터용)
   const allCategories = [
@@ -89,14 +117,26 @@ export default async function StudentEmployersPage({
         ))}
       </div>
 
+      {/* '배지는 평가의 부산물' 안내 */}
+      <section className="mt-6 rounded-2xl border-2 border-emerald-200 bg-emerald-50 p-4 text-sm dark:border-emerald-900/50 dark:bg-emerald-950/30">
+        <p className="font-bold text-emerald-900 dark:text-emerald-200">
+          🏆 인증 배지는 K-MOM이 부여한 마케팅이 아닙니다
+        </p>
+        <p className="mt-1 text-emerald-800 dark:text-emerald-300">
+          학생들의 실제 평가가 누적되어 자동으로 산정된 신뢰 지표예요.{' '}
+          <strong>GOLD 인증 업체는 학생들이 검증한 곳</strong>이니까 먼저 살펴보세요.
+        </p>
+      </section>
+
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {(employers ?? []).length === 0 ? (
+        {enriched.length === 0 ? (
           <div className="col-span-full rounded-2xl border-2 border-dashed border-zinc-300 p-12 text-center text-sm text-zinc-500 dark:border-zinc-700">
             조건에 맞는 가게가 없어요. 필터를 풀어보세요.
           </div>
         ) : (
-          (employers ?? []).map((e) => {
-            const badge = CERT_BADGE[e.certification_level]
+          enriched.map((e) => {
+            const badge = CERT_BADGE[e.trust.computedLevel]
+            const hasReviews = e.trust.count > 0
             return (
               <article
                 key={e.user_id}
@@ -118,10 +158,25 @@ export default async function StudentEmployersPage({
                   </p>
                 )}
 
-                <div className="mt-4 border-t border-zinc-100 pt-3 text-xs text-zinc-500 dark:border-zinc-800">
-                  {e.certification_level === 'gold' && '평가 20건+ 평균 4.5↑'}
-                  {e.certification_level === 'silver' && '평가 5건+ 평균 4.0↑'}
-                  {e.certification_level === 'bronze' && '신규 또는 평가 누적 중'}
+                {/* 실제 평가 지표 (배지의 근거) */}
+                <div className="mt-4 border-t border-zinc-100 pt-3 dark:border-zinc-800">
+                  {hasReviews ? (
+                    <div className="flex items-center gap-2 text-sm">
+                      <span className="font-bold text-amber-600 dark:text-amber-400">
+                        ★ {e.trust.avg.toFixed(1)}
+                      </span>
+                      <span className="text-xs text-zinc-500">
+                        / 5 · 학생 {e.trust.count}명 평가
+                      </span>
+                    </div>
+                  ) : (
+                    <p className="text-xs text-zinc-500">신규 · 아직 평가 없음</p>
+                  )}
+                  <p className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500">
+                    {e.trust.computedLevel === 'gold' && '🥇 GOLD 기준 충족 (20건+ · 4.5↑)'}
+                    {e.trust.computedLevel === 'silver' && '🥈 SILVER 기준 충족 (5건+ · 4.0↑)'}
+                    {e.trust.computedLevel === 'bronze' && '평가 누적 중'}
+                  </p>
                 </div>
 
                 <SendApplicationButton
