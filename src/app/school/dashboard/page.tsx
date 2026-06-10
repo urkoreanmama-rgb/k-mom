@@ -99,7 +99,7 @@ export default async function SchoolDashboardPage() {
 
       {/* 위험 알림 (있을 때만) */}
       {(overLimit > 0 || riskEmployer > 0) && (
-        <section className="mt-8 rounded-2xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-950">
+        <section className="card-3d mt-8 rounded-2xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-950">
           <p className="text-sm font-medium text-zinc-500">알림</p>
           <h3 className="mt-2 text-lg font-semibold tracking-tight">
             확인이 필요한 학생 {overLimit + riskEmployer}명

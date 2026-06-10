@@ -86,7 +86,7 @@ export default async function DemoPage() {
         </p>
 
         <div className="mt-10 grid gap-4 sm:grid-cols-2">
-          <div className="rounded-xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-950">
+          <div className="card-3d rounded-xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-950">
             <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
               일반 알바앱
             </p>

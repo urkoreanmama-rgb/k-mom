@@ -113,7 +113,7 @@ export default async function Home({
         </div>
 
         {/* "왜 이런 서비스가 필요한가" 핵심 수치 */}
-        <div className="mt-16 rounded-2xl border border-zinc-200 bg-zinc-50 p-8 sm:p-10 dark:border-zinc-800 dark:bg-zinc-950">
+        <div className="card-3d mt-16 rounded-2xl border border-zinc-200 bg-zinc-50 p-8 sm:p-10 dark:border-zinc-800 dark:bg-zinc-950">
           <p className="text-sm font-medium text-zinc-500 text-center">왜 K-MOM인가요?</p>
           <div className="mt-6 grid gap-8 sm:grid-cols-3">
             <ProblemPoint
@@ -130,6 +130,59 @@ export default async function Home({
               stat="0건"
               label="K-MOM 매개 위반"
               detail="모든 학생·업체를 사전 검증"
+            />
+          </div>
+        </div>
+
+        {/* K-MOM의 핵심 원칙 4가지 */}
+        <div className="mt-16">
+          <h3 className="text-center text-2xl sm:text-3xl font-semibold tracking-tight">
+            K-MOM이 지키는 4가지 원칙
+          </h3>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <PrincipleCard
+              num="01"
+              title="합법"
+              body="출입국관리법 제20조 기반. 비자·시간·서류 위반 사전 차단."
+            />
+            <PrincipleCard
+              num="02"
+              title="신뢰"
+              body="광고비가 아닌 학생 평가가 GOLD 인증을 만듭니다."
+            />
+            <PrincipleCard
+              num="03"
+              title="단순"
+              body="언어 매칭팩 9,900원. 가게 컨텍스트로 직결."
+            />
+            <PrincipleCard
+              num="04"
+              title="성장"
+              body="알바 이력 = 평생 경력 자산. 졸업 후 커리어로 전환."
+            />
+          </div>
+        </div>
+
+        {/* 실제 사용 사례 — 3명의 페르소나 */}
+        <div className="mt-16">
+          <h3 className="text-center text-2xl sm:text-3xl font-semibold tracking-tight">
+            이렇게 사용해요
+          </h3>
+          <div className="mt-10 grid gap-4 lg:grid-cols-3">
+            <StoryCard
+              persona="응우옌 티 화"
+              meta="베트남 · D-2-2 · TOPIK 4급"
+              quote="비자체커로 합법 여부 확인하고, 신뢰 프로필 만들고, 베트남 식당에서 안심하고 일해요. 평가 이력이 졸업 후에도 쌓여요."
+            />
+            <StoryCard
+              persona="이수정 사장님"
+              meta="명동 화장품 매장"
+              quote="중국어 가능한 학생 후보 3명을 9,900원에 받았어요. 비자·서류 사전 점검까지 끝나서 채용 후 면접만 보면 됩니다."
+            />
+            <StoryCard
+              persona="국제처 담당자"
+              meta="서울미디어대학원대학교"
+              quote="재학생이 어디서 일하는지 한눈에. 시간 초과 직전이나 위험 업체에서 일하는 학생이 있으면 자동으로 알려줘요."
             />
           </div>
         </div>
@@ -347,9 +400,50 @@ function ProblemPoint({
   );
 }
 
+function PrincipleCard({
+  num,
+  title,
+  body,
+}: {
+  num: string;
+  title: string;
+  body: string;
+}) {
+  return (
+    <div className="card-3d rounded-2xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
+      <p className="text-xs font-medium tabular-nums text-zinc-400">{num}</p>
+      <h4 className="mt-3 text-lg font-semibold tracking-tight">{title}</h4>
+      <p className="mt-2 text-sm text-zinc-500 leading-relaxed">{body}</p>
+    </div>
+  );
+}
+
+function StoryCard({
+  persona,
+  meta,
+  quote,
+}: {
+  persona: string;
+  meta: string;
+  quote: string;
+}) {
+  return (
+    <div className="card-3d rounded-2xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900">
+      <p className="text-3xl text-zinc-300 dark:text-zinc-700 leading-none">"</p>
+      <p className="mt-2 text-base leading-relaxed text-zinc-700 dark:text-zinc-300">
+        {quote}
+      </p>
+      <div className="mt-6 border-t border-zinc-100 pt-4 dark:border-zinc-800">
+        <p className="text-sm font-semibold tracking-tight">{persona}</p>
+        <p className="mt-0.5 text-xs text-zinc-500">{meta}</p>
+      </div>
+    </div>
+  );
+}
+
 function Feature({ title, body }: { title: string; body: string }) {
   return (
-    <div className="rounded-2xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="card-3d rounded-2xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900">
       <h3 className="text-xl font-semibold tracking-tight">{title}</h3>
       <p className="mt-3 text-zinc-500 leading-relaxed">{body}</p>
     </div>
@@ -375,7 +469,7 @@ function RoleCard({
   items: string[];
 }) {
   return (
-    <div className="rounded-2xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900">
+    <div className="card-3d rounded-2xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900">
       <h3 className="text-xl font-semibold tracking-tight">{role}</h3>
       <p className="mt-2 text-sm text-zinc-500">{price}</p>
       <ul className="mt-6 space-y-3 text-sm text-zinc-700 dark:text-zinc-300">
