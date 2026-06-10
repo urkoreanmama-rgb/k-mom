@@ -3,7 +3,8 @@ import { NextResponse, type NextRequest } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 
 const PROTECTED_PREFIXES = ['/student', '/employer', '/school', '/admin']
-const PUBLIC_AUTH_ROUTES = ['/login', '/signup']
+// (이전: 로그인 사용자가 /login·/signup 접근 시 자동 리다이렉트 → 제거
+//  메인 페이지가 항상 비로그인 화면이라서 로그인된 사용자가 다시 로그인 폼에 접근 가능해야 함)
 
 // 투자자 시현 모드 — 로그인 없이 접근 가능한 데모 경로
 // NEXT_PUBLIC_DEMO_MODE !== 'false' 일 때만 활성. 운영에선 false로 설정.
@@ -60,7 +61,6 @@ export async function proxy(request: NextRequest) {
 
   const path = request.nextUrl.pathname
   const isProtected = PROTECTED_PREFIXES.some((p) => path.startsWith(p))
-  const isAuthRoute = PUBLIC_AUTH_ROUTES.includes(path)
 
   // 시현 경로는 보호 우회
   if (isProtected && !user && !isDemoExempt(path)) {
@@ -70,12 +70,9 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url)
   }
 
-  if (isAuthRoute && user) {
-    // 로그인된 상태에서 /login·/signup 접근 → 학생 홈으로 (역할별 분기는 클라이언트가 따로 처리)
-    const url = request.nextUrl.clone()
-    url.pathname = '/student/profile'
-    return NextResponse.redirect(url)
-  }
+  // /login, /signup은 로그인 여부와 무관하게 항상 접근 가능
+  // (메인 페이지가 비로그인 화면을 보이게 하므로, 로그인 사용자가 다른 계정으로
+  // 다시 로그인할 수 있어야 함)
 
   return response
 }
