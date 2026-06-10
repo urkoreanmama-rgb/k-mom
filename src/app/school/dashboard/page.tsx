@@ -9,7 +9,7 @@ import { DEMO_EMPLOYERS } from '@/data/demo-employers'
 
 export const metadata = { title: '학교 모니터링 대시보드 · K-MOM' }
 
-type Filter = 'working' | 'overlimit' | 'risk' | 'idle' | null
+type Filter = 'working' | 'overlimit' | 'risk' | 'alert' | 'idle' | null
 
 export default async function SchoolDashboardPage({
   searchParams,
@@ -18,7 +18,11 @@ export default async function SchoolDashboardPage({
 }) {
   const sp = await searchParams
   const filter: Filter =
-    sp.filter === 'working' || sp.filter === 'overlimit' || sp.filter === 'risk' || sp.filter === 'idle'
+    sp.filter === 'working' ||
+    sp.filter === 'overlimit' ||
+    sp.filter === 'risk' ||
+    sp.filter === 'alert' ||
+    sp.filter === 'idle'
       ? sp.filter
       : null
 
@@ -67,6 +71,14 @@ export default async function SchoolDashboardPage({
     const emp = DEMO_EMPLOYERS.find((e) => e.companyId === w.employerId)
     return Boolean(emp?.riskFlag)
   }).length
+  // 확인 필요 = 시간 초과 OR 위험 업체 (중복 제거 union)
+  const needCheck = showcase.filter((s) => {
+    const w = currentWork[s.studentId]
+    if (!w) return false
+    if (w.weeklyHours > 25) return true
+    const emp = DEMO_EMPLOYERS.find((e) => e.companyId === w.employerId)
+    return Boolean(emp?.riskFlag)
+  }).length
 
   return (
     <main className="max-w-6xl mx-auto px-6 py-12 sm:py-16">
@@ -81,8 +93,8 @@ export default async function SchoolDashboardPage({
         </p>
       </header>
 
-      {/* KPI 4개 카드 — 클릭하면 해당 학생만 필터링 */}
-      <section className="mt-12 grid gap-4 sm:grid-cols-4">
+      {/* KPI 5개 카드 — 클릭하면 해당 학생만 필터링 */}
+      <section className="mt-12 grid gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">
         <Kpi
           label="모니터링 학생"
           value={total}
@@ -112,6 +124,14 @@ export default async function SchoolDashboardPage({
           warn={riskEmployer > 0}
           href="/school/dashboard?filter=risk"
           active={filter === 'risk'}
+        />
+        <Kpi
+          label="확인 필요"
+          value={needCheck}
+          suffix="명"
+          warn={needCheck > 0}
+          href="/school/dashboard?filter=alert"
+          active={filter === 'alert'}
         />
       </section>
 
@@ -161,6 +181,7 @@ export default async function SchoolDashboardPage({
               {filter === 'working' && '현재 근무 중인 학생'}
               {filter === 'overlimit' && '시간 한도 초과 학생'}
               {filter === 'risk' && '위험 업체에서 근무 중'}
+              {filter === 'alert' && '확인이 필요한 학생'}
               {filter === 'idle' && '대기 중인 학생'}
               {!filter && '재학 유학생'}
             </h2>
@@ -183,6 +204,10 @@ export default async function SchoolDashboardPage({
           if (filter === 'working') return Boolean(w)
           if (filter === 'overlimit') return w && w.weeklyHours > 25
           if (filter === 'risk') return Boolean(emp?.riskFlag)
+          if (filter === 'alert') {
+            if (!w) return false
+            return w.weeklyHours > 25 || Boolean(emp?.riskFlag)
+          }
           if (filter === 'idle') return !w
           return true
         }).length === 0 && (
@@ -248,17 +273,27 @@ export default async function SchoolDashboardPage({
                       <p className="mt-1 text-sm font-medium">{emp.companyName}</p>
                       <p className="mt-0.5 text-xs text-zinc-500">
                         {emp.area} · {emp.businessType} · 주 {w.weeklyHours}h
-                        {isOverLimit && (
-                          <span className="ml-1 font-medium text-zinc-900 dark:text-zinc-100">
-                            · 한도 초과
-                          </span>
-                        )}
                       </p>
                     </>
                   ) : (
                     <p className="mt-1 text-sm text-zinc-400">근무 이력 없음</p>
                   )}
                 </div>
+
+                {/* 알림 사유 (시간 초과·위험 업체) */}
+                {hasAlert && (
+                  <div className="mt-3 rounded-lg border border-zinc-200 bg-zinc-50 p-3 text-xs dark:border-zinc-700 dark:bg-zinc-950">
+                    <p className="font-medium text-zinc-900 dark:text-zinc-100">알림 사유</p>
+                    <ul className="mt-1 space-y-0.5 text-zinc-600 dark:text-zinc-400">
+                      {isOverLimit && (
+                        <li>· 주 {w!.weeklyHours}h 근무 (D-2 한도 25h 초과)</li>
+                      )}
+                      {isRisk && emp && (
+                        <li>· {emp.companyName} — 임금 지연 신고</li>
+                      )}
+                    </ul>
+                  </div>
+                )}
 
                 {/* 누적 지표 */}
                 <div className="mt-4 grid grid-cols-3 gap-3 border-t border-zinc-100 pt-4 dark:border-zinc-800">
