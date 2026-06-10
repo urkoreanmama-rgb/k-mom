@@ -101,9 +101,9 @@ export default async function StudentDetailPage({
           <p className="mt-1 text-sm text-zinc-500">
             Free 플랜은 이메일 직접 연결만 1회 무료입니다. 더 많은 연락은{' '}
             <Link href="/pricing" className="underline">
-              Contact Pack
+              🌏 언어 매칭팩
             </Link>{' '}
-            을 구매하세요.
+            을 구매하세요 (필요한 언어 학생 후보 3명 — 9,900원).
           </p>
           <a
             href={`mailto:${studentUser.email}?subject=K-MOM 합법 채용 사전 확인 문의`}

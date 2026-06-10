@@ -147,6 +147,93 @@ export default async function DemoPage() {
         </p>
       </section>
 
+      {/* 💼 K-MOM 수익 구조 — 4개 채널 BM 구조 */}
+      <section className="mt-6 rounded-2xl border-2 border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
+        <div className="text-center">
+          <span className="inline-block rounded-full bg-zinc-900 px-3 py-1 text-[11px] font-bold uppercase tracking-wider text-white dark:bg-zinc-100 dark:text-zinc-900">
+            💼 K-MOM 수익 구조
+          </span>
+          <h2 className="mt-3 text-xl sm:text-2xl font-bold">
+            업주 결제는 두 축으로 — <span className="text-emerald-600">언어 인재 + 스태프 안정</span>
+          </h2>
+          <p className="mt-2 text-xs text-zinc-500">
+            "외국인 채용비" 가 아니라 "내가 필요한 언어 인재 열람비". 가게가 직결된다.
+          </p>
+        </div>
+
+        <div className="mt-5 grid gap-3 lg:grid-cols-2">
+          {/* 학생 */}
+          <div className="rounded-xl border border-emerald-200 bg-emerald-50 p-4 dark:border-emerald-900/50 dark:bg-emerald-950/20">
+            <p className="text-xs font-bold uppercase text-emerald-700 dark:text-emerald-400">
+              👨‍🎓 학생 (항상 무료)
+            </p>
+            <ul className="mt-2 space-y-1 text-xs text-emerald-900 dark:text-emerald-200">
+              <li>· 비자체커 (가입 깔때기)</li>
+              <li>· 신뢰 프로필 등록</li>
+              <li>· 재직 중 이력 누적</li>
+              <li>· 졸업 후 커리어 프로필 전환</li>
+            </ul>
+          </div>
+
+          {/* 업주 */}
+          <div className="rounded-xl border-2 border-sky-400 bg-sky-50 p-4 dark:border-sky-700 dark:bg-sky-950/30">
+            <p className="text-xs font-bold uppercase text-sky-700 dark:text-sky-300">
+              🏪 업주 (두 가지 결제)
+            </p>
+            <div className="mt-2 space-y-2 text-xs">
+              <div>
+                <p className="font-bold text-sky-900 dark:text-sky-200">
+                  🌏 언어 매칭팩 9,900원/언어
+                </p>
+                <p className="text-sky-800 dark:text-sky-300">
+                  🇨🇳 중국어·🇻🇳 베트남어·🇺🇸 영어... 가게 컨텍스트로 직결
+                </p>
+              </div>
+              <div>
+                <p className="font-bold text-sky-900 dark:text-sky-200">
+                  🛡️ 스태프 안정 구독 49,000원/월
+                </p>
+                <p className="text-sky-800 dark:text-sky-300">
+                  비자 D-30 알림·주 25h 사전 경고·졸업 D-60 후임 알림 →
+                  "갑자기 사람 없어지는 상황 예방"
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* 학교 */}
+          <div className="rounded-xl border border-violet-200 bg-violet-50 p-4 dark:border-violet-900/50 dark:bg-violet-950/20">
+            <p className="text-xs font-bold uppercase text-violet-700 dark:text-violet-400">
+              🏫 학교 국제처 (B2B 구독)
+            </p>
+            <ul className="mt-2 space-y-1 text-xs text-violet-900 dark:text-violet-200">
+              <li>· 대시보드 학기당 협의</li>
+              <li>· 학생 교외 근무 현황 모니터링</li>
+              <li>· 위험 업체 알림</li>
+            </ul>
+          </div>
+
+          {/* 기업 v4.0 */}
+          <div className="rounded-xl border border-amber-200 bg-amber-50 p-4 dark:border-amber-900/50 dark:bg-amber-950/20">
+            <p className="text-xs font-bold uppercase text-amber-700 dark:text-amber-400">
+              🏢 기업 채용팀 (v4.0)
+            </p>
+            <ul className="mt-2 space-y-1 text-xs text-amber-900 dark:text-amber-200">
+              <li>· 졸업생 커리어 프로필 열람권</li>
+              <li>· 알바 이력 + 평가 + 언어 능력 패키지</li>
+              <li>· 진짜 B2B 매출의 시작점</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="mt-4 rounded-lg bg-zinc-50 p-3 text-[11px] text-zinc-600 dark:bg-zinc-950 dark:text-zinc-400">
+          <strong>업주 결제 재정의 핵심:</strong> "Contact Pack"을 "🌏 언어 매칭팩"으로 바꾸니
+          업주가 가게 컨텍스트로 직결돼서 9,900원이 합리적으로 느껴진다.
+          "컴플라이언스 구독"을 "🛡️ 스태프 안정 구독"으로 바꾸니
+          법무 부담이 아니라 "사람 안 끊기는 안전망"이 돼서 49,000원이 보험으로 보인다.
+        </div>
+      </section>
+
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
         {ROLE_CARDS.map((card) => {
           const t = TONE_MAP[card.tone]

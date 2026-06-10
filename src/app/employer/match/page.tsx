@@ -48,10 +48,13 @@ export default async function MatchEntryPage({
         <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700 dark:text-emerald-400">
           STEP 1 / 4
         </p>
-        <h1 className="mt-2 text-2xl sm:text-3xl font-bold">조건맞춤 유학생 후보 찾기</h1>
+        <h1 className="mt-2 text-2xl sm:text-3xl font-bold">
+          🌏 언어 매칭팩 — 필요한 언어 후보 3명 받기
+        </h1>
         <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-          외국어 가능 D-2 유학생을 사전 필터링합니다. 조건에 맞는 후보 수를 먼저 확인하고,
-          충분할 때만 1만 원에 후보 3명 미리보기를 받아보세요.
+          명동 매장이면 <strong>🇨🇳 중국어</strong>, 안산 공장이면 <strong>🇺🇿 우즈벡어</strong>,
+          이태원 식당이면 <strong>🇺🇸 영어</strong>. 가게에 필요한 언어를 고르면
+          그 언어 가능 D-2 학생 후보 3명을 <strong>9,900원에</strong> 카드로 받아보세요.
         </p>
       </header>
 

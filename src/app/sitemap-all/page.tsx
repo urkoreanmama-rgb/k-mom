@@ -96,7 +96,7 @@ export default async function SitemapPage() {
         { href: '/signup?role=student', title: '학생 회원가입', desc: 'D-2 유학생 — 무료', emoji: '👨‍🎓' },
         { href: '/signup?role=employer', title: '업주 회원가입', desc: '가게·매장 운영자', emoji: '🏪' },
         { href: '/signup?role=school_admin', title: '학교 회원가입', desc: '국제처 담당자', emoji: '🏫' },
-        { href: '/pricing', title: '요금제', desc: 'Free · Contact Pack · Verified Partner', emoji: '💰' },
+        { href: '/pricing', title: '요금제', desc: 'Free · 🌏 언어 매칭팩 · 🛡️ 스태프 안정 구독', emoji: '💰' },
       ],
     })
   } else {
@@ -106,7 +106,7 @@ export default async function SitemapPage() {
       color: 'zinc',
       items: [
         { href: '/', title: '홈', desc: 'K-MOM 메인 화면', emoji: '🏠' },
-        { href: '/pricing', title: '요금제', desc: 'Free · Contact Pack · Verified Partner', emoji: '💰' },
+        { href: '/pricing', title: '요금제', desc: 'Free · 🌏 언어 매칭팩 · 🛡️ 스태프 안정 구독', emoji: '💰' },
       ],
     })
   }

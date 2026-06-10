@@ -8,15 +8,35 @@ export default function PricingPage() {
   return (
     <main className="max-w-5xl mx-auto px-6 py-14">
       <p className="text-sm font-medium text-emerald-700 dark:text-emerald-400">요금제</p>
-      <h1 className="mt-2 text-4xl font-bold">합법 채용에 필요한 만큼만.</h1>
+      <h1 className="mt-2 text-4xl font-bold">
+        외국인 채용비가 아니라, 내가 필요한 <span className="text-emerald-600">언어 인재 열람비</span>.
+      </h1>
       <p className="mt-3 max-w-2xl text-zinc-600 dark:text-zinc-400">
-        K-MOM은 채용 성사 수수료를 받지 않습니다. 업주는 <strong>연락권</strong> 또는 <strong>인증 구독</strong>으로,
-        학교는 <strong>리포트 구독</strong>으로 이용하세요.
+        명동 화장품 매장은 중국어, 이태원 식당은 영어, 안산 공장은 우즈벡어. 가게가 필요한
+        언어가 다르면 결제도 그렇게.{' '}
+        <strong>학생은 항상 무료</strong>, 업주는 <strong>언어 매칭팩 + 스태프 안정 구독</strong>,
+        학교는 <strong>리포트 구독</strong>.
       </p>
 
-      {/* 업주 요금제 */}
+      {/* 🌏 언어 매칭팩 — Contact Pack 재정의 */}
       <section className="mt-12">
-        <h2 className="text-xl font-bold">업주</h2>
+        <div className="flex items-baseline justify-between">
+          <h2 className="text-xl font-bold">🌏 언어 매칭팩 (건당)</h2>
+          <p className="text-xs text-zinc-500">필요한 언어만 골라서 후보 3명 카드 열람</p>
+        </div>
+        <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {LANGUAGE_PACKS.map((p) => (
+            <LanguagePack key={p.flag} {...p} />
+          ))}
+        </div>
+        <p className="mt-3 text-xs text-zinc-500">
+          ※ 후보 3명을 모두 거절하면 다음 팩 50% 할인 자동 적용. 재고용 시 같은 학생 무료 연락.
+        </p>
+      </section>
+
+      {/* 🛡️ 스태프 안정 구독 — Verified Partner 재정의 */}
+      <section className="mt-12">
+        <h2 className="text-xl font-bold">🛡️ 스태프 안정 구독 (월정액)</h2>
         <div className="mt-4 grid gap-4 lg:grid-cols-3">
           <PlanCard
             name="Free"
@@ -32,33 +52,40 @@ export default function PricingPage() {
             ]}
           />
           <PlanCard
-            name="Contact Pack"
-            price="9,900원~"
-            tagline="필요할 때만 연락권 구매"
+            name="스태프 안정"
+            price="월 49,000원"
+            tagline="갑자기 사람 없어지는 상황을 막아주는 구독"
             cta="시작하기"
             href="/signup?role=employer"
             features={[
-              '5건 9,900원 / 10건 19,000원',
-              '학생에게 직접 연락 (이메일·메신저)',
-              '서류 체크리스트 보기',
-              '연락권 6개월 유효',
+              '📅 비자 만료 D-30 자동 알림 — "이 직원, ○월까지 일할 수 있어요"',
+              '⏰ 주 25h 초과 사전 경고 — "다음 주 한도 초과 위험"',
+              '🎓 졸업 D-60 후임 채용 알림',
+              '🏆 GOLD 배지 유지 (해지 시 소멸)',
+              '🆘 합법 채용 확인서 발급 (월 1회 무료)',
+              '🔁 좋은 학생 우선 지원 효과',
             ]}
             highlight
           />
           <PlanCard
-            name="Verified Partner"
-            price="월 49,000원~"
-            tagline="자주 채용하는 업주를 위한 구독"
+            name="Enterprise"
+            price="문의"
+            tagline="3개 매장 이상 운영하는 프랜차이즈"
             cta="문의하기"
-            href="mailto:hello@k-mom.kr?subject=Verified Partner 문의"
+            href="mailto:hello@k-mom.kr?subject=Enterprise 문의"
             features={[
-              '인증 업주 배지',
-              '학생 무제한 연락',
-              '서류 자동 점검 + 안내 패키지',
-              '검색 결과 우선 노출',
-              '쌍방 평가 우수 시 등급 상승',
+              '본사 ↔ 매장 통합 대시보드',
+              '매장별 스태프 안정 알림 묶음',
+              '본사 채용 담당자 다계정',
+              '인사·노무 API 연동',
             ]}
           />
+        </div>
+        <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-4 text-xs text-amber-900 dark:border-amber-800 dark:bg-amber-950/30 dark:text-amber-200">
+          <strong>왜 월 49,000원이 합리적인가?</strong>{' '}
+          외국인 알바 1명 갑자기 못 나오면 → 하루 매출 손실 + 후임 채용 1~2주.
+          "이 직원 다음 주 한도 초과" / "비자 D-30" 한 줄 알림이 그걸 사전에 막아줍니다.
+          한 번만 막아도 구독료 회수.
         </div>
       </section>
 
@@ -130,6 +157,83 @@ export default function PricingPage() {
         </ul>
       </section>
     </main>
+  )
+}
+
+// 🌏 언어 매칭팩 — 업주가 자기 가게 컨텍스트로 직접 연결되도록
+const LANGUAGE_PACKS = [
+  {
+    flag: '🇨🇳',
+    lang: '중국어',
+    price: '9,900원',
+    use: '명동 화장품·면세점·관광지 카페',
+    detail: '중국어 가능 학생 후보 3명 카드 열람',
+  },
+  {
+    flag: '🇻🇳',
+    lang: '베트남어',
+    price: '9,900원',
+    use: '안산·시흥 공장, 베트남식당',
+    detail: '베트남어 가능 학생 후보 3명 카드 열람',
+  },
+  {
+    flag: '🇺🇸',
+    lang: '영어',
+    price: '9,900원',
+    use: '이태원·홍대 식당, 관광 안내',
+    detail: '영어 가능 학생 후보 3명 카드 열람',
+  },
+  {
+    flag: '🇲🇳',
+    lang: '몽골어',
+    price: '9,900원',
+    use: '동대문 의류 도매, 광장시장',
+    detail: '몽골어 가능 학생 후보 3명 카드 열람',
+  },
+  {
+    flag: '🇺🇿',
+    lang: '우즈벡어',
+    price: '9,900원',
+    use: '안산·평택 공장, 동대문 시장',
+    detail: '우즈벡어 가능 학생 후보 3명 카드 열람',
+  },
+  {
+    flag: '🇰🇷',
+    lang: '한국어 능통',
+    price: '14,900원',
+    use: 'TOPIK 5급+ — 응대·전화 가능',
+    detail: '한국어 능통 학생 후보 3명 카드 열람',
+  },
+]
+
+function LanguagePack({
+  flag,
+  lang,
+  price,
+  use,
+  detail,
+}: {
+  flag: string
+  lang: string
+  price: string
+  use: string
+  detail: string
+}) {
+  return (
+    <div className="rounded-2xl border-2 border-zinc-200 bg-white p-5 hover:border-emerald-400 dark:border-zinc-800 dark:bg-zinc-900">
+      <div className="flex items-center gap-3">
+        <span className="text-3xl">{flag}</span>
+        <div>
+          <p className="text-base font-bold">{lang} 매칭팩</p>
+          <p className="text-xs text-zinc-500">{detail}</p>
+        </div>
+      </div>
+      <p className="mt-4 text-2xl font-bold">{price}</p>
+      <p className="mt-1 text-[11px] uppercase tracking-wide text-emerald-600 dark:text-emerald-400">
+        대표 업종
+      </p>
+      <p className="text-xs text-zinc-600 dark:text-zinc-400">{use}</p>
+    </div>
   )
 }
 

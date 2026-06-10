@@ -4,7 +4,17 @@ import { useState } from 'react'
 import { submitCriteria } from './actions'
 import { DEMO_SCENARIOS } from '@/data/demo-scenarios'
 
-const LANGUAGES = ['베트남어', '중국어', '영어', '러시아어', '기타'] as const
+// 🌏 언어 매칭팩 — 업주가 자기 가게 컨텍스트로 직접 선택
+const LANGUAGES = ['중국어', '베트남어', '영어', '몽골어', '우즈벡어', '러시아어', '기타'] as const
+const LANGUAGE_META: Record<string, { flag: string; use: string }> = {
+  '중국어': { flag: '🇨🇳', use: '명동·면세점·관광지' },
+  '베트남어': { flag: '🇻🇳', use: '안산·시흥 공장·식당' },
+  '영어': { flag: '🇺🇸', use: '이태원·홍대·관광 안내' },
+  '몽골어': { flag: '🇲🇳', use: '동대문 시장·도매' },
+  '우즈벡어': { flag: '🇺🇿', use: '안산·평택 공장' },
+  '러시아어': { flag: '🇷🇺', use: 'CIS권 학생 응대' },
+  '기타': { flag: '🌐', use: '직접 입력 가능' },
+}
 const DAYS = ['월', '화', '수', '목', '금', '토', '일'] as const
 const TIME_SLOTS = ['오전', '오후', '저녁'] as const
 const AREAS = ['대림', '건대', '홍대', '명동', '기타'] as const
@@ -38,12 +48,8 @@ export default function MatchCriteriaForm() {
       }}
       className="space-y-6"
     >
-      <CheckboxGroup
-        name="requiredLanguages"
-        label="필요 언어 (복수 선택 가능)"
-        options={LANGUAGES}
+      <LanguagePackPicker
         defaults={DEFAULTS.requiredLanguages}
-        required
       />
       <CheckboxGroup
         name="workDays"
@@ -132,6 +138,52 @@ export default function MatchCriteriaForm() {
         {pending ? '계산 중...' : '조건에 맞는 후보 수 확인하기 →'}
       </button>
     </form>
+  )
+}
+
+// 🌏 언어 매칭팩 — 시각적 진입점
+// 일반 체크박스 대신 국기 카드로 노출. 업주가 '내 가게는 이 언어' 컨텍스트를 즉시 인지.
+function LanguagePackPicker({ defaults = [] }: { defaults?: readonly string[] }) {
+  return (
+    <fieldset className="space-y-3">
+      <legend className="text-sm font-medium">
+        🌏 어떤 언어가 필요하세요? <span className="text-red-500">*</span>
+        <span className="ml-2 text-xs font-normal text-zinc-500">
+          (복수 선택 가능 · 선택한 언어별로 9,900원)
+        </span>
+      </legend>
+      <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+        {LANGUAGES.map((opt) => {
+          const meta = LANGUAGE_META[opt]
+          return (
+            <label
+              key={opt}
+              className="relative flex cursor-pointer items-start gap-3 rounded-xl border-2 border-zinc-200 bg-white p-3 hover:border-emerald-400 dark:border-zinc-700 dark:bg-zinc-900 has-[input:checked]:border-emerald-600 has-[input:checked]:bg-emerald-50 dark:has-[input:checked]:bg-emerald-950/40"
+            >
+              <input
+                type="checkbox"
+                name="requiredLanguages"
+                value={opt}
+                defaultChecked={defaults.includes(opt)}
+                className="mt-1 h-4 w-4"
+              />
+              <div className="flex-1">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">{meta.flag}</span>
+                  <span className="text-sm font-bold">{opt}</span>
+                </div>
+                <p className="mt-0.5 text-[11px] text-zinc-500 dark:text-zinc-400">
+                  {meta.use}
+                </p>
+              </div>
+            </label>
+          )
+        })}
+      </div>
+      <p className="text-[11px] text-zinc-500">
+        💡 9,900원으로 그 언어 가능 학생 후보 3명 카드를 받습니다. 거절 시 다음 팩 50% 할인.
+      </p>
+    </fieldset>
   )
 }
 
