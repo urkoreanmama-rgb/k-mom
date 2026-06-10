@@ -1,14 +1,23 @@
 import Link from 'next/link'
+import { headers } from 'next/headers'
 import { logout } from '@/app/actions/auth'
 import { createClient } from '@/lib/supabase/server'
 import { DEMO_MODE } from '@/lib/flags'
 import MobileMenu, { type NavItem } from './MobileMenu'
 
 export default async function Nav() {
+  // 메인 페이지(/)에서는 로그인 상태와 무관하게 항상 '비로그인 Nav'로 표시
+  const hdrs = await headers()
+  const pathname = hdrs.get('x-pathname') || hdrs.get('x-invoke-path') || ''
+  const isHomePage = pathname === '/' || pathname === ''
+
   const supabase = await createClient()
   const {
-    data: { user },
+    data: { user: realUser },
   } = await supabase.auth.getUser()
+
+  // 메인 페이지면 user를 null로 강제 (Nav가 비로그인 모드로 렌더)
+  const user = isHomePage ? null : realUser
 
   let role: string | null = null
   let name = ''

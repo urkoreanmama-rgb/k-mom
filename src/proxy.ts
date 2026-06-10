@@ -20,9 +20,14 @@ function isDemoExempt(path: string): boolean {
 }
 
 export async function proxy(request: NextRequest) {
+  // Nav 컴포넌트가 현재 경로 알 수 있도록 헤더 주입
+  // (메인 페이지 '/' 에서는 비로그인 Nav 표시용)
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('x-pathname', request.nextUrl.pathname)
+
   // 응답 객체를 만들어두고, Supabase가 쿠키를 set 할 때 여기에 누적
   let response = NextResponse.next({
-    request: { headers: request.headers },
+    request: { headers: requestHeaders },
   })
 
   const supabase = createServerClient(
@@ -38,7 +43,7 @@ export async function proxy(request: NextRequest) {
             request.cookies.set(name, value),
           )
           response = NextResponse.next({
-            request: { headers: request.headers },
+            request: { headers: requestHeaders },
           })
           cookiesToSet.forEach(({ name, value, options }) =>
             response.cookies.set(name, value, options),

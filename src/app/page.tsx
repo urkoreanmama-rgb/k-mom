@@ -1,17 +1,7 @@
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
 
-// 역할별 홈 경로
-function roleHome(role: string | null): string {
-  switch (role) {
-    case 'employer': return '/employer/match'
-    case 'school_admin': return '/school/dashboard'
-    case 'platform_admin': return '/admin/dashboard'
-    case 'student': return '/student/profile'
-    default: return '/'
-  }
-}
+// 메인 URL (/)은 로그인 여부 상관없이 항상 랜딩 페이지 표시
+// — 로그인된 사용자도 자유롭게 접근 (Nav는 사용자 정보 표시)
 
 export default async function Home({
   searchParams,
@@ -19,19 +9,6 @@ export default async function Home({
   searchParams: Promise<{ notice?: string }>
 }) {
   const { notice } = await searchParams
-  const supabase = await createClient()
-  const { data: { user } } = await supabase.auth.getUser()
-
-  // 🚪 로그인된 사용자는 즉시 자기 역할 페이지로 리다이렉트
-  // → 메인 URL은 항상 '비로그인 화면'만 보임
-  if (user) {
-    const { data } = await supabase
-      .from('users')
-      .select('role')
-      .eq('id', user.id)
-      .single()
-    redirect(roleHome(data?.role ?? null))
-  }
 
   return (
     <main className="flex-1">
