@@ -17,20 +17,20 @@ export default async function SchoolDashboardPage() {
 
   // 학교 데모 계정이 Supabase에 없거나 RLS 차단되어도 시연 화면이 보이도록
   // user 없으면 그대로 데모 데이터 표시 (redirect 안 함)
-  let school: { id: string; name: string; admin_user_id: string; mou_status: string } | null = null
+  let schoolName: string | null = null
   let realStudentCount = 0
   if (user) {
     const { data: s } = await supabase
       .from('schools')
-      .select('*')
+      .select('id, name')
       .eq('admin_user_id', user.id)
       .maybeSingle()
-    school = s ?? null
-    if (school) {
+    if (s) {
+      schoolName = s.name
       const { data: rows } = await supabase
         .from('school_students')
         .select('student_id')
-        .eq('school_id', school.id)
+        .eq('school_id', s.id)
       realStudentCount = rows?.length ?? 0
     }
   }
@@ -74,7 +74,7 @@ export default async function SchoolDashboardPage() {
       <header>
         <p className="text-sm font-medium text-zinc-500">학교 국제처</p>
         <h1 className="mt-3 text-3xl sm:text-4xl font-semibold tracking-tight">
-          {school?.name ?? 'K-MOM 데모대학교'}
+          {schoolName ?? 'K-MOM 데모대학교'}
         </h1>
         <p className="mt-3 text-zinc-500">
           재학 유학생의 합법 시간제취업 현황을 한눈에. 클릭하면 학생별 현재 근무·이력·위험 신호를 볼 수 있어요.
