@@ -60,6 +60,81 @@ export default async function Home({
         </p>
       </section>
 
+      {/* 서비스 소개 — '이게 뭐 하는 서비스인가요?' 즉시 답 */}
+      <section className="px-6 py-20 sm:py-24 max-w-5xl mx-auto">
+        <div className="text-center">
+          <p className="text-sm font-medium text-zinc-500">서비스 소개</p>
+          <h2 className="mt-3 text-3xl sm:text-5xl font-semibold tracking-tight leading-tight">
+            K-MOM은
+            <br />
+            <span className="text-zinc-500">D-2 유학생 · 업주 · 학교</span>를 잇는
+            <br />
+            합법 채용 신뢰 플랫폼입니다.
+          </h2>
+          <p className="mx-auto mt-6 max-w-2xl text-zinc-500">
+            외국인 유학생은 까다로운 비자·시간·서류 규정 때문에 합법 알바가 어렵고,
+            업주는 무엇이 합법인지 모르고, 학교는 학생이 어디서 일하는지 모릅니다.
+            K-MOM은 이 세 주체를 신뢰 데이터로 연결합니다.
+          </p>
+        </div>
+
+        {/* 3개 흐름 카드 */}
+        <div className="mt-16 grid gap-4 sm:grid-cols-3">
+          <IntroCard
+            tag="학생"
+            title="합법 알바를 찾고 신뢰를 쌓아요."
+            steps={[
+              '비자체커로 합법 여부 즉시 확인',
+              '신뢰 프로필·이력서 등록 (무료)',
+              '인증 업체에 직접 지원',
+              '근무 이력은 평생 경력 자산',
+            ]}
+          />
+          <IntroCard
+            tag="업주"
+            title="필요한 언어 인재만 빠르게."
+            steps={[
+              '명동 중국어·안산 우즈벡어 — 언어별 매칭팩',
+              '9,900원에 검증된 후보 3명 받음',
+              '서류·합법성 사전 점검',
+              '스태프 안정 구독으로 운영 리스크 차단',
+            ]}
+          />
+          <IntroCard
+            tag="학교"
+            title="재학생 알바 현황을 한눈에."
+            steps={[
+              '학생 동의 기반 실시간 모니터링',
+              '시간 한도 초과·위험 업체 자동 알림',
+              '서류 미제출 학생 추적',
+              '학기·연간 추이 분석',
+            ]}
+          />
+        </div>
+
+        {/* "왜 이런 서비스가 필요한가" 핵심 수치 */}
+        <div className="mt-16 rounded-2xl border border-zinc-200 bg-zinc-50 p-8 sm:p-10 dark:border-zinc-800 dark:bg-zinc-950">
+          <p className="text-sm font-medium text-zinc-500 text-center">왜 K-MOM인가요?</p>
+          <div className="mt-6 grid gap-8 sm:grid-cols-3">
+            <ProblemPoint
+              stat="18만+"
+              label="국내 D-2 유학생"
+              detail="대부분이 합법 시간제취업 요건을 정확히 모름"
+            />
+            <ProblemPoint
+              stat="주 25h"
+              label="학기중 근무 한도"
+              detail="초과 시 비자 취소 · 업주 200만원 과태료"
+            />
+            <ProblemPoint
+              stat="0건"
+              label="K-MOM 매개 위반"
+              detail="모든 학생·업체를 사전 검증"
+            />
+          </div>
+        </div>
+      </section>
+
       {/* 학생 자가진단 — 옅은 회색 섹션 (구분만 hint) */}
       <section className="bg-zinc-50 dark:bg-zinc-950">
         <div className="px-6 py-20 max-w-5xl mx-auto text-center">
@@ -220,6 +295,55 @@ export default async function Home({
         © 2026 K-MOM · 출입국관리법 제20조 · 직업안정법 준수
       </footer>
     </main>
+  );
+}
+
+function IntroCard({
+  tag,
+  title,
+  steps,
+}: {
+  tag: string;
+  title: string;
+  steps: string[];
+}) {
+  return (
+    <div className="card-3d rounded-2xl border border-zinc-200 bg-white p-8 dark:border-zinc-800 dark:bg-zinc-900">
+      <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
+        {tag}
+      </p>
+      <h3 className="mt-3 text-lg font-semibold tracking-tight leading-tight">
+        {title}
+      </h3>
+      <ol className="mt-6 space-y-3 text-sm text-zinc-600 dark:text-zinc-400">
+        {steps.map((step, i) => (
+          <li key={step} className="flex gap-3">
+            <span className="font-medium text-zinc-400 tabular-nums">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <span>{step}</span>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+function ProblemPoint({
+  stat,
+  label,
+  detail,
+}: {
+  stat: string;
+  label: string;
+  detail: string;
+}) {
+  return (
+    <div className="text-center">
+      <p className="text-4xl sm:text-5xl font-semibold tracking-tight">{stat}</p>
+      <p className="mt-2 text-sm font-medium">{label}</p>
+      <p className="mt-2 text-xs text-zinc-500 leading-relaxed">{detail}</p>
+    </div>
   );
 }
 
