@@ -51,7 +51,7 @@ export default async function AdminDashboardPage() {
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
           <p className="text-xs font-semibold uppercase tracking-wide text-zinc-500">
-            INVESTOR DEMO
+            시연 모드
           </p>
           <h1 className="mt-1 text-3xl font-bold">K-MOM 운영자 대시보드</h1>
           <p className="mt-1 text-sm text-zinc-500">

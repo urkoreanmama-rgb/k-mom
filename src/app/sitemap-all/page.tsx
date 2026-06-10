@@ -168,7 +168,7 @@ export default async function SitemapPage() {
         color: 'zinc',
         items: [
           { href: '/demo', title: '시연 페이지', desc: '6개 페르소나 카드로 원클릭 로그인', emoji: '🎭' },
-          { href: '/dashboard', title: '투자자 대시보드', desc: 'KPI 한눈에', emoji: '📊' },
+          { href: '/dashboard', title: '대시보드', desc: 'KPI 한눈에', emoji: '📊' },
           { href: '/students', title: '학생 전체 명단', desc: '50명 필터 가능', emoji: '👥' },
           { href: '/employers', title: '업체 전체 명단', desc: '등록 가게 카드', emoji: '🏬' },
           { href: '/reviews', title: '쌍방향 평가', desc: '누적 평가 사례', emoji: '⭐' },

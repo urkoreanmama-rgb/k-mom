@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { DEMO_METRICS } from '@/data/demo-metrics'
 
-export const metadata = { title: '투자자 대시보드 · K-MOM' }
+export const metadata = { title: '대시보드 · K-MOM' }
 
 export default function InvestorDashboardPage() {
   const m = DEMO_METRICS
@@ -12,7 +12,7 @@ export default function InvestorDashboardPage() {
       <section className="mb-12 text-center">
         <div className="flex flex-wrap items-center justify-center gap-2 mb-4">
           <span className="inline-flex h-7 items-center rounded-full bg-violet-100 px-3 text-xs font-semibold text-violet-700 dark:bg-violet-900/40 dark:text-violet-300">
-            INVESTOR DEMO · Phase 1 MVP
+            시연 모드 · Phase 1 MVP
           </span>
           <span className="inline-flex h-7 items-center rounded-full bg-zinc-100 px-3 text-xs font-semibold text-zinc-600 dark:bg-zinc-800 dark:text-zinc-300">
             벤치마킹: Instawork + Interstride + Handshake

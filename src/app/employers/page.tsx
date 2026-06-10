@@ -39,7 +39,7 @@ export default function EmployersPage() {
       {/* Header */}
       <div className="mb-8">
         <Link href="/dashboard" className="text-sm text-emerald-600 dark:text-emerald-400 hover:underline">
-          ← 투자자 대시보드
+          ← 대시보드
         </Link>
         <h1 className="mt-3 text-3xl font-bold">업체 신뢰 프로필</h1>
         <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
