@@ -203,7 +203,7 @@ function EmployerReviewForm() {
       <div className="rounded-2xl border border-zinc-200 bg-zinc-50 p-4 dark:border-zinc-800 dark:bg-zinc-900">
         <p className="text-xs text-zinc-500">평가 대상 학생</p>
         <p className="mt-1 text-lg font-bold">응우옌 티 화 (화)</p>
-        <p className="text-xs text-zinc-400">베트남 · D-2-2 · 서울시립대학교 · TOPIK 4급</p>
+        <p className="text-xs text-zinc-400">베트남 · D-2-2 · 서울미디어대학원대학교 · TOPIK 4급</p>
       </div>
 
       <div className="space-y-5">

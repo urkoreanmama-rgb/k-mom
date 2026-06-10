@@ -144,7 +144,7 @@ export const DEMO_STUDENTS: DemoStudent[] = [
       },
     ],
     totalWorkHours: 220,
-    schoolName: '서울시립대학교',
+    schoolName: '서울미디어대학원대학교',
   },
   {
     studentId: 's-002',
