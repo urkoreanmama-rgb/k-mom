@@ -131,6 +131,8 @@ export default async function DemoPage() {
               '재직 중 이력 누적',
               '졸업 후 커리어 프로필 전환',
             ]}
+            loginEmail="kmom.student1@gmail.com"
+            dest="/student/profile"
           />
           <BMSection
             label="업주"
@@ -140,6 +142,8 @@ export default async function DemoPage() {
               '스태프 안정 구독 49,000원 / 월',
               '비자 D-30 · 주 25h · 졸업 D-60 알림',
             ]}
+            loginEmail="kmom.employer3@gmail.com"
+            dest="/employer/match"
             emphasis
           />
           <BMSection
@@ -150,6 +154,8 @@ export default async function DemoPage() {
               '교외 근무 현황 모니터링',
               '위험 업체 알림',
             ]}
+            loginEmail="kmom.school@gmail.com"
+            dest="/school/dashboard"
           />
           <BMSection
             label="기업 채용팀"
@@ -159,6 +165,7 @@ export default async function DemoPage() {
               '알바 이력 + 평가 + 언어 능력',
               '진짜 B2B 매출의 시작점',
             ]}
+            href="/demo/enterprise"
           />
         </div>
       </section>
@@ -230,20 +237,24 @@ function BMSection({
   sub,
   items,
   emphasis = false,
+  loginEmail,
+  dest,
+  href,
 }: {
   label: string
   sub: string
   items: string[]
   emphasis?: boolean
+  loginEmail?: string
+  dest?: string
+  href?: string
 }) {
-  return (
-    <div
-      className={
-        emphasis
-          ? 'rounded-xl card-3d border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900'
-          : 'rounded-xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-950'
-      }
-    >
+  const cls = emphasis
+    ? 'card-3d block w-full text-left rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900'
+    : 'card-3d block w-full text-left rounded-xl border border-zinc-200 bg-zinc-50 p-6 dark:border-zinc-800 dark:bg-zinc-950'
+
+  const content = (
+    <>
       <p className="text-xs font-medium uppercase tracking-wide text-zinc-500">
         {label}
       </p>
@@ -256,6 +267,33 @@ function BMSection({
           </li>
         ))}
       </ul>
-    </div>
+      <p className="mt-4 text-[10px] font-medium uppercase tracking-wide text-zinc-400">
+        클릭해서 화면 보기 →
+      </p>
+    </>
   )
+
+  // 데모 계정 자동 로그인
+  if (loginEmail && dest) {
+    return (
+      <form action={loginAsDemoAccount}>
+        <input type="hidden" name="email" value={loginEmail} />
+        <input type="hidden" name="dest" value={dest} />
+        <button type="submit" className={cls}>
+          {content}
+        </button>
+      </form>
+    )
+  }
+
+  // 내부 링크 (예: /demo/enterprise)
+  if (href) {
+    return (
+      <Link href={href} className={cls}>
+        {content}
+      </Link>
+    )
+  }
+
+  return <div className={cls}>{content}</div>
 }
